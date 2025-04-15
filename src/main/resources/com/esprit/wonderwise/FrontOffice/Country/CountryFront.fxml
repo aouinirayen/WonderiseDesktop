@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="740.0" prefWidth="1070.0" stylesheets="@../../khalilstyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.CountryFrontController">
+    <top>
+        <fx:include source="../NavBarFront.fxml" />
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #F0F4F8; -fx-padding: 30;">
+            <!-- Title Section with Icon -->
+            <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 0 0 20 20;">
+                <ImageView fitHeight="50.0" fitWidth="50.0">
+                    <Image url="@../../icons/country.png" />
+                </ImageView>
+                <Text text="Explore Countries" style="-fx-font-size: 34px; -fx-fill: #2D3748; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" styleClass="header-text" />
+            </HBox>
+
+            <!-- Scrollable Country Cards -->
+            <ScrollPane fitToHeight="false" fitToWidth="true" prefHeight="600" style="-fx-background: transparent; -fx-background-color: transparent;" styleClass="scroll-pane">
+                <FlowPane fx:id="countryCards" alignment="CENTER" hgap="25" vgap="25" prefWidth="1000" style="-fx-padding: 20; -fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);">
+                    <BorderPane.margin>
+                        <Insets bottom="20" left="20" right="20" top="20" />
+                    </BorderPane.margin>
+                </FlowPane>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

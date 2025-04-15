@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="modern-background" stylesheets="@../../khalilstyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.CountryController">
+    <left>
+        <fx:include source="../NavBarBack.fxml" />
+    </left>
+    <center>
+        <HBox alignment="CENTER" spacing="20" style="-fx-padding: 30; -fx-background-color: #F0F4F8; -fx-max-width: 1000;">
+            <!-- Left Card: Country Details -->
+            <VBox alignment="TOP_CENTER" spacing="20" style="-fx-background-color: #FFFFFF; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 10); -fx-padding: 25; -fx-min-width: 400; -fx-max-width: 400;">
+                <!-- Header with Circular Image -->
+                <VBox alignment="CENTER" spacing="15">
+                    <ImageView fx:id="detailImageView" fitHeight="200" fitWidth="200" style="-fx-background-radius: 50%; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 20, 0, 0, 5);">
+                        <Image url="@../../icons/country.png" />
+                    </ImageView>
+                    <Label fx:id="nameLabel" style="-fx-font-size: 30px; -fx-text-fill: #2D3748; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                </VBox>
+
+                <!-- Country Details -->
+                <VBox spacing="15" style="-fx-padding: 10 0;">
+                    <VBox spacing="10">
+                        <Label text="Description" style="-fx-font-size: 16px; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                        <Text fx:id="descLabel" wrappingWidth="350" style="-fx-font-size: 14px; -fx-fill: #718096; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                    </VBox>
+                    <HBox spacing="20">
+                        <VBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Currency" style="-fx-font-size: 14px; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                                <Label fx:id="currencyLabel" style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="ISO Code" style="-fx-font-size: 14px; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                                <Label fx:id="isoLabel" style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                            </VBox>
+                        </VBox>
+                        <VBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Calling Code" style="-fx-font-size: 14px; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                                <Label fx:id="callingLabel" style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Climate" style="-fx-font-size: 14px; -fx-text-fill: #4A5568; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                                <Label fx:id="climateLabel" style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                            </VBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Back Button -->
+                <Button onAction="#showCountryList" text="Back to List" styleClass="backoffice-action-button" />
+            </VBox>
+
+            <!-- Right Card: ScrollPane for Categories (White Mode) -->
+            <VBox alignment="TOP_CENTER" spacing="20" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-padding: 25; -fx-min-width: 550; -fx-max-width: 550; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 10);">
+                <Text text="Explore Categories" style="-fx-font-size: 26px; -fx-fill: #2D3748; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+
+                <!-- Scrollable Categories -->
+                <ScrollPane fitToWidth="true" prefHeight="600" style="-fx-background: transparent; -fx-background-color: transparent;">
+                    <VBox spacing="20" style="-fx-padding: 15;">
+                        <!-- Arts Section -->
+                        <VBox spacing="10" style="-fx-background-color: #EDF2F7; -fx-background-radius: 15; -fx-padding: 15;">
+                            <Text text="Arts" style="-fx-font-size: 20px; -fx-fill: #2D3748; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                            <FlowPane fx:id="artsFlowPane" hgap="15" vgap="15" alignment="CENTER" style="-fx-padding: 10;" />
+                        </VBox>
+                        <!-- Monuments Section -->
+                        <VBox spacing="10" style="-fx-background-color: #EDF2F7; -fx-background-radius: 15; -fx-padding: 15;">
+                            <Text text="Monuments" style="-fx-font-size: 20px; -fx-fill: #2D3748; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                            <FlowPane fx:id="monumentsFlowPane" hgap="15" vgap="15" alignment="CENTER" style="-fx-padding: 10;" />
+                        </VBox>
+                        <!-- Traditional Foods Section -->
+                        <VBox spacing="10" style="-fx-background-color: #EDF2F7; -fx-background-radius: 15; -fx-padding: 15;">
+                            <Text text="Traditional Foods" style="-fx-font-size: 20px; -fx-fill: #2D3748; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                            <FlowPane fx:id="foodsFlowPane" hgap="15" vgap="15" alignment="CENTER" style="-fx-padding: 10;" />
+                        </VBox>
+                        <!-- Celebrities Section -->
+                        <VBox spacing="10" style="-fx-background-color: #EDF2F7; -fx-background-radius: 15; -fx-padding: 15;">
+                            <Text text="Celebrities" style="-fx-font-size: 20px; -fx-fill: #2D3748; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" />
+                            <FlowPane fx:id="celebritiesFlowPane" hgap="15" vgap="15" alignment="CENTER" style="-fx-padding: 10;" />
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>
