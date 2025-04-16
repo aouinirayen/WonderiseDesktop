@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.esprit.wonderwise.Controllers.ProfileController"
+            prefHeight="700.0" prefWidth="1000.0"
+            styleClass="profile-container"
+            stylesheets="@profile.css">
+
+    <VBox spacing="30" AnchorPane.topAnchor="0.0" 
+          AnchorPane.leftAnchor="0.0" 
+          AnchorPane.rightAnchor="0.0"
+          AnchorPane.bottomAnchor="0.0"
+          styleClass="profile-content">
+        
+        <!-- En-tête du profil -->
+        <HBox spacing="20" alignment="CENTER" styleClass="profile-header">
+            <StackPane styleClass="profile-image-container">
+                <Circle radius="50" styleClass="profile-image-circle"/>
+                <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
+                    <Image url="@../icons/default-avatar.png"/>
+                </ImageView>
+                <Button styleClass="change-photo-btn" text="Changer la photo"/>
+            </StackPane>
+            
+            <VBox alignment="CENTER_LEFT">
+                <Label fx:id="userNameLabel" styleClass="profile-name" text="Nom Complet"/>
+                <Label fx:id="userEmailLabel" styleClass="profile-email" text="email@example.com"/>
+            </VBox>
+        </HBox>
+
+        <!-- Informations personnelles -->
+        <TitledPane text="Informations Personnelles" expanded="true">
+            <GridPane hgap="20" vgap="15">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                <Label text="Prénom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="firstNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Nom:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="lastNameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Date de naissance:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="birthDatePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Téléphone:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="phoneField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="Adresse:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <TextArea fx:id="addressArea" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            </GridPane>
+        </TitledPane>
+
+        <!-- Préférences -->
+        <TitledPane text="Préférences de Voyage" expanded="true">
+            <VBox spacing="15">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                <Label text="Destinations préférées:"/>
+                <ComboBox fx:id="preferredDestinationsCombo" promptText="Sélectionnez vos destinations"/>
+
+                <Label text="Type de voyage préféré:"/>
+                <HBox spacing="20">
+                    <CheckBox fx:id="adventureCheck" text="Aventure"/>
+                    <CheckBox fx:id="cultureCheck" text="Culture"/>
+                    <CheckBox fx:id="relaxCheck" text="Détente"/>
+                    <CheckBox fx:id="gastronomyCheck" text="Gastronomie"/>
+                </HBox>
+
+                <Label text="Budget moyen par voyage:"/>
+                <Slider fx:id="budgetSlider" min="0" max="10000" showTickLabels="true" showTickMarks="true"/>
+            </VBox>
+        </TitledPane>
+
+        <!-- Historique des voyages -->
+        <TitledPane text="Historique des Voyages" expanded="true">
+            <TableView fx:id="travelHistoryTable">
+                <columns>
+                    <TableColumn text="Date" fx:id="dateColumn"/>
+                    <TableColumn text="Destination" fx:id="destinationColumn"/>
+                    <TableColumn text="Type" fx:id="typeColumn"/>
+                    <TableColumn text="Statut" fx:id="statusColumn"/>
+                </columns>
+            </TableView>
+        </TitledPane>
+
+        <!-- Boutons d'action -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Sauvegarder les modifications" onAction="#handleSave" styleClass="save-button"/>
+            <Button text="Réinitialiser" onAction="#handleReset" styleClass="reset-button"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

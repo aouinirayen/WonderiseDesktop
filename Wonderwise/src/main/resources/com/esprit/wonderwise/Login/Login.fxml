@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.Login.LoginController">
+    <StackPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to right bottom, #1a237e, #0d47a1);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        
+        <!-- Login Card -->
+        <VBox alignment="CENTER" maxWidth="400" spacing="20" style="-fx-background-color: white; -fx-padding: 40; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);">
+            <!-- Logo -->
+            <ImageView fitHeight="70" fitWidth="70" preserveRatio="true">
+                <image>
+                    <Image url="@../icons/gps.png"/>
+                </image>
+            </ImageView>
+            
+            <!-- Title -->
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="Welcome Back!" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1a237e;"/>
+                <Text style="-fx-fill: #757575; -fx-font-size: 14px;" text="Sign in to continue your journey"/>
+            </VBox>
+            
+            <!-- Form -->
+            <VBox spacing="15" style="-fx-padding: 20 0;">
+                <TextField fx:id="usernameField" promptText="Username" 
+                         style="-fx-background-color: #f5f5f5; 
+                                -fx-background-radius: 5;
+                                -fx-border-color: transparent;
+                                -fx-padding: 12;
+                                -fx-font-size: 14px;"/>
+                
+                <PasswordField fx:id="passwordField" promptText="Password"
+                             style="-fx-background-color: #f5f5f5;
+                                    -fx-background-radius: 5;
+                                    -fx-border-color: transparent;
+                                    -fx-padding: 12;
+                                    -fx-font-size: 14px;"/>
+            </VBox>
+            
+            <!-- Login Button -->
+            <Button fx:id="loginButton" text="Login" 
+                    style="-fx-background-color: #2196F3;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 5;
+                           -fx-min-width: 320;
+                           -fx-padding: 14;
+                           -fx-font-size: 14px;
+                           -fx-cursor: hand;"/>
+            
+            <!-- Links -->
+            <HBox alignment="CENTER" spacing="20">
+                <Hyperlink fx:id="forgotPasswordLink" text="Forgot Password?" 
+                          style="-fx-text-fill: #2196F3;
+                                 -fx-underline: false;
+                                 -fx-font-size: 13px;"/>
+                <Hyperlink fx:id="createAccountLink" text="Create Account"
+                          style="-fx-text-fill: #2196F3;
+                                 -fx-underline: false;
+                                 -fx-font-size: 13px;"/>
+            </HBox>
+        </VBox>
+    </StackPane>
+</AnchorPane>
