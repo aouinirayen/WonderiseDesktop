@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefWidth="450" prefHeight="600" stylesheets="@addOffre.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.AddOffreController">
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <VBox styleClass="form-container">
+                    <Label styleClass="label-title" text="Ajouter une nouvelle offre" />
+
+                    <!-- Titre -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Titre" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <TextField fx:id="titreField" promptText="Entrez le titre" />
+                        <Label fx:id="titreError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Description -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Description" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <TextArea fx:id="descriptionField" promptText="Entrez la description" />
+                        <Label fx:id="descriptionError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Prix -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Prix" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <TextField fx:id="prixField" promptText="Entrez le prix (ex. 999.99)" />
+                        <Label fx:id="prixError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Nombre de places -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Nombre de places" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <TextField fx:id="nombrePlacesField" promptText="Entrez le nombre de places" />
+                        <Label fx:id="nombrePlacesError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Places disponibles -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Places disponibles" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <TextField fx:id="placesDisponiblesField" promptText="Entrez les places disponibles" />
+                        <Label fx:id="placesDisponiblesError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Date de début -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Date de début" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <DatePicker fx:id="dateDebutPicker" promptText="Sélectionnez la date de début" />
+                        <Label fx:id="dateDebutError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Date de fin -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Date de fin" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <DatePicker fx:id="dateFinPicker" promptText="Sélectionnez la date de fin" />
+                        <Label fx:id="dateFinError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Image -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Image" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <TextField fx:id="imageField" promptText="Sélectionnez une image" editable="false" HBox.hgrow="ALWAYS" />
+                            <Button fx:id="selectImageButton" text="Parcourir" onAction="#handleImageSelection" />
+                        </HBox>
+                        <ImageView fx:id="imagePreview" fitWidth="200" fitHeight="150" preserveRatio="true" />
+                        <Label fx:id="imageError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Boutons -->
+                    <HBox styleClass="button-container">
+                        <Button fx:id="addButton" styleClass="button-add" onAction="#handleAddOffre" text="Ajouter" />
+                        <Button fx:id="cancelButton" styleClass="button-cancel" onAction="#handleCancel" text="Annuler" />
+                    </HBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

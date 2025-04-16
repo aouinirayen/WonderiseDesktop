@@ -1,0 +1,254 @@
+/* Conteneur principal */
+.border-pane {
+    -fx-background-color: linear-gradient(to bottom right, #FFFFFF, #F8F9FA);
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 20, 0, 0, 5);
+    -fx-padding: 25;
+}
+
+/* VBox du formulaire */
+.vbox {
+    -fx-spacing: 15;
+    -fx-alignment: center;
+    -fx-padding: 20;
+    -fx-max-width: 450;
+}
+
+/* Style pour le titre du formulaire */
+.label-title {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+    -fx-padding: 15 0 25 0;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.2), 10, 0, 0, 2);
+    -fx-alignment: center;
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #E3F2FD;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-min-width: 300;
+    -fx-max-width: 500;
+}
+
+/* En-tête du formulaire */
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 0 0 20 0;
+    -fx-font-family: "Segoe UI";
+}
+
+/* Container pour chaque groupe label + champ */
+.form-group {
+    -fx-spacing: 8;
+    -fx-alignment: center-left;
+    -fx-min-width: 400;
+}
+
+/* Labels des champs */
+.label-field {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495E;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-min-width: 150;
+}
+
+/* Style commun pour tous les champs de saisie */
+.input-field {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #E0E5EC;
+    -fx-border-radius: 8;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-pref-width: 300;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 0, 1);
+}
+
+/* Champs de texte */
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #E0E5EC;
+    -fx-border-radius: 8;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-pref-width: 300;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498DB;
+    -fx-border-width: 2;
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 8, 0, 0, 0);
+}
+
+/* Zone de texte */
+.text-area {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #E0E5EC;
+    -fx-border-radius: 8;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-pref-width: 300;
+}
+
+.text-area:focused {
+    -fx-border-color: #3498DB;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 8, 0, 0, 0);
+}
+
+/* ChoiceBox */
+.choice-box {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #E0E5EC;
+    -fx-border-radius: 8;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-pref-width: 300;
+}
+
+.choice-box:hover {
+    -fx-border-color: #3498DB;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #E0E5EC;
+    -fx-border-radius: 8;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: #3498DB;
+    -fx-background-radius: 4;
+}
+
+.choice-box .menu-item > .label {
+    -fx-text-fill: #2C3E50;
+    -fx-font-family: "Segoe UI";
+}
+
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Container pour les boutons */
+.button-container {
+    -fx-spacing: 15;
+    -fx-alignment: center;
+    -fx-padding: 20 0 0 0;
+}
+
+/* Bouton Réserver */
+.button-add {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.3), 8, 0, 0, 2);
+}
+
+.button-add:hover {
+    -fx-background-color: #1976D2;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.4), 10, 0, 0, 4);
+    -fx-translate-y: -1;
+}
+
+.button-add:pressed {
+    -fx-background-color: #0D47A1;
+    -fx-translate-y: 0;
+}
+
+/* Bouton Annuler */
+.button-cancel {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.3), 8, 0, 0, 2);
+}
+
+.button-cancel:hover {
+    -fx-background-color: #C0392B;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.4), 10, 0, 0, 4);
+    -fx-translate-y: -1;
+}
+
+.button-cancel:pressed {
+    -fx-background-color: #A93226;
+    -fx-translate-y: 0;
+}
+
+/* Effets de transition */
+.text-field:hover, .text-area:hover, .choice-box:hover {
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.1), 8, 0, 0, 0);
+    -fx-border-color: #BDC3C7;
+}
+
+/* Masquer les champs spécifiés */
+.hidden-field {
+    visibility: hidden;
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+    -fx-padding: 0;
+    -fx-margin: 0;
+    -fx-opacity: 0;
+}
+
+HBox:has(> .label-field:contains("Ville")),
+HBox:has(> .label-field:contains("Date de départ")),
+HBox:has(> .label-field:contains("Heure de départ")),
+HBox:has(> .label-field:contains("Type de voyage")),
+HBox:has(> .label-field:contains("Préférences")),
+HBox:has(> .label-field:contains("Statut")),
+HBox:has(> .label-field:contains("Régime alimentaire")),
+HBox:has(> .label-field:contains("Stripe Payment ID")) {
+    display: none;
+}
+
+/* Style pour les champs obligatoires */
+.required-field {
+    -fx-text-fill: #E74C3C;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 0 0 0 2;
+}
+
+/* Style pour les messages d'erreur */
+.error-label {
+    -fx-text-fill: #E74C3C;
+    -fx-font-size: 12px;
+    -fx-padding: 2 0 0 2;
+}
+
+/* Style pour les champs avec erreur */
+.error {
+    -fx-border-color: #E74C3C;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.2), 4, 0, 0, 0);
+}
+
+.error:focused {
+    -fx-border-color: #E74C3C;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.3), 8, 0, 0, 0);
+}

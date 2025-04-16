@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox alignment="TOP_CENTER" spacing="0" stylesheets="@Packages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.PackagesController">
+    <HBox styleClass="section-title-container" alignment="CENTER">
+        <Label styleClass="section-title" text="Nos Offres de Voyage" />
+    </HBox>
+    
+    <FlowPane fx:id="offersPane" hgap="30" vgap="30" alignment="TOP_CENTER" styleClass="offers-container">
+        <!-- Les cartes seront ajoutées dynamiquement via le contrôleur -->
+    </FlowPane>
+</VBox>

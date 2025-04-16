@@ -1,0 +1,261 @@
+/* Conteneur principal */
+.vbox {
+    -fx-background-color: #ECF0F1;
+    -fx-padding: 20;
+}
+
+/* Titre de la section */
+.section-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Carte d’offre */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-radius: 15;
+    -fx-min-width: 300px;
+    -fx-max-width: 300px;
+    -fx-transition: all 0.3s ease;
+}
+
+.card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 8);
+    -fx-translate-y: -3;
+}
+
+/* Image de l’offre */
+.card-image {
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.card-image-view {
+    -fx-background-radius: 10;
+    -fx-fit-width: 260;
+    -fx-fit-height: 180;
+    -fx-preserve-ratio: true;
+}
+
+/* Titre de l’offre */
+.card-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 10 0 5 0;
+}
+
+/* Prix */
+.card-price {
+    -fx-font-size: 18px;
+    -fx-text-fill: #e74c3c;
+    -fx-font-weight: bold;
+    -fx-padding: 5 0;
+}
+
+/* Informations de date */
+.date-info {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+    -fx-padding: 4 0;
+}
+
+/* Étiquette de date */
+.date-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #7f8c8d;
+}
+
+/* Places disponibles */
+.available-places {
+    -fx-padding: 8 12;
+    -fx-background-color: #f0f9ff;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #bde0fe;
+    -fx-border-width: 1;
+    -fx-font-size: 13px;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-margin: 8 0;
+}
+
+/* Bouton Détails */
+.details-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 10 24;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.details-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Conteneur de dates */
+.date-container {
+    -fx-spacing: 8;
+    -fx-padding: 8 0;
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-margin: 8 0;
+}
+
+/* Existing styles (assumed, keep your original styles) */
+.offer-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.offer-image {
+    -fx-background-radius: 10;
+}
+
+.offer-title {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2C3E50;
+    -fx-font-weight: bold;
+}
+
+.offer-price {
+    -fx-font-size: 14px;
+    -fx-text-fill: #E74C3C;
+}
+
+.details-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-font-size: 12px;
+}
+
+.details-button:hover {
+    -fx-background-color: #2980B9;
+}
+
+/* Updated pagination styles to remove blue line */
+.pagination {
+    visibility: hidden;
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+    -fx-padding: 0;
+    -fx-margin: 0;
+}
+
+.pagination .control-box {
+    -fx-spacing: 8;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.pagination .page {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 12;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+    -fx-font-size: 12px;
+    -fx-alignment: center;
+    -fx-border-color: transparent;
+}
+
+.pagination .current-page {
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 12;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+    -fx-border-color: transparent;
+}
+
+.pagination .left-arrow-button, .pagination .right-arrow-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+    -fx-border-color: transparent;
+}
+
+.pagination .left-arrow-button:disabled, .pagination .right-arrow-button:disabled {
+    -fx-background-color: #BDC3C7;
+    -fx-opacity: 0.6;
+    -fx-border-color: transparent;
+}
+
+/* Remove blue line from scroll-pane and viewport */
+.pagination .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.pagination .viewport {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Disable focus ring */
+.pagination:focused, .pagination .page:focused, .pagination .left-arrow-button:focused, .pagination .right-arrow-button:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-border-color: transparent;
+}
+
+#offresTitle {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 20 0;
+}
+
+.grid-pane {
+    -fx-padding: 20;
+    -fx-hgap: 25;
+    -fx-vgap: 25;
+    -fx-background-color: #f8f9fa;
+}
+
+.section-title-container {
+    -fx-alignment: center;
+    -fx-padding: 20 20 30 20;
+    -fx-background-color: linear-gradient(to right, rgba(52,152,219,0.1), rgba(52,152,219,0.05), rgba(52,152,219,0));
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #e0e0e0;
+}
+
+.section-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.offers-container {
+    -fx-padding: 20;
+    -fx-pref-width: 1200;
+    -fx-min-height: 800;
+    -fx-alignment: top-center;
+}

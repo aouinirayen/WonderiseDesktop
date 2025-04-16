@@ -1,0 +1,155 @@
+/* Conteneur principal */
+.root {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 25;
+}
+
+/* Titre */
+.offer-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a365d;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1);
+    -fx-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -fx-padding: 0 0 15 0;
+    -fx-alignment: center;
+}
+
+/* Prix */
+.offer-price {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2b6cb0;
+    -fx-background-color: #ebf8ff;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(43,108,176,0.15), 3, 0, 0, 1);
+}
+
+/* Informations */
+.offer-info {
+    -fx-font-size: 16px;
+    -fx-text-fill: #34495e;
+    -fx-padding: 5 0;
+}
+
+/* Conteneur d'image */
+.image-container {
+    -fx-background-color: #edf2f7;
+    -fx-padding: 15;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);
+    -fx-alignment: center;
+}
+
+ImageView {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+/* Conteneur de détails */
+.content-container {
+    -fx-background-color: white;
+    -fx-padding: 25;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+
+/* Description */
+.offer-description {
+    -fx-font-size: 14px;
+    -fx-fill: #4a5568;
+    -fx-line-spacing: 1.4;
+    -fx-text-alignment: center;
+    -fx-padding: 0 40 20 40;
+}
+
+/* Conteneur d'informations */
+.info-container {
+    -fx-padding: 15;
+    -fx-spacing: 20;
+    -fx-alignment: center-left;
+    -fx-min-width: 250;
+}
+
+/* Boîte de date */
+.date-box {
+    -fx-background-color: #f7fafc;
+    -fx-padding: 10 15;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 4, 0, 0, 1);
+    -fx-alignment: center-left;
+}
+
+/* Étiquette de date */
+.date-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2d3748;
+    -fx-font-weight: bold;
+}
+
+/* Étiquette de places */
+.places-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2f855a;
+    -fx-font-weight: bold;
+    -fx-background-color: #f0fff4;
+    -fx-background-radius: 6;
+    -fx-padding: 8 15;
+    -fx-alignment: center-left;
+}
+
+/* Bouton Book Now */
+.book-now-button {
+    -fx-background-color: #3182ce;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 35;
+    -fx-background-radius: 25;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(49,130,206,0.3), 8, 0, 0, 2);
+}
+
+.book-now-button:hover {
+    -fx-background-color: #2c5282;
+    -fx-effect: dropshadow(gaussian, rgba(49,130,206,0.4), 10, 0, 0, 3);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-translate-y: -1;
+}
+
+.book-now-button:pressed {
+    -fx-background-color: #2a4365;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-translate-y: 1;
+}
+
+/* Section d'informations */
+.info-section {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
+
+.info-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #7f8c8d;
+}
+
+.info-value {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 15px;
+}
+
+#ratingLabel, #paysLabel {
+    visibility: hidden;
+    -fx-max-height: 0;
+    -fx-padding: 0;
+    -fx-margin: 0;
+}}

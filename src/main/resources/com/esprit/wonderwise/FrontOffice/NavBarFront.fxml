@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<HBox prefHeight="50" style="-fx-background-color: linear-gradient(to right, #2C3E50, #1C2526); -fx-padding: 10; -fx-alignment: center-left;" stylesheets="@navbarFront.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.NavBarFrontController">
+
+    <!-- Logo and Brand Name -->
+    <HBox alignment="CENTER" spacing="8">
+        <ImageView fitHeight="25" fitWidth="25" preserveRatio="true">
+            <image>
+                <Image url="@../icons/gps.png" />
+            </image>
+        </ImageView>
+        <Label style="-fx-text-fill: white; -fx-font-size: 16; -fx-font-weight: bold;" text="WonderWise" />
+        <HBox.margin>
+            <Insets left="10" />
+        </HBox.margin>
+    </HBox>
+
+    <!-- Spacer to push menu items to the center -->
+    <Region HBox.hgrow="ALWAYS" />
+
+    <!-- Menu Items -->
+    <HBox alignment="CENTER" spacing="20">
+        <Button styleClass="nav-button" text="Home" />
+        <Button styleClass="nav-button" text="About" />
+        <Button styleClass="nav-button" text="Services" />
+        <Button styleClass="nav-button" text="Offres" onAction="#openPackages" />
+        <Button styleClass="nav-button" text="Blog" />
+        <MenuButton styleClass="nav-button" text="Country">
+            <items>
+                <MenuItem text="Country 1" />
+                <MenuItem text="Country 2" />
+            </items>
+        </MenuButton>
+        <Button styleClass="nav-button" text="Contact" />
+    </HBox>
+
+    <!-- Spacer to push Book Now and Profile to the right -->
+    <Region HBox.hgrow="ALWAYS" />
+
+    <!-- Book Now Button -->
+    <Button styleClass="book-now-button" text="Book Now">
+        <HBox.margin>
+            <Insets left="10" right="20" />
+        </HBox.margin>
+    </Button>
+
+    <!-- Profile Section -->
+    <MenuButton fx:id="profileMenu" styleClass="profile-menu">
+        <graphic>
+            <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                <image>
+                    <Image url="@../icons/profile.png" />
+                </image>
+            </ImageView>
+        </graphic>
+        <items>
+            <MenuItem disable="true" style="-fx-text-fill: #3498DB; -fx-font-weight: bold;" text="Khalil Fray" />
+            <MenuItem text="Settings" />
+            <MenuItem text="Logout" />
+        </items>
+        <HBox.margin>
+            <Insets right="10" />
+        </HBox.margin>
+    </MenuButton>
+</HBox>
