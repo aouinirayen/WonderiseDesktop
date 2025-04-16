@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="tn.esprit.controllers.ExperienceDetailsController"
+      styleClass="main-container" stylesheets="@../styles/responsive.css, @../styles/experience-details.css">
+    
+    <!-- En-tête de l'interface -->
+    <top>
+        <VBox styleClass="header">
+            <Label fx:id="headerTitle" text="Détails de l'Expérience" styleClass="header-title">
+                <font>
+                    <Font size="22" weight="BOLD"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+    
+    <!-- Contenu principal -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="content-scroll">
+            <VBox spacing="20" styleClass="form-container">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                
+                <!-- Header with back button -->
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="navigation-bar">
+                    <Button fx:id="backButton" text="← Retour" onAction="#handleBack" 
+                            styleClass="button"/>
+                </HBox>
+                
+                <!-- Experience Details Card -->
+                <VBox spacing="15" styleClass="experience-detail-card">
+                    <padding>
+                        <Insets top="15" right="15" bottom="15" left="15"/>
+                    </padding>
+                    
+                    <!-- Titre avec style amélioré -->
+                    <Label fx:id="titleLabel" styleClass="experience-title">
+                        <font>
+                            <Font size="24" weight="BOLD"/>
+                        </font>
+                    </Label>
+                    
+                    <!-- Image de l'expérience avec effet de bordure -->
+                    <ImageView fx:id="experienceImage" fitWidth="600" fitHeight="350" 
+                               preserveRatio="true" styleClass="detail-image"/>
+                    
+                    <!-- Section d'informations principales -->
+                    <HBox spacing="20" styleClass="info-container">
+                        <!-- Colonne gauche : informations de base -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS" styleClass="info-section">
+                            <HBox styleClass="info-row" alignment="CENTER_LEFT">
+                                <Label text="Date:" styleClass="field-label"/>
+                                <Label fx:id="dateLabel" styleClass="field-value"/>
+                            </HBox>
+                            
+                            <HBox styleClass="info-row" alignment="CENTER_LEFT">
+                                <Label text="Lieu:" styleClass="field-label"/>
+                                <Label fx:id="locationLabel" styleClass="field-value"/>
+                            </HBox>
+                            
+                            <HBox styleClass="info-row" alignment="CENTER_LEFT">
+                                <Label text="Catégorie:" styleClass="field-label"/>
+                                <Label fx:id="categoryLabel" styleClass="field-value"/>
+                            </HBox>
+                        </VBox>
+                        
+                        <!-- Colonne droite : boutons d'action -->
+                        <VBox alignment="TOP_RIGHT" styleClass="actions-section">
+                            <HBox spacing="10" alignment="TOP_RIGHT">
+                                <Button text="Modifier" onAction="#handleEdit" styleClass="edit-button">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@../icons/edit.png" requestedWidth="16" requestedHeight="16"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button text="Supprimer" onAction="#handleDelete" styleClass="delete-button">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@../icons/delete.png" requestedWidth="16" requestedHeight="16"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                    
+                    <!-- Description -->
+                    <VBox spacing="8" styleClass="description-section">
+                        <Label text="Description" styleClass="section-subtitle">
+                            <font>
+                                <Font size="16" weight="BOLD"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="descriptionLabel" styleClass="experience-description" wrapText="true"/>
+                    </VBox>
+                </VBox>
+                
+                <!-- Comments Section -->
+                <VBox spacing="15" styleClass="comments-section">
+                    <Label text="Commentaires" styleClass="section-title">
+                        <font>
+                            <Font size="18" weight="BOLD"/>
+                        </font>
+                    </Label>
+                    
+                    <!-- Add Comment Card -->
+                    <VBox spacing="10" styleClass="comment-form-card">
+                        <padding>
+                            <Insets top="15" right="15" bottom="15" left="15"/>
+                        </padding>
+                        
+                        <Label text="Ajouter un commentaire" styleClass="form-subtitle">
+                            <font>
+                                <Font size="14" weight="BOLD"/>
+                            </font>
+                        </Label>
+                        
+                        <TextField fx:id="nameField" promptText="Votre nom" styleClass="text-field"/>
+                        <TextArea fx:id="commentField" promptText="Écrivez un commentaire..." 
+                                  styleClass="text-area" wrapText="true" prefRowCount="3"/>
+                        <HBox alignment="CENTER_RIGHT">
+                            <Button text="Envoyer" onAction="#handleSubmitComment" 
+                                    styleClass="success-button">
+                                <graphic>
+                                    <ImageView>
+                                        <Image url="@../icons/send.png" requestedWidth="16" requestedHeight="16"/>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    
+                    <!-- Comments List -->
+                    <VBox spacing="10" styleClass="comments-list">
+                        <Label text="Commentaires existants" styleClass="list-subtitle">
+                            <font>
+                                <Font size="14" weight="BOLD"/>
+                            </font>
+                        </Label>
+                        <ScrollPane fitToWidth="true" styleClass="comments-scroll" prefHeight="150">
+                            <VBox fx:id="commentsContainer" spacing="10"/>
+                        </ScrollPane>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+    
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="footer">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,367 @@
+/* ===== Base Styles ===== */
+.root {
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-background-color: #f8f9fa;
+    background-color: #f8f9fa;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* ===== Layout Containers ===== */
+.container {
+    -fx-background-color: #f8f9fa;
+    background-color: #f8f9fa;
+    -fx-padding: 20px;
+    padding: 20px;
+}
+
+.main-content {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.search-container {
+    -fx-background-color: white;
+    background-color: white;
+    -fx-padding: 15px;
+    padding: 15px;
+    -fx-background-radius: 8px;
+    border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);
+    -fx-alignment: center-left;
+    -fx-spacing: 15px;
+}
+
+/* ===== Form Elements ===== */
+.search-field {
+    -fx-background-color: #f8f9fa;
+    background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0;
+    border-color: #e0e0e0;
+    -fx-border-radius: 6px;
+    border-radius: 6px;
+    -fx-padding: 10px 15px;
+    padding: 10px 15px;
+    -fx-font-size: 14px;
+    font-size: 14px;
+    -fx-prompt-text-fill: #9e9e9e;
+    -fx-highlight-fill: #2A3F54;
+    -fx-highlight-text-fill: white;
+}
+
+.search-field:focused {
+    -fx-border-color: #2A3F54;
+    border-color: #2A3F54;
+    -fx-background-color: white;
+    background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(42,63,84,0.2), 0, 0, 0, 2);
+}
+
+/* ===== Button Styles ===== */
+.button {
+    -fx-background-color: #2A3F54;
+    background-color: #2A3F54;
+    -fx-text-fill: white;
+    color: white;
+    -fx-padding: 10px 20px;
+    padding: 10px 20px;
+    -fx-background-radius: 6px;
+    border-radius: 6px;
+    -fx-cursor: hand;
+    cursor: pointer;
+    -fx-font-weight: 600;
+    font-weight: 600;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #3c5476;
+    background-color: #3c5476;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2);
+}
+
+.button:pressed {
+    -fx-background-color: #1d2d3e;
+    background-color: #1d2d3e;
+    -fx-translate-y: 1px;
+}
+
+/* Primary Action Buttons */
+.primary-button {
+    -fx-background-color: #2A3F54;
+    background-color: #2A3F54;
+}
+
+.success-button {
+    -fx-background-color: #28a745;
+    background-color: #28a745;
+}
+
+.success-button:hover {
+    -fx-background-color: #218838;
+    background-color: #218838;
+}
+
+/* Secondary Action Buttons */
+.edit-button {
+    -fx-background-color: #ffc107;
+    background-color: #ffc107;
+    -fx-text-fill: #212529;
+    color: #212529;
+}
+
+.edit-button:hover {
+    -fx-background-color: #e0a800;
+    background-color: #e0a800;
+}
+
+/* Danger Action Buttons */
+.delete-button {
+    -fx-background-color: #dc3545;
+    background-color: #dc3545;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c82333;
+    background-color: #c82333;
+}
+
+/* ===== Experience Cards ===== */
+.experience-card {
+    -fx-background-color: white;
+    background-color: white;
+    -fx-background-radius: 12px;
+    border-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);
+    -fx-min-width: 320px;
+    min-width: 320px;
+    -fx-max-width: 320px;
+    max-width: 320px;
+    -fx-border-color: #e9ecef;
+    border-color: #e9ecef;
+    -fx-border-width: 1px;
+    border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-cursor: hand;
+    cursor: pointer;
+    -fx-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.experience-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 14, 0, 0, 5);
+    -fx-translate-y: -5px;
+    -fx-border-color: #2A3F54;
+    border-color: #2A3F54;
+}
+
+.experience-image {
+    -fx-background-radius: 12px 12px 0 0;
+    border-radius: 12px 12px 0 0;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.1), 2, 1, 0, 0);
+}
+
+.experience-content {
+    -fx-padding: 20px;
+    padding: 20px;
+    -fx-spacing: 12px;
+}
+
+.experience-title {
+    -fx-font-size: 18px;
+    font-size: 18px;
+    -fx-font-weight: 700;
+    font-weight: 700;
+    -fx-text-fill: #2A3F54;
+    color: #2A3F54;
+    -fx-wrap-text: true;
+}
+
+.experience-meta {
+    -fx-spacing: 8px;
+}
+
+.experience-date {
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-text-fill: #757575;
+    color: #757575;
+}
+
+.experience-description {
+    -fx-font-size: 14px;
+    font-size: 14px;
+    -fx-text-fill: #616161;
+    color: #616161;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 4px;
+    line-height: 1.4;
+    -fx-max-height: 60px;
+    max-height: 60px;
+}
+
+.experience-location {
+    -fx-font-size: 14px;
+    font-size: 14px;
+    -fx-text-fill: #616161;
+    color: #616161;
+    -fx-graphic-text-gap: 6px;
+}
+
+.experience-category {
+    -fx-font-size: 12px;
+    font-size: 12px;
+    -fx-text-fill: white;
+    color: white;
+    -fx-background-color: #2A3F54;
+    background-color: #2A3F54;
+    -fx-background-radius: 4px;
+    border-radius: 4px;
+    -fx-padding: 4px 10px;
+    padding: 4px 10px;
+}
+
+/* ===== Button Container ===== */
+.button-container {
+    -fx-spacing: 8px;
+    -fx-padding: 8px 0 0 0;
+    padding: 8px 0 0 0;
+    -fx-alignment: center-right;
+    text-align: right;
+}
+
+.button-container .button {
+    -fx-padding: 8px 14px;
+    padding: 8px 14px;
+    -fx-font-size: 12px;
+    font-size: 12px;
+}
+
+.read-more-button {
+    -fx-background-color: #2A3F54;
+    background-color: #2A3F54;
+    -fx-text-fill: white;
+    color: white;
+}
+
+.read-more-button:hover {
+    -fx-background-color: #374E65;
+    background-color: #374E65;
+}
+
+/* ===== List View ===== */
+.list-view {
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-padding: 10px;
+    padding: 10px;
+}
+
+.list-view .scroll-bar:vertical {
+    -fx-opacity: 0;
+    opacity: 0;
+    -fx-pref-width: 12px;
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #b9bfc6;
+    background-color: #b9bfc6;
+    -fx-background-radius: 6px;
+    border-radius: 6px;
+}
+
+.list-view .scroll-bar:vertical:hover {
+    -fx-opacity: 1;
+    opacity: 1;
+}
+
+.list-view .viewport {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+/* Flow container for experiences */
+.experiences-flow-container {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+/* ===== Header and Footer ===== */
+.header {
+    -fx-background-color: #2A3F54;
+    background-color: #2A3F54;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);
+}
+
+.header-title {
+    -fx-text-fill: white;
+    color: white;
+    -fx-font-size: 24px;
+    font-size: 24px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+.footer {
+    -fx-background-color: #f8f9fa;
+    background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0 transparent transparent transparent;
+    border-color: #e0e0e0 transparent transparent transparent;
+    -fx-border-width: 1px 0 0 0;
+    border-width: 1px 0 0 0;
+}
+
+.count-label {
+    -fx-text-fill: #6c757d;
+    color: #6c757d;
+    -fx-font-size: 14px;
+    font-size: 14px;
+}
+
+/* ===== Tooltips ===== */
+.tooltip {
+    -fx-background-color: #2A3F54;
+    background-color: #2A3F54;
+    -fx-text-fill: white;
+    color: white;
+    -fx-font-size: 12px;
+    font-size: 12px;
+    -fx-padding: 8px 12px;
+    padding: 8px 12px;
+    -fx-background-radius: 4px;
+    border-radius: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0, 0, 2);
+}
+
+/* ===== Responsive adjustments ===== */
+@media screen and (max-width: 1000px) {
+    .experience-card {
+        -fx-min-width: 300px;
+        min-width: 300px;
+        -fx-max-width: 300px;
+        max-width: 300px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .experience-card {
+        -fx-min-width: 280px;
+        min-width: 280px;
+        -fx-max-width: 280px;
+        max-width: 280px;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { -fx-opacity: 0; }
+    to { -fx-opacity: 1; }
+}
+
+.fade-in {
+    -fx-animation: fadeIn 0.5s ease forwards;
+    animation: fadeIn 0.5s ease forwards;
+}

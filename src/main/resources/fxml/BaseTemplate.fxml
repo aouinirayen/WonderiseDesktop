@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="main-container"
+      stylesheets="@../styles/responsive.css">
+      
+    <!-- En-tête de l'interface -->
+    <top>
+        <VBox styleClass="header">
+            <Label fx:id="headerTitle" text="Titre de l'interface" styleClass="header-title"/>
+        </VBox>
+    </top>
+    
+    <!-- Contenu principal - à remplacer dans chaque interface spécifique -->
+    <center>
+        <VBox styleClass="form-container" spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            
+            <!-- Le contenu spécifique sera ajouté ici -->
+            <Label text="Contenu à remplacer" />
+        </VBox>
+    </center>
+    
+    <!-- Barre de navigation/boutons en bas -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="footer">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button fx:id="backButton" text="Retour" styleClass="button"/>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,197 @@
+/* Experience Details Styles */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: #f8f9fa;
+    background-color: #f8f9fa;
+}
+
+/* En-tête */
+.header {
+    -fx-background-color: #2A3F54;
+    -fx-padding: 15px 20px;
+    -fx-alignment: center-left;
+}
+
+.header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* Barre de navigation */
+.navigation-bar {
+    -fx-padding: 5px 0;
+    -fx-border-color: transparent transparent #eee transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* Card pour les détails d'expérience */
+.experience-detail-card {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #e0e0e0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 1);
+}
+
+.experience-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2A3F54;
+    -fx-padding: 0 0 10px 0;
+}
+
+.detail-image {
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-border-color: #e0e0e0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+/* Conteneur d'informations */
+.info-container {
+    -fx-padding: 15px 0;
+    -fx-border-color: transparent transparent #eee transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.info-row {
+    -fx-spacing: 10px;
+    -fx-padding: 3px 0;
+}
+
+.field-label {
+    -fx-font-weight: bold;
+    -fx-min-width: 80px;
+    -fx-text-fill: #495057;
+}
+
+.field-value {
+    -fx-text-fill: #212529;
+}
+
+/* Section description */
+.description-section {
+    -fx-padding: 10px 0;
+}
+
+.section-subtitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 5px 0;
+    -fx-text-fill: #2A3F54;
+}
+
+.experience-description {
+    -fx-wrap-text: true;
+    -fx-text-fill: #212529;
+    -fx-font-size: 14px;
+}
+
+/* Section commentaires */
+.comments-section {
+    -fx-padding: 10px 0;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2A3F54;
+    -fx-padding: 0 0 10px 0;
+}
+
+.comment-form-card {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #e0e0e0;
+}
+
+.form-subtitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+.text-field, .text-area {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: #ced4da;
+    -fx-padding: 8px;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #2A3F54;
+    -fx-background-color: white;
+}
+
+/* Boutons */
+.button {
+    -fx-background-color: #2A3F54;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+}
+
+.button:hover {
+    -fx-background-color: #374E65;
+}
+
+.edit-button {
+    -fx-background-color: #2A3F54;
+    -fx-text-fill: white;
+}
+
+.delete-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+}
+
+.success-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+}
+
+.edit-button:hover {
+    -fx-background-color: #374E65;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c82333;
+}
+
+.success-button:hover {
+    -fx-background-color: #218838;
+}
+
+/* Liste des commentaires */
+.comments-list {
+    -fx-padding: 10px 0;
+}
+
+.list-subtitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+.comments-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.comments-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Pied de page */
+.footer {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0 transparent transparent transparent;
+    -fx-border-width: 1px 0 0 0;
+}

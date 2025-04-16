@@ -1,0 +1,175 @@
+/* Fichier CSS pour les styles responsifs et dimensions communes */
+
+/* Variables globales pour les dimensions */
+* {
+    -fx-base-width: 800px;
+    -fx-min-width: 600px; /* Standard property */
+    min-width: 600px;
+    -fx-min-height: 400px; /* Standard property */
+    min-height: 400px;
+    -fx-preferred-width: 800px;
+    -fx-preferred-height: 600px;
+    -fx-max-width: 1200px; /* Standard property */
+    max-width: 1200px;
+    -fx-max-height: 900px; /* Standard property */
+    max-height: 900px;
+    
+    /* Espacement et marges communs */
+    -fx-standard-padding: 15px;
+    -fx-standard-spacing: 10px;
+    
+    /* Tailles de police */
+    -fx-font-size-small: 12px;
+    -fx-font-size-medium: 14px;
+    -fx-font-size-large: 18px;
+    -fx-font-size-xlarge: 24px;
+}
+
+/* Styles pour le mode desktop */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
+    -fx-background-color: #f5f5f5;
+    background-color: #f5f5f5;
+}
+
+/* Container principal - s'adapte à la taille de la fenêtre */
+.main-container {
+    -fx-pref-width: -fx-preferred-width;
+    -fx-pref-height: -fx-preferred-height;
+    -fx-min-width: -fx-min-width;
+    min-width: -fx-min-width;
+    -fx-min-height: -fx-min-height;
+    min-height: -fx-min-height;
+    -fx-max-width: -fx-max-width;
+    max-width: -fx-max-width;
+    -fx-max-height: -fx-max-height;
+    max-height: -fx-max-height;
+    -fx-padding: -fx-standard-padding;
+    padding: -fx-standard-padding;
+    -fx-spacing: -fx-standard-spacing;
+}
+
+/* En-tête des interfaces */
+.header {
+    -fx-padding: 15px;
+    padding: 15px;
+    -fx-background-color: #3498db;
+    background-color: #3498db;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+.header-title {
+    -fx-font-size: -fx-font-size-xlarge;
+    font-size: -fx-font-size-xlarge;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+/* Conteneur de formulaire */
+.form-container {
+    -fx-background-color: white;
+    background-color: white;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-padding: 20px;
+    padding: 20px;
+    -fx-spacing: 15px;
+}
+
+/* Champs de formulaire */
+.form-field {
+    -fx-spacing: 5px;
+}
+
+.form-label {
+    -fx-font-size: -fx-font-size-medium;
+    font-size: -fx-font-size-medium;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+/* Boutons */
+.button {
+    -fx-background-color: #3498db;
+    background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    font-weight: bold;
+    -fx-padding: 10px 20px;
+    padding: 10px 20px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #2980b9;
+    background-color: #2980b9;
+}
+
+.success-button {
+    -fx-background-color: #2ecc71;
+    background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    font-weight: bold;
+    -fx-padding: 10px 20px;
+    padding: 10px 20px;
+    -fx-background-radius: 5px;
+}
+
+.success-button:hover {
+    -fx-background-color: #27ae60;
+    background-color: #27ae60;
+}
+
+/* Tableaux */
+.table-view {
+    -fx-background-color: white;
+    background-color: white;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.table-view .column-header {
+    -fx-background-color: #3498db;
+    background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+/* Images */
+.image-preview {
+    -fx-background-color: #f8f8f8;
+    background-color: #f8f8f8;
+    -fx-border-color: #ddd;
+    border-color: #ddd;
+    -fx-border-width: 1px;
+    border-width: 1px;
+    -fx-border-radius: 5px;
+    border-radius: 5px;
+    -fx-padding: 5px;
+    padding: 5px;
+}
+
+/* Media queries pour différentes tailles d'écran */
+/* Petit écran */
+.small-screen {
+    -fx-font-size-small: 10px;
+    -fx-font-size-medium: 12px;
+    -fx-font-size-large: 16px;
+    -fx-font-size-xlarge: 20px;
+    -fx-standard-padding: 10px;
+    -fx-standard-spacing: 8px;
+}
+
+/* Grand écran */
+.large-screen {
+    -fx-font-size-small: 14px;
+    -fx-font-size-medium: 16px;
+    -fx-font-size-large: 20px;
+    -fx-font-size-xlarge: 28px;
+    -fx-standard-padding: 20px;
+    -fx-standard-spacing: 15px;
+}

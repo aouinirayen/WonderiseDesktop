@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="tn.esprit.controllers.ExperienceFormController"
+      styleClass="form-container" spacing="20">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Button fx:id="backButton" text="← Back" onAction="#handleBack" 
+                styleClass="back-button"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="formTitle" styleClass="form-title"/>
+    </HBox>
+
+    <!-- Form Fields -->
+    <VBox spacing="15">
+        <Label text="Title" styleClass="field-label"/>
+        <TextField fx:id="titleField" promptText="Enter experience title" 
+                  styleClass="form-field"/>
+        
+        <Label text="Location" styleClass="field-label"/>
+        <TextField fx:id="locationField" promptText="Enter location" 
+                  styleClass="form-field"/>
+        
+        <Label text="Description" styleClass="field-label"/>
+        <TextArea fx:id="descriptionField" promptText="Enter description" 
+                  styleClass="form-field" wrapText="true" prefRowCount="5"/>
+        
+        <Label text="Date" styleClass="field-label"/>
+        <DatePicker fx:id="datePicker" promptText="Select date" 
+                    styleClass="form-field"/>
+    </VBox>
+
+    <!-- Action Buttons -->
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button text="Cancel" onAction="#handleCancel" styleClass="cancel-button"/>
+        <Button text="Save" onAction="#handleSave" styleClass="save-button" 
+                defaultButton="true"/>
+    </HBox>
+</VBox>
