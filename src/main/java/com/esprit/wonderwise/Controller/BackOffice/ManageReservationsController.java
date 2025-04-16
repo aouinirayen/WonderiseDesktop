@@ -41,8 +41,7 @@ public class ManageReservationsController {
     @FXML
     private TableColumn<reservation, Integer> nombrePersonneColumn;
 
-    @FXML
-    private TableColumn<reservation, String> dateDepartColumn;
+
 
     @FXML
     private TableColumn<reservation, String> statutColumn;
@@ -62,9 +61,7 @@ public class ManageReservationsController {
         prenomColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPrenom()));
         emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
         nombrePersonneColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getNombrePersonne()).asObject());
-        dateDepartColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getDateDepart() != null ?
-                        cellData.getValue().getDateDepart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : ""));
+
         statutColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatut()));
 
         // Configurer la colonne Actions

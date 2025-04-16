@@ -73,6 +73,22 @@
                         <Label fx:id="placesDisponiblesError" styleClass="error-label" />
                     </VBox>
 
+                    <!-- Pays -->
+                    <VBox styleClass="field-container">
+                        <HBox styleClass="field-row">
+                            <Label text="Pays" />
+                            <Label styleClass="required-label" text="*" />
+                            <Label text=" :" />
+                        </HBox>
+                        <TextField fx:id="paysField" promptText="Entrez le pays" />
+                        <Label fx:id="paysError" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Rating -->
+
+
+
+
                     <!-- Date de début -->
                     <VBox styleClass="field-container">
                         <HBox styleClass="field-row">

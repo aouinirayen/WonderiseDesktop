@@ -55,7 +55,7 @@
                         <TextField fx:id="nombrePersonneField" promptText="Entrez le nombre" styleClass="text-field" />
                     </HBox>
 
-
+                    
 
 
 
@@ -85,7 +85,10 @@
                         </ChoiceBox>
                     </HBox>
 
-
+                    <HBox spacing="10" alignment="CENTER">
+                        <Label text="Préférences :" styleClass="label-field" />
+                        <TextArea fx:id="preferencesVoyageField" promptText="Entrez les préférences" prefHeight="60" styleClass="text-area" />
+                    </HBox>
 
                     <HBox spacing="10" alignment="CENTER">
                         <Label text="Commentaire :" styleClass="label-field" />
@@ -105,9 +108,15 @@
                         </ChoiceBox>
                     </HBox>
 
+                    <HBox spacing="10" alignment="CENTER">
+                        <Label text="Régime alimentaire :" styleClass="label-field" />
+                        <TextField fx:id="regimeAlimentaireField" promptText="Entrez le régime" styleClass="text-field" />
+                    </HBox>
 
-
-
+                    <HBox spacing="10" alignment="CENTER">
+                        <Label text="Stripe Payment ID :" styleClass="label-field" />
+                        <TextField fx:id="stripePaymentIdField" promptText="Entrez l'ID Stripe" styleClass="text-field" />
+                    </HBox>
                 </VBox>
             </content>
         </ScrollPane>

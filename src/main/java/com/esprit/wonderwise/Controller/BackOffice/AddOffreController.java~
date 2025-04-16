@@ -72,7 +72,7 @@ public class AddOffreController {
 
     @FXML
     public void initialize() {
-        // Create image directory
+        // Create image directory if it doesn't exist
         File dir = new File(IMAGE_DIR);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -93,7 +93,8 @@ public class AddOffreController {
         ratingField.setText(offre.getRating() != null ? String.valueOf(offre.getRating()) : "");
         ratingCountField.setText(offre.getRatingCount() != null ? String.valueOf(offre.getRatingCount()) : "");
         addButton.setText("Modifier");
-        // Show image preview
+
+        // Show image preview if image is available
         if (offre.getImage() != null && !offre.getImage().isEmpty()) {
             try {
                 imagePreview.setImage(new Image("file:" + IMAGE_DIR + offre.getImage().substring("/images/offres/".length())));
@@ -108,33 +109,26 @@ public class AddOffreController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Sélectionner une image");
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
         );
-        
+
         File selectedFile = fileChooser.showOpenDialog(selectImageButton.getScene().getWindow());
         if (selectedFile != null) {
             try {
-                // Generate unique filename
+                // Generate a unique filename based on current time
                 String fileName = System.currentTimeMillis() + "_" + selectedFile.getName();
-                String targetDir = "src/main/resources/images/offres/";
-                File dir = new File(targetDir);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                
-                Path targetPath = Paths.get(targetDir + fileName);
-                
-                // Copy file to images directory
+                Path targetPath = Paths.get(IMAGE_DIR + fileName);
+
+                // Copy file to the target image directory
                 Files.copy(selectedFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-                
+
                 // Update image field and preview
                 imageField.setText("/images/offres/" + fileName);
-                Image image = new Image(selectedFile.toURI().toString());
-                imagePreview.setImage(image);
-                imagePreview.setFitWidth(260);
-                imagePreview.setFitHeight(180);
+                imagePreview.setImage(new Image(selectedFile.toURI().toString()));
+                imagePreview.setFitWidth(200);
+                imagePreview.setFitHeight(150);
                 imagePreview.setPreserveRatio(true);
-                
+
             } catch (IOException e) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors du chargement de l'image: " + e.getMessage());
             }
@@ -150,7 +144,7 @@ public class AddOffreController {
         dateDebutError.setVisible(false);
         dateFinError.setVisible(false);
         imageError.setVisible(false);
-        
+
         titreField.getStyleClass().remove("field-error");
         descriptionField.getStyleClass().remove("field-error");
         prixField.getStyleClass().remove("field-error");
@@ -174,7 +168,7 @@ public class AddOffreController {
             boolean hasError = false;
             LocalDate today = LocalDate.now();
 
-            // Validation du titre
+            // Validate the title
             if (titreField.getText().trim().isEmpty()) {
                 showError(titreError, titreField, "Le titre est obligatoire");
                 hasError = true;
@@ -183,7 +177,7 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validation de la description
+            // Validate the description
             if (descriptionField.getText().trim().isEmpty()) {
                 showError(descriptionError, descriptionField, "La description est obligatoire");
                 hasError = true;
@@ -192,7 +186,7 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validation du prix
+            // Validate the price
             try {
                 double prix = Double.parseDouble(prixField.getText().trim());
                 if (prix <= 0) {
@@ -204,7 +198,7 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validation du nombre de places
+            // Validate the number of places
             try {
                 int nombrePlaces = Integer.parseInt(nombrePlacesField.getText().trim());
                 if (nombrePlaces <= 0) {
@@ -216,7 +210,7 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validation des places disponibles
+            // Validate available places
             try {
                 int placesDisponibles = Integer.parseInt(placesDisponiblesField.getText().trim());
                 int nombrePlaces = Integer.parseInt(nombrePlacesField.getText().trim());
@@ -232,7 +226,7 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validation des dates
+            // Validate dates
             if (dateDebutPicker.getValue() == null) {
                 showError(dateDebutError, dateDebutPicker, "La date de début est obligatoire");
                 hasError = true;
@@ -249,7 +243,7 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Vérification que la date de fin est après la date de début
+            // Check that the end date is after the start date
             if (dateDebutPicker.getValue() != null && dateFinPicker.getValue() != null) {
                 if (dateFinPicker.getValue().isBefore(dateDebutPicker.getValue())) {
                     showError(dateFinError, dateFinPicker, "La date de fin doit être après la date de début");
@@ -257,7 +251,7 @@ public class AddOffreController {
                 }
             }
 
-            // Validation de l'image
+            // Validate image field
             if (imageField.getText().trim().isEmpty()) {
                 showError(imageError, imageField, "L'image est obligatoire");
                 hasError = true;
@@ -267,7 +261,7 @@ public class AddOffreController {
                 return;
             }
 
-            // Si toutes les validations sont passées, créer/modifier l'offre
+            // If no errors, create/update the offer
             offre offre = offreToEdit != null ? offreToEdit : new offre();
             offre.setTitre(titreField.getText().trim());
             offre.setDescription(descriptionField.getText().trim());

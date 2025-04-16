@@ -37,11 +37,8 @@ public class AddReservationController {
     @FXML
     private TextField nombrePersonneField;
 
-    @FXML
-    private DatePicker dateDepartPicker;
 
-    @FXML
-    private TextField heureDepartField;
+
 
     @FXML
     private ChoiceBox<String> typeVoyageChoice;
@@ -49,8 +46,7 @@ public class AddReservationController {
     @FXML
     private ChoiceBox<String> modePaiementChoice;
 
-    @FXML
-    private TextArea preferencesVoyageField;
+
 
     @FXML
     private TextArea commentaireField;
@@ -58,11 +54,7 @@ public class AddReservationController {
     @FXML
     private ChoiceBox<String> statutChoice;
 
-    @FXML
-    private TextField regimeAlimentaireField;
 
-    @FXML
-    private TextField stripePaymentIdField;
 
     @FXML
     private Button addButton;
@@ -87,15 +79,10 @@ public class AddReservationController {
         telephoneField.setText(res.getTelephone());
         villeField.setText(res.getVille());
         nombrePersonneField.setText(String.valueOf(res.getNombrePersonne()));
-        dateDepartPicker.setValue(res.getDateDepart());
-        heureDepartField.setText(res.getHeureDepart() != null ? res.getHeureDepart().format(DateTimeFormatter.ofPattern("HH:mm")) : "");
         typeVoyageChoice.setValue(res.getTypeVoyage());
         modePaiementChoice.setValue(res.getModePaiement());
-        preferencesVoyageField.setText(res.getPreferencesVoyage());
         commentaireField.setText(res.getCommentaire());
         statutChoice.setValue(res.getStatut());
-        regimeAlimentaireField.setText(res.getRegimeAlimentaire());
-        stripePaymentIdField.setText(res.getStripePaymentId());
         addButton.setText("Modifier");
     }
 
@@ -105,7 +92,7 @@ public class AddReservationController {
             // Validation des champs obligatoires
             if (offreIdField.getText().isEmpty() || nomField.getText().isEmpty() ||
                     prenomField.getText().isEmpty() || emailField.getText().isEmpty() ||
-                    nombrePersonneField.getText().isEmpty() || dateDepartPicker.getValue() == null) {
+                    nombrePersonneField.getText().isEmpty()){
                 showAlert("Erreur", "Veuillez remplir tous les champs obligatoires.");
                 return;
             }
@@ -118,29 +105,16 @@ public class AddReservationController {
             res.setTelephone(telephoneField.getText().isEmpty() ? null : telephoneField.getText());
             res.setVille(villeField.getText().isEmpty() ? null : villeField.getText());
             res.setNombrePersonne(Integer.parseInt(nombrePersonneField.getText()));
-            res.setDateDepart(dateDepartPicker.getValue());
 
             // Valider et parser l'heure de départ
-            if (!heureDepartField.getText().isEmpty()) {
-                try {
-                    res.setHeureDepart(LocalTime.parse(heureDepartField.getText(), DateTimeFormatter.ofPattern("HH:mm")));
-                } catch (DateTimeParseException e) {
-                    showAlert("Erreur", "Format de l'heure invalide (utilisez HH:MM).");
-                    return;
-                }
-            } else {
-                res.setHeureDepart(null);
-            }
+
 
             res.setTypeVoyage(typeVoyageChoice.getValue());
             res.setModePaiement(modePaiementChoice.getValue());
-            res.setPreferencesVoyage(preferencesVoyageField.getText().isEmpty() ? null : preferencesVoyageField.getText());
             res.setCommentaire(commentaireField.getText().isEmpty() ? null : commentaireField.getText());
             res.setDateReservation(LocalDateTime.now()); // Toujours à jour
             res.setStatut(statutChoice.getValue());
             res.setDatePaiement(null); // Non modifiable dans ce formulaire
-            res.setStripePaymentId(stripePaymentIdField.getText().isEmpty() ? null : stripePaymentIdField.getText());
-            res.setRegimeAlimentaire(regimeAlimentaireField.getText().isEmpty() ? null : regimeAlimentaireField.getText());
 
             if (reservationToEdit != null) {
                 reservationService.update(res);
