@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.esprit.wonderwise.Controller.BackOffice.ReclamationBackController"
+            prefHeight="740.0" prefWidth="1070.0"
+            style="-fx-background-color: #F4F7F9;"
+            stylesheets="@../khalilstyle.css">
+
+    <!-- Barre de navigation latérale -->
+    <left>
+        <fx:include source="NavBarBack.fxml"/>
+    </left>
+
+    <!-- Contenu principal -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="25"
+              style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.2, 0, 4);"
+              BorderPane.alignment="CENTER">
+
+            <!-- Titre + icône -->
+            <HBox alignment="CENTER" spacing="15">
+                <ImageView fitHeight="40.0" fitWidth="40.0">
+                    <Image url="@../../wonderwise/icons/reclamation.png"/>
+                </ImageView>
+                <Text styleClass="header-text" text="Liste des Réclamations"/>
+            </HBox>
+
+            <!-- Zone de recherche -->
+            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 0 0 10 0;" maxWidth="900">
+                <TextField fx:id="searchField" promptText="Rechercher par objet..."
+                           HBox.hgrow="ALWAYS"
+                           style="-fx-font-size: 14px; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 10; -fx-background-color: #ecf0f1;" />
+                <Button text="🔍"
+                        onAction="#handleSearch"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 20;" />
+            </HBox>
+
+            <!-- Conteneur principal avec liste à gauche, réponses à droite -->
+            <HBox spacing="30" alignment="TOP_CENTER" maxWidth="1000" VBox.vgrow="ALWAYS">
+
+                <!-- Liste des réclamations -->
+                <VBox spacing="15" HBox.hgrow="ALWAYS" style="-fx-background-color: #ffffff; -fx-padding: 10;" fx:id="reclamationContainerWrapper">
+                    <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                        <VBox fx:id="reclamationContainer" spacing="15"
+                              style="-fx-background-color: transparent;">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                        </VBox>
+                    </ScrollPane>
+                </VBox>
+
+
+
+            </HBox>
+            <Button text="Voir les réponses"
+                    fx:id="viewResponsesButton"
+                    onAction="#handleViewResponses"
+                    style="-fx-background-color: #27AE60; -fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24;"/>
+
+            <!-- Pagination -->
+            <HBox spacing="15" alignment="CENTER">
+                <Button text="◀"
+                        onAction="#handlePreviousPage"
+                        style="-fx-background-color: #95A5A6; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20;" />
+                <Label fx:id="pageInfoLabel" text="Page 1/10"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" />
+                <Button text="▶"
+                        onAction="#handleNextPage"
+                        style="-fx-background-color: #95A5A6; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20;" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
