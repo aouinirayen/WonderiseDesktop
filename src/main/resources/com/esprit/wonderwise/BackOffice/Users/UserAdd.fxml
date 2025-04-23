@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="740.0" prefWidth="1070.0" style="-fx-background-color: #F4F6FB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.UserAddController">
+    <left>
+        <fx:include source="../NavBarBack.fxml" />
+    </left>
+    <center>
+        <VBox alignment="CENTER" spacing="15.0" style="-fx-padding: 35; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 18, 0, 0, 4);">
+            <VBox alignment="CENTER" spacing="30.0" style="-fx-background-color: #fff; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.10), 8, 0, 0, 2); -fx-padding: 28 36 28 36; -fx-border-color: #e0e7ef; -fx-border-width: 1;">
+                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #23395d;" text="Add User" />
+                <VBox alignment="CENTER" spacing="18">
+                    <ImageView fx:id="profileImageView" fitHeight="90" fitWidth="90" style="-fx-effect: dropshadow(gaussian, #bfc9d9, 3, 0.2, 0, 2); -fx-background-radius: 45;" />
+                    <Button fx:id="changePhotoBtn" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-size: 12px; -fx-padding: 4 18;" text="Change Photo" />
+                    <TextField fx:id="usernameField" promptText="Username" style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-font-size: 15px; -fx-border-color: #e0e0e0; -fx-padding: 8; -fx-max-width: 370;" />
+                    <HBox alignment="CENTER" spacing="10">
+                        <TextField fx:id="emailField" promptText="Email" style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-font-size: 15px; -fx-border-color: #e0e0e0; -fx-padding: 8; -fx-max-width: 180;" />
+                        <TextField fx:id="phoneField" promptText="Phone" style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-font-size: 15px; -fx-border-color: #e0e0e0; -fx-padding: 8; -fx-max-width: 180;" />
+                    </HBox>
+                    <HBox alignment="CENTER" spacing="10">
+                        <PasswordField fx:id="passwordField" promptText="Password" style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-font-size: 15px; -fx-border-color: #e0e0e0; -fx-padding: 8; -fx-max-width: 180;" />
+                        <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-font-size: 15px; -fx-border-color: #e0e0e0; -fx-padding: 8; -fx-max-width: 180;" />
+                    </HBox>
+                    <TextField fx:id="addressField" promptText="Address" style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-font-size: 15px; -fx-border-color: #e0e0e0; -fx-padding: 8; -fx-max-width: 370;" />
+                    <HBox alignment="CENTER" spacing="10">
+                        <DatePicker fx:id="dobPicker" maxWidth="207.0" prefHeight="49.0" prefWidth="207.0" promptText="Date of Birth" style="-fx-font-size: 15px; -fx-border-color: transparent; -fx-padding: 8; -fx-background-color: #f6f7fb; -fx-max-width: 180;" />
+                        <ComboBox fx:id="genderComboBox" prefHeight="47.0" prefWidth="205.0" promptText="Gender" style="-fx-font-size: 15px; -fx-padding: 8; -fx-background-color: #f6f7fb; -fx-max-width: 370;" />
+                        <ComboBox fx:id="roleComboBox" prefHeight="47.0" prefWidth="207.0" promptText="Role" style="-fx-font-size: 15px; -fx-padding: 8; -fx-background-color: #f6f7fb; -fx-max-width: 370;" />
+                    </HBox>
+                </VBox>
+                <HBox alignment="CENTER" spacing="18">
+                    <Button fx:id="saveBtn" style="-fx-background-color: linear-gradient(to right, #3b82f6, #60a5fa); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 8 22; -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.14), 2, 0, 0, 1);" text="Add User" />
+                    <Button fx:id="cancelBtn" style="-fx-background-color: #e0e7ef; -fx-text-fill: #23395d; -fx-background-radius: 10; -fx-padding: 8 22;" text="Cancel" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

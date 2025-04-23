@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="740.0" prefWidth="200.0" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #2C3E50, #1A252F); -fx-padding: 25; -fx-alignment: center;" stylesheets="@navbarBack.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.NavBarBackController">
+    <HBox alignment="CENTER" spacing="12">
+        <Label style="-fx-text-fill: #ECF0F1; -fx-font-size: 20; -fx-font-family: 'Arial'; -fx-font-weight: bold;" text="WonderWise" />
+    </HBox>
+    <Label fx:id="userNameLabel" style="-fx-text-fill: #ECF0F1; -fx-font-size: 14px; -fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-background-color: rgba(52, 152, 219, 0.2); -fx-padding: 5 10 5 10; -fx-background-radius: 5;" text="Welcome, Admin" />
+    <Separator style="-fx-background-color: #34495E; -fx-pref-height: 1; -fx-opacity: 0.5;" />
+    <VBox alignment="CENTER_LEFT" prefWidth="200" spacing="15">
+        <Button fx:id="dashboardBtn" onAction="#handleDashboardButton" styleClass="nav-button" text="Dashboard">
+            <graphic>
+                <ImageView fitHeight="30.0" fitWidth="30.0">
+                    <Image url="@../icons/dashboard.png" />
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="usersBtn" onAction="#handleUsersButton" styleClass="nav-button" text="Users">
+            <graphic>
+                <ImageView fitHeight="30.0" fitWidth="30.0">
+                    <Image url="@../icons/users.png" />
+                </ImageView>
+            </graphic>
+        </Button>
+    </VBox>
+    <Region VBox.vgrow="ALWAYS" />
+    <Button fx:id="logoutBtn" onAction="#handleLogoutButton" styleClass="logout-button" text="Logout">
+        <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0">
+                <Image url="@../icons/logout.png" />
+            </ImageView>
+        </graphic>
+    </Button>
+</VBox>
