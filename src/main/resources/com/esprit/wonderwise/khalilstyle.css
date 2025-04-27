@@ -1,0 +1,283 @@
+/* Modern Input Fields */
+.modern-input {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+    -fx-font-size: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.02), 5, 0, 0, 3);
+}
+
+.modern-input:focused {
+    -fx-border-color: #1A252F;
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.1), 5, 0, 0, 3);
+}
+
+/* Upload Button */
+.upload-button {
+    -fx-background-color: #2D3436;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-background-radius: 15;
+    -fx-cursor: hand;
+    -fx-font-size: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 2, 2);
+    -fx-transition: background-color 0.3s ease-in-out;
+}
+
+.upload-button:hover {
+    -fx-background-color: #636E72;
+}
+
+.upload-button:pressed {
+    -fx-background-color: #4B565E;
+}
+
+/* General Button Styling */
+.button:hover {
+    -fx-opacity: 0.95;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+/* Card Styling */
+.country-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 5);
+    -fx-cursor: hand;
+    -fx-transition: transform 0.2s ease-in-out;
+}
+
+.country-card:hover {
+    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 8);
+}
+
+/* Action Buttons */
+.action-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: #ECF0F1;
+    -fx-font-size: 12px;
+    -fx-padding: 5 15;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+.action-button:hover {
+    -fx-background-color: #2980B9;
+}
+
+.action-button:pressed {
+    -fx-background-color: #1F618D;
+}
+
+.delete-button {
+    -fx-background-color: #E74C3C;
+}
+
+.delete-button:hover {
+    -fx-background-color: #C0392B;
+}
+
+.delete-button:pressed {
+    -fx-background-color: #A93226;
+}
+
+/* Header Styling */
+.header-text {
+    -fx-font-size: 28px;
+    -fx-font-family: 'Arial';
+    -fx-fill: linear-gradient(to right, #2C3E50, #4CAF50);
+    -fx-font-weight: bold;
+}
+
+/* Background Gradient */
+.gradient-background {
+    -fx-background-color: linear-gradient(to bottom right, #ECF0F1, #D5DEE7);
+}
+
+.rounded-image {
+    -fx-background-radius: 15; /* Rounded corners */
+    -fx-border-radius: 15;
+}
+
+/* ScrollPane Styling */
+.scroll-pane {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Scrollbar Styling */
+.scroll-pane .scroll-bar:vertical {
+    -fx-pref-width: 10;
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #2C3E50;
+    -fx-background-radius: 5;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #4CAF50;
+}
+
+/* Modern DatePicker Styling */
+.modern-datepicker {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Arial';
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.02), 5, 0, 0, 3);
+}
+
+.modern-datepicker:focused {
+    -fx-border-color: #4CAF50;
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.2), 8, 0, 0, 4);
+}
+
+/* Calendar Popup Styling */
+.modern-datepicker .date-picker-popup {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 5);
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 10;
+}
+
+/* Header of the Calendar */
+.modern-datepicker .date-picker-popup > .month-year-pane {
+    -fx-background-color: linear-gradient(to right, #2C3E50, #4CAF50);
+    -fx-padding: 10;
+}
+
+/* Month and Year Labels */
+.modern-datepicker .date-picker-popup > .month-year-pane .label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Navigation Arrows */
+.modern-datepicker .date-picker-popup > .month-year-pane .spinner .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
+}
+
+.modern-datepicker .date-picker-popup > .month-year-pane .spinner .button:hover {
+    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-background-radius: 50%;
+}
+
+/* Day Cells */
+.modern-datepicker .date-picker-popup > .calendar-grid {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 5;
+}
+
+.modern-datepicker .date-picker-popup .day-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #2C3E50;
+    -fx-font-size: 12px;
+    -fx-alignment: center;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 35px;
+    -fx-pref-height: 35px;
+}
+
+.modern-datepicker .date-picker-popup .day-cell:hover {
+    -fx-background-color: #ECF0F1;
+    -fx-text-fill: #4CAF50;
+}
+
+.modern-datepicker .date-picker-popup .day-cell:focused {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Selected Date */
+.modern-datepicker .date-picker-popup .day-cell:selected {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+/* Today Button */
+.modern-datepicker .date-picker-popup .today-button {
+    -fx-background-color: #2D3436;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
+    -fx-padding: 5 15;
+    -fx-background-radius: 15;
+}
+
+.modern-datepicker .date-picker-popup .today-button:hover {
+    -fx-background-color: #636E72;
+}
+
+/* Weekday Headers */
+.modern-datepicker .date-picker-popup .week-day {
+    -fx-text-fill: #636E72;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-color: transparent;
+}
+
+/* Disabled Days */
+.modern-datepicker .date-picker-popup .day-cell:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: transparent;
+}
+
+/* Front-Office Action Button */
+.frontoffice-action-button {
+    -fx-background-color: linear-gradient(to right, #ED8936, #F6AD55); /* Orange gradient */
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-padding: 10 30;
+    -fx-background-radius: 15;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Poppins', 'Arial', sans-serif;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 5);
+}
+
+.frontoffice-action-button:hover {
+    -fx-background-color: linear-gradient(to right, #DD6E20, #E89B3F); /* Slightly darker orange on hover */
+    -fx-opacity: 0.95;
+}
+
+.frontoffice-action-button:pressed {
+    -fx-background-color: linear-gradient(to right, #C75C1A, #D28433); /* Darker orange when pressed */
+}
+
+/* Back-Office Action Button */
+.backoffice-action-button {
+    -fx-background-color: linear-gradient(to right, #4C51BF, #667EEA); /* Blue gradient */
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16px;
+    -fx-padding: 12 40;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Poppins', 'Arial', sans-serif;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 5);
+}
+
+.backoffice-action-button:hover {
+    -fx-background-color: linear-gradient(to right, #3E44A8, #576BDC); /* Slightly darker blue on hover */
+    -fx-opacity: 0.95;
+}
+
+.backoffice-action-button:pressed {
+    -fx-background-color: linear-gradient(to right, #343A91, #4A5CCE); /* Darker blue when pressed */
+}

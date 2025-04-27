@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.esprit.wonderwise.Controller.FrontOffice.ChatBotController"
+      spacing="0" style="-fx-background-color: #f8f9fa;">
+
+    <!-- Header -->
+    <HBox style="-fx-background-color: #ffffff; -fx-border-color: #e9ecef; -fx-border-width: 0 0 1 0; -fx-padding: 15;">
+        <children>
+            <ImageView fitWidth="30.0" fitHeight="30.0">
+                <image>
+                    <Image url="@../../wonderwise/images/chatbot-icon.png"/>
+                </image>
+            </ImageView>
+            <Label text="WonderWise Assistant" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #212529; -fx-padding: 0 0 0 10;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="✕" style="-fx-font-size: 16; -fx-background-color: transparent; -fx-text-fill: #6c757d; -fx-cursor: hand;" onAction="#closeWindow"/>
+        </children>
+    </HBox>
+
+    <!-- Chat Area - Plus grande -->
+    <ScrollPane fitToWidth="true" style="-fx-background: #ffffff;" VBox.vgrow="ALWAYS" prefHeight="500">
+        <content>
+            <TextArea fx:id="chatArea" editable="false" wrapText="true"
+                      style="-fx-font-size: 16; -fx-font-family: 'Segoe UI', Arial; -fx-background-color: transparent; -fx-text-fill: #495057; -fx-border-color: transparent; -fx-padding: 20;"/>
+        </content>
+    </ScrollPane>
+
+    <!-- Input Area -->
+    <VBox style="-fx-background-color: #ffffff; -fx-border-color: #e9ecef; -fx-border-width: 1 0 0 0; -fx-padding: 15;">
+        <children>
+            <HBox spacing="10" alignment="CENTER">
+                <children>
+                    <TextField fx:id="userInputField" promptText="Type your message..." onAction="#handleUserInput"
+                               style="-fx-font-size: 14; -fx-background-radius: 20; -fx-border-radius: 20; -fx-padding: 10 15; -fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-text-fill: #212529; -fx-prompt-text-fill: #adb5bd;" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="sendButton" text="Send" onAction="#handleUserInput"
+                            style="-fx-font-size: 14; -fx-min-width: 80; -fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand;"/>
+                    <ProgressIndicator fx:id="loadingIndicator" visible="false"
+                                       style="-fx-progress-color: #28a745;" prefWidth="25.0" prefHeight="25.0"/>
+                </children>
+            </HBox>
+            <Label text="WonderWise may produce inaccurate information."
+                   style="-fx-font-size: 11; -fx-text-fill: #6c757d; -fx-alignment: CENTER; -fx-padding: 5 0 0 0;"/>
+        </children>
+    </VBox>
+</VBox>

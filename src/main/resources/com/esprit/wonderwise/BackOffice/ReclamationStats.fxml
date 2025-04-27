@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.esprit.wonderwise.Controller.BackOffice.ReclamationStatsController"
+            stylesheets="@../reclamation.css"
+            prefHeight="740.0" prefWidth="1070.0">
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+            <Label text="📊 Réclamations les plus fréquentes"
+                   styleClass="stats-title" />
+
+            <VBox styleClass="chart-container" alignment="CENTER" spacing="25">
+                <BarChart fx:id="barChart"
+                          title=""
+                          styleClass="bar-chart"
+                          prefHeight="500.0" prefWidth="800.0"
+                          legendVisible="false">
+                    <xAxis>
+                        <CategoryAxis fx:id="xAxis" label="Types de réclamations" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis" label="Nombre d'occurrences" upperBound="100" tickUnit="20" />
+                    </yAxis>
+                </BarChart>
+
+                <HBox styleClass="button-container" spacing="20" alignment="CENTER">
+                    <Button text="✓ Supprimer la plus fréquente"
+                            onAction="#handleDeleteMostFrequent"
+                            styleClass="action-button button-delete-green" />
+
+                    <Button text="← Retour"
+                            onAction="#handleBack"
+                            styleClass="action-button button-back-purple" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
