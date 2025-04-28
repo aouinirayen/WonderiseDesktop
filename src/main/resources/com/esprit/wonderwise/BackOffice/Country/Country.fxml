@@ -9,7 +9,9 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../../khalilstyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.CountryController">
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../../khalilstyle.css ,@../../search-filter.css  " xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.CountryController">
     <left>
         <fx:include source="../NavBarBack.fxml"/>
     </left>
@@ -22,6 +24,17 @@
                 <Text styleClass="header-text" text="Explore Countries"/>
             </HBox>
             <Button text="Add New Country" onAction="#showAddCountry" style="-fx-background-color: #2C3E50; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 10 25; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);"/>
+
+
+
+
+            <HBox alignment="CENTER" spacing="16" style="-fx-background-color: #fff; -fx-padding: 14 24 14 24; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8,0,0,2);">
+                <TextField fx:id="searchField" promptText="Mot-clé..." styleClass="custom-beauty" />
+                <ComboBox fx:id="currencyCombo" promptText="Devise" styleClass="custom-beauty" />
+                <ComboBox fx:id="climateCombo" promptText="Climat" styleClass="custom-beauty" />
+            </HBox>
+
+
             <ScrollPane fitToWidth="true" fitToHeight="false" style="-fx-background: transparent; -fx-background-color: transparent;">
                 <FlowPane fx:id="countryCards" hgap="25" vgap="25" alignment="CENTER" style="-fx-padding: 20;"/>
             </ScrollPane>

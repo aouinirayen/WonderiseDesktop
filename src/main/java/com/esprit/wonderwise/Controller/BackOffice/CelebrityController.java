@@ -5,6 +5,10 @@ import com.esprit.wonderwise.Model.Country;
 import com.esprit.wonderwise.Service.CelebrityService;
 import com.esprit.wonderwise.Service.CountryService;
 import com.esprit.wonderwise.Utils.DialogUtils;
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -19,6 +23,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,6 +32,8 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import javafx.embed.swing.SwingFXUtils;
 
 public class CelebrityController {
     @FXML private FlowPane celebrityCards;
@@ -336,4 +344,40 @@ public class CelebrityController {
                 nameField != null ? nameField.getScene().getWindow() :
                         nameLabel.getScene().getWindow());
     }
+
+
+    private Webcam webcam = null;
+    @FXML private ImageView webcamPreview;
+
+    @FXML
+    public void handleWebcamCapture() {
+        new Thread(() -> {
+            try {
+                if (webcam == null) {
+                    webcam = Webcam.getDefault();
+                    webcam.setViewSize(WebcamResolution.QVGA.getSize());
+                }
+                webcam.open();
+                BufferedImage grabbedImage = webcam.getImage();
+                if (grabbedImage != null) {
+                    // Save captured image to disk
+                    String filename = "celebrity_" + UUID.randomUUID() + ".png";
+                    File outputFile = new File(IMAGE_DESTINATION_DIR + filename);
+                    ImageIO.write(grabbedImage, "PNG", outputFile);
+
+                    // Update imgPathField and preview in JavaFX thread
+                    Platform.runLater(() -> {
+                        imgPathField.setText(IMAGE_DESTINATION_DIR  + filename);
+                        webcamPreview.setImage(SwingFXUtils.toFXImage(grabbedImage, null));
+                        webcamPreview.setVisible(true);
+                        webcamPreview.setManaged(true);
+                    });
+                }
+                webcam.close();
+            } catch (Exception e) {
+                Platform.runLater(() -> DialogUtils.showCustomDialog("Webcam Error", "Failed to capture image: " + e.getMessage(), false, getCurrentStage()));
+            }
+        }).start();
+    }
+
 }

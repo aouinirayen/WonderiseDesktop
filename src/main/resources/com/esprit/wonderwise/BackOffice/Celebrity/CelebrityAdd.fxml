@@ -37,7 +37,22 @@
                 </ImageView>
                 <TextField fx:id="imgPathField" editable="false" prefWidth="300.0" promptText="Image Path" styleClass="modern-input" />
                 <Button onAction="#handleImgBrowse" styleClass="upload-button" text="Browse" />
+
+
+
+                <Button onAction="#handleWebcamCapture" styleClass="upload-button" text="Webcam" />
+
+
+
             </HBox>
+            <ImageView fx:id="webcamPreview" fitHeight="95.0" fitWidth="130.0" style="-fx-border-color: #bbb; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 6;" visible="false" managed="false" />
+
+
+
+
+
+
+
             <TextField fx:id="descField" promptText="Description" styleClass="modern-input" />
             <HBox spacing="20">
                 <TextField fx:id="jobField" promptText="Job" styleClass="modern-input" HBox.hgrow="ALWAYS" />

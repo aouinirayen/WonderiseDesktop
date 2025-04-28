@@ -44,6 +44,16 @@ public class CountryController {
     @FXML private Text descLabel;
     @FXML private ImageView detailImageView;
 
+
+
+    @FXML
+    private TextField searchField;
+    @FXML
+    private ComboBox<String> currencyCombo;
+    @FXML
+    private ComboBox<String> climateCombo;
+
+
     private CountryService countryService = new CountryService();
     private ArtService artService = new ArtService();
     private MonumentService monumentService = new MonumentService();
@@ -52,10 +62,16 @@ public class CountryController {
     private Country selectedCountry;
     private static final String IMAGE_DESTINATION_DIR = "C:\\xampp\\htdocs\\pidev3\\";
 
+
+    private List<Country> allCountries = null;
+    private List<Country> filteredCountries = null;
+
+
     @FXML
     public void initialize() {
         if (countryCards != null) {
-            loadCountries();
+            allCountries = countryService.readAll();
+            filteredCountries = allCountries;
             if (countryCards.getParent() instanceof ScrollPane) {
                 ScrollPane scrollPane = (ScrollPane) countryCards.getParent();
                 scrollPane.setPrefHeight(500);
@@ -77,11 +93,46 @@ public class CountryController {
                 if (newVal.length() > 5) callingField.setText(oldVal);
             });
         }
-    }
+        List<String> currencyOptions = new java.util.ArrayList<>();
+        currencyOptions.add("All");
+        currencyOptions.addAll(allCountries.stream().map(Country::getCurrency).distinct().sorted().toList());
+        if (currencyCombo != null) {
+            currencyCombo.getItems().setAll(currencyOptions);
+            currencyCombo.getSelectionModel().selectFirst();
+        }
 
+        List<String> climateOptions = new java.util.ArrayList<>();
+        climateOptions.add("All");
+        climateOptions.addAll(allCountries.stream().map(Country::getClimate).distinct().sorted().toList());
+        if (climateCombo != null) {
+            climateCombo.getItems().setAll(climateOptions);
+            climateCombo.getSelectionModel().selectFirst();
+        }
+
+        // Add listeners for live search/filter
+        if (searchField != null)
+            searchField.textProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+        if (currencyCombo != null)
+            currencyCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+        if (climateCombo != null)
+            climateCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+        loadCountries();
+
+    }
+    private void applyAdvancedSearch() {
+        String keyword = (searchField != null && searchField.getText() != null) ? searchField.getText().trim().toLowerCase() : "";
+        String currency = (currencyCombo != null) ? currencyCombo.getValue() : null;
+        String climate = (climateCombo != null) ? climateCombo.getValue() : null;
+        filteredCountries = allCountries.stream()
+                .filter(c -> (keyword.isEmpty() || c.getName().toLowerCase().contains(keyword) || c.getIsoCode().toLowerCase().contains(keyword) || c.getCurrency().toLowerCase().contains(keyword)))
+                .filter(c -> (currency == null || currency.equals("All") || currency.isEmpty() || c.getCurrency().equals(currency)))
+                .filter(c -> (climate == null || climate.equals("All") || climate.isEmpty() || c.getClimate().equals(climate)))
+                .toList();
+        loadCountries();
+    }
     private void loadCountries() {
         countryCards.getChildren().clear();
-        List<Country> countries = countryService.readAll();
+        List<Country> countries = (filteredCountries != null) ? filteredCountries : countryService.readAll();
 
         for (Country country : countries) {
             VBox card = new VBox(15);
@@ -152,7 +203,7 @@ public class CountryController {
             countryCards.getChildren().add(card);
         }
     }
-
+//BUUTON ADD
     @FXML
     public void showAddCountry() throws IOException {
         loadScene("CountryAdd.fxml", null);
@@ -183,7 +234,7 @@ public class CountryController {
             imgPathField.setText(file.getAbsolutePath());
         }
     }
-
+//TèEL EDIT COUNTRY
     @FXML
     public void showEditCountry(Country country) throws IOException {
         selectedCountry = country;
@@ -195,7 +246,7 @@ public class CountryController {
         Stage stage = (Stage) (countryCards != null ? countryCards.getScene().getWindow() : nameField.getScene().getWindow());
         stage.setScene(new Scene(root));
     }
-
+//FUCNTION UPDATE
     @FXML
     public void updateCountry() throws IOException {
         if (selectedCountry == null) {
@@ -226,7 +277,7 @@ public class CountryController {
         Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         return fileName;
     }
-
+// DTAT UPDATE
     public void setCountryData(Country country) {
         nameField.setText(country.getName());
         imgPathField.setText(IMAGE_DESTINATION_DIR + country.getImg());
@@ -262,7 +313,7 @@ public class CountryController {
         Stage stage = (Stage) (countryCards != null ? countryCards.getScene().getWindow() : nameLabel.getScene().getWindow());
         stage.setScene(new Scene(root));
     }
-
+// TA3MER DATA F SHOW DETAILS
     public void setDetailsData(Country country) {
         nameLabel.setText(country.getName());
         descLabel.setText(country.getDescription());
@@ -450,7 +501,7 @@ public class CountryController {
         }
         return true;
     }
-
+// BLOUR DIALOG
     private Stage getCurrentStage() {
         return (Stage) (countryCards != null ? countryCards.getScene().getWindow() :
                 nameField != null ? nameField.getScene().getWindow() :
