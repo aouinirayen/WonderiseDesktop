@@ -4,21 +4,33 @@ import com.esprit.wonderwise.Service.UserService;
 import com.esprit.wonderwise.Model.User;
 import com.esprit.wonderwise.Util.UserSession;
 import com.esprit.wonderwise.Utils.DialogUtils;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Control;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class LoginController {
+
+    @FXML private AnchorPane backgroundPane;
+    @FXML private ImageView worldMap; // Added for world map
+    @FXML private ImageView pin1; // Pins for locations
+    @FXML private ImageView pin2;
+    @FXML private ImageView pin3;
+    @FXML private ImageView pin4;
+    @FXML private ImageView pin5;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private TextField passwordTextField;
@@ -33,38 +45,53 @@ public class LoginController {
     private void initialize() {
         if (errorLabel != null) errorLabel.setVisible(false);
 
-        // Show/hide password logic
         passwordTextField.setManaged(false);
         passwordTextField.setVisible(false);
-        passwordTextField.setText("");
         passwordTextField.setPromptText(passwordField.getPromptText());
 
-        // Set eye icon to closed by default
         setEyeIcon(false);
 
-        // Toggle on eye click
         togglePasswordView.setOnMouseClicked(event -> togglePasswordVisibility());
 
-        // Keep both fields in sync
         passwordField.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!passwordTextField.isVisible()) passwordTextField.setText(newVal);
         });
+
         passwordTextField.textProperty().addListener((obs, oldVal, newVal) -> {
             if (passwordTextField.isVisible()) passwordField.setText(newVal);
         });
+
+        animatePins();
+    }
+
+    private void animatePins() {
+        // List of pins to animate
+        List<ImageView> pins = Arrays.asList(pin1, pin2, pin3, pin4, pin5);
+
+        for (ImageView pin : pins) {
+            // Create a pulsing animation (scale up and down)
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, new KeyValue(pin.scaleXProperty(), 1.0)),
+                    new KeyFrame(Duration.ZERO, new KeyValue(pin.scaleYProperty(), 1.0)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(pin.scaleXProperty(), 1.3)),
+                    new KeyFrame(Duration.seconds(1), new KeyValue(pin.scaleYProperty(), 1.3)),
+                    new KeyFrame(Duration.seconds(2), new KeyValue(pin.scaleXProperty(), 1.0)),
+                    new KeyFrame(Duration.seconds(2), new KeyValue(pin.scaleYProperty(), 1.0))
+            );
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+        }
     }
 
     private void togglePasswordVisibility() {
         boolean showing = passwordTextField.isVisible();
         if (showing) {
-            // Hide password
             passwordTextField.setVisible(false);
             passwordTextField.setManaged(false);
             passwordField.setVisible(true);
             passwordField.setManaged(true);
             setEyeIcon(false);
         } else {
-            // Show password
             passwordTextField.setText(passwordField.getText());
             passwordTextField.setVisible(true);
             passwordTextField.setManaged(true);
@@ -76,31 +103,34 @@ public class LoginController {
 
     private void setEyeIcon(boolean open) {
         String iconPath = open ? "/com/esprit/wonderwise/icons/eye_open.png" : "/com/esprit/wonderwise/icons/eye_closed.png";
-        togglePasswordView.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream(iconPath)));
+        togglePasswordView.setImage(new Image(getClass().getResourceAsStream(iconPath)));
     }
 
     @FXML
     private void handleLogin() {
         String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
+
         if (email.isEmpty() || password.isEmpty()) {
             showError("Veuillez remplir tous les champs.");
             return;
         }
+
         User user = userService.login(email, password);
         if (user == null) {
             showError("Email ou mot de passe incorrect.");
             return;
         }
-        if (user.getStatus() != null && user.getStatus().equalsIgnoreCase("Inactive")) {
+
+        if ("Inactive".equalsIgnoreCase(user.getStatus())) {
             showError("Votre compte est inactif. Veuillez contacter l'administrateur.");
             return;
         }
-        // Save session for global access
-        if (user.getRole().equalsIgnoreCase("admin")) {
+
+        if ("admin".equalsIgnoreCase(user.getRole())) {
             switchSceneFromControl(loginButton, "/com/esprit/wonderwise/backoffice/BackOffice.fxml");
-        } else if (user.getRole().equalsIgnoreCase("client")) {
-            com.esprit.wonderwise.Util.UserSession.setUser(user);
+        } else if ("client".equalsIgnoreCase(user.getRole())) {
+            UserSession.setUser(user);
             switchSceneFromControl(loginButton, "/com/esprit/wonderwise/frontoffice/FrontOffice.fxml");
         } else {
             showError("Rôle utilisateur inconnu : " + user.getRole());

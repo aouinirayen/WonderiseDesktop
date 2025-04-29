@@ -3,13 +3,20 @@ package com.esprit.wonderwise.Controller.Auth;
 import com.esprit.wonderwise.Model.User;
 import com.esprit.wonderwise.Service.UserService;
 import com.esprit.wonderwise.Utils.DialogUtils;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.time.LocalDate;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import javafx.stage.FileChooser;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -27,8 +34,17 @@ public class SignupController {
     private static String step2ProfilePicPath = null;
     private static boolean comingBackToStep1 = false;
     private static final String IMAGE_DESTINATION_DIR = "C:\\xampp\\htdocs\\pidev3\\";
+    private static final String EYE_OPEN_ICON = "/com/esprit/wonderwise/icons/eye_open.png";
+    private static final String EYE_CLOSED_ICON = "/com/esprit/wonderwise/icons/eye_closed.png";
 
     // Step 1 fields
+    @FXML private AnchorPane backgroundPane;
+    @FXML private ImageView worldMap;
+    @FXML private ImageView pin1;
+    @FXML private ImageView pin2;
+    @FXML private ImageView pin3;
+    @FXML private ImageView pin4;
+    @FXML private ImageView pin5;
     @FXML private TextField usernameField;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
@@ -53,11 +69,7 @@ public class SignupController {
     private String selectedProfilePicturePath = null;
     private final UserService userService = new UserService();
 
-    @FXML
-    private static final String EYE_OPEN_ICON = "/com/esprit/wonderwise/icons/eye_open.png";
-private static final String EYE_CLOSED_ICON = "/com/esprit/wonderwise/icons/eye_closed.png";
-
-public void initialize() {
+    public void initialize() {
         if (genderComboBox != null) {
             genderComboBox.getItems().clear();
             genderComboBox.getItems().addAll("Male", "Female");
@@ -105,6 +117,30 @@ public void initialize() {
         if (dobPicker != null && step2Dob != null) dobPicker.setValue(step2Dob);
         // If coming back to step 1, reset flag
         if (comingBackToStep1) comingBackToStep1 = false;
+
+        // Animate the pins
+        animatePins();
+    }
+
+    private void animatePins() {
+        // List of pins to animate
+        List<ImageView> pins = Arrays.asList(pin1, pin2, pin3, pin4, pin5);
+
+        // Check if pins are null to avoid NullPointerException
+        for (ImageView pin : pins) {
+            if (pin != null) {
+                Timeline timeline = new Timeline(
+                        new KeyFrame(Duration.ZERO, new KeyValue(pin.scaleXProperty(), 1.0)),
+                        new KeyFrame(Duration.ZERO, new KeyValue(pin.scaleYProperty(), 1.0)),
+                        new KeyFrame(Duration.seconds(1), new KeyValue(pin.scaleXProperty(), 1.3)),
+                        new KeyFrame(Duration.seconds(1), new KeyValue(pin.scaleYProperty(), 1.3)),
+                        new KeyFrame(Duration.seconds(2), new KeyValue(pin.scaleXProperty(), 1.0)),
+                        new KeyFrame(Duration.seconds(2), new KeyValue(pin.scaleYProperty(), 1.0))
+                );
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+            }
+        }
     }
 
     private void togglePasswordVisibility(PasswordField pf, TextField tf, ImageView eye) {
@@ -287,6 +323,4 @@ public void initialize() {
             System.err.println("Error loading scene: " + e.getMessage());
         }
     }
-
 }
-

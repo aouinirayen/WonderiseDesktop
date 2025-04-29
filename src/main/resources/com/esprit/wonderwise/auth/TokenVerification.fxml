@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="740.0" prefWidth="1070.0" style="-fx-background-color: #F5F7FB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.Auth.TokenVerificationController">
+<AnchorPane prefHeight="740.0" prefWidth="1070.0" style="-fx-background-color: #96b0e1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.Auth.TokenVerificationController">
     <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <!-- Token Verification Card -->
         <VBox alignment="CENTER" maxWidth="400" spacing="20" style="-fx-background-color: white; -fx-padding: 40; -fx-background-radius: 15;">

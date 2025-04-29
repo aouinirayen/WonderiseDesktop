@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,50 +15,92 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="740.0" prefWidth="1070.0" style="-fx-background-color: #F5F7FB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.Auth.LoginController">
-    <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <!-- Login Card -->
-        <VBox alignment="CENTER" maxWidth="400" spacing="20" style="-fx-background-color: white; -fx-padding: 40; -fx-background-radius: 15;">
-            <!-- Logo -->
-            <ImageView fitHeight="70" fitWidth="70" preserveRatio="true">
-                <image>
-                    <Image url="@../icons/gps.png" />
-                </image>
-            </ImageView>
-            <!-- Title -->
-            <VBox alignment="CENTER" spacing="5">
-                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1a237e;" text="Bienvenue" />
-                <Text style="-fx-fill: #757575; -fx-font-size: 14px;" text="Connectez-vous à votre compte" />
+<AnchorPane fx:id="backgroundPane" prefHeight="740.0" prefWidth="1070.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.Auth.LoginController">
+    <children>
+        <!-- World Map Background -->
+        <ImageView fx:id="worldMap" fitWidth="1070.0" fitHeight="740.0" preserveRatio="false">
+            <image>
+                <Image url="@../images/world_map.jpeg"/>
+            </image>
+            <effect>
+                <GaussianBlur radius="10.0"/>
+            </effect>
+        </ImageView>
+
+        <!-- Location Pins -->
+        <ImageView fx:id="pin1" fitWidth="30.0" fitHeight="30.0" preserveRatio="true" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="150.0">
+            <image>
+                <Image url="@../icons/pin.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="pin2" fitWidth="30.0" fitHeight="30.0" preserveRatio="true" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="120.0">
+            <image>
+                <Image url="@../icons/pin.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="pin3" fitWidth="30.0" fitHeight="30.0" preserveRatio="true" AnchorPane.leftAnchor="600.0" AnchorPane.topAnchor="200.0">
+            <image>
+                <Image url="@../icons/pin.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="pin4" fitWidth="30.0" fitHeight="30.0" preserveRatio="true" AnchorPane.leftAnchor="800.0" AnchorPane.topAnchor="400.0">
+            <image>
+                <Image url="@../icons/pin.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="pin5" fitWidth="30.0" fitHeight="30.0" preserveRatio="true" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="500.0">
+            <image>
+                <Image url="@../icons/pin.png"/>
+            </image>
+        </ImageView>
+
+        <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <!-- Login Card -->
+            <VBox alignment="CENTER" maxWidth="400" spacing="20" style="-fx-background-color: white; -fx-padding: 40; -fx-background-radius: 15;">
+                <!-- Logo -->
+                <ImageView fitHeight="70" fitWidth="70" preserveRatio="true">
+                    <image>
+                        <Image url="@../icons/gps.png"/>
+                    </image>
+                </ImageView>
+
+                <!-- Title -->
+                <VBox alignment="CENTER" spacing="5">
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1a237e;" text="Bienvenue"/>
+                    <Text style="-fx-fill: #757575; -fx-font-size: 14px;" text="Connectez-vous à votre compte"/>
+                </VBox>
+
+                <!-- Form -->
+                <VBox spacing="15">
+                    <TextField fx:id="emailField" focusTraversable="false" promptText="Adresse e-mail" style="-fx-background-color: #f5f5f5; -fx-background-radius: 5; -fx-border-color: transparent; -fx-padding: 12; -fx-font-size: 14px;"/>
+                    <StackPane alignment="CENTER_RIGHT">
+                        <PasswordField fx:id="passwordField" focusTraversable="false" promptText="Mot de passe" style="-fx-background-color: #f5f5f5; -fx-background-radius: 5; -fx-border-color: transparent; -fx-padding: 12 36 12 12; -fx-font-size: 14px;"/>
+                        <TextField fx:id="passwordTextField" focusTraversable="false" promptText="Mot de passe" style="-fx-background-color: #f5f5f5; -fx-background-radius: 5; -fx-border-color: transparent; -fx-padding: 12 36 12 12; -fx-font-size: 14px;" visible="false" managed="false"/>
+                        <ImageView fx:id="togglePasswordView" fitHeight="22" fitWidth="28" pickOnBounds="true" style="-fx-cursor: hand; -fx-translate-x: -8;"/>
+                    </StackPane>
+                </VBox>
+
+                <!-- Forgot Password -->
+                <HBox alignment="CENTER_RIGHT">
+                    <Hyperlink fx:id="forgotPasswordLink" focusTraversable="false" onAction="#handleForgotPassword" style="-fx-text-fill: #2196F3;" text="Mot de passe oublié ?"/>
+                </HBox>
+
+                <!-- Login Button -->
+                <Button fx:id="loginButton" onAction="#handleLogin" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-min-width: 320; -fx-padding: 14;" text="Se connecter"/>
+
+                <!-- Error Label -->
+                <Label fx:id="errorLabel" style="-fx-text-fill: #e74c3c; -fx-font-size: 13px;" text="" visible="false"/>
+
+                <!-- Sign Up Link -->
+                <HBox alignment="CENTER">
+                    <Label style="-fx-text-fill: #757575;" text="Pas encore inscrit ? "/>
+                    <Hyperlink fx:id="createAccountLink" focusTraversable="false" onAction="#handleCreateAccount" style="-fx-text-fill: #2196F3;" text="Créer un compte"/>
+                </HBox>
+
+                <StackPane.margin>
+                    <Insets bottom="25.0" top="25.0"/>
+                </StackPane.margin>
             </VBox>
-            <!-- Form -->
-            <VBox spacing="15">
-                <TextField fx:id="emailField" focusTraversable="false" promptText="Adresse e-mail" style="-fx-background-color: #f5f5f5; -fx-background-radius: 5; -fx-border-color: transparent; -fx-padding: 12; -fx-font-size: 14px;" />
-                <StackPane alignment="CENTER_RIGHT">
-    <PasswordField fx:id="passwordField" focusTraversable="false" promptText="Mot de passe"
-                   style="-fx-background-color: #f5f5f5; -fx-background-radius: 5; -fx-border-color: transparent; -fx-padding: 12 36 12 12; -fx-font-size: 14px;" />
-    <TextField fx:id="passwordTextField" focusTraversable="false" promptText="Mot de passe"
-               style="-fx-background-color: #f5f5f5; -fx-background-radius: 5; -fx-border-color: transparent; -fx-padding: 12 36 12 12; -fx-font-size: 14px;"
-               visible="false" managed="false"/>
-    <ImageView fx:id="togglePasswordView" fitHeight="22" fitWidth="28" pickOnBounds="true"
-               style="-fx-cursor: hand; -fx-translate-x: -8;"/>
-</StackPane>
-            </VBox>
-            <!-- Forgot Password -->
-            <HBox alignment="CENTER_RIGHT">
-                <Hyperlink fx:id="forgotPasswordLink" focusTraversable="false" onAction="#handleForgotPassword" style="-fx-text-fill: #2196F3;" text="Mot de passe oublié ?" />
-            </HBox>
-            <!-- Login Button -->
-            <Button fx:id="loginButton" onAction="#handleLogin" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-min-width: 320; -fx-padding: 14;" text="Se connecter" />
-            <!-- Error Label -->
-            <Label fx:id="errorLabel" style="-fx-text-fill: #e74c3c; -fx-font-size: 13px;" text="" visible="false" />
-            <!-- Sign Up Link -->
-            <HBox alignment="CENTER">
-                <Label style="-fx-text-fill: #757575;" text="Pas encore inscrit ? " />
-                <Hyperlink fx:id="createAccountLink" focusTraversable="false" onAction="#handleCreateAccount" style="-fx-text-fill: #2196F3;" text="Créer un compte" />
-            </HBox>
-         <StackPane.margin>
-            <Insets bottom="25.0" top="25.0" />
-         </StackPane.margin>
-        </VBox>
-    </StackPane>
+        </StackPane>
+    </children>
 </AnchorPane>
