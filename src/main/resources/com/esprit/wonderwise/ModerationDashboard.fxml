@@ -26,6 +26,7 @@
                         <Button fx:id="backButton" text="← Retour" onAction="#handleBackButton" styleClass="back-button"/>
                         <Label text="Modération de Contenu" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
                         <Pane HBox.hgrow="ALWAYS" />
+                        <Button fx:id="testModerationButton" text="Tester l'API" onAction="#handleTestModeration" styleClass="secondary-button" />
                         <Label text="En attente:" />
                         <Label fx:id="pendingCountLabel" text="0" style="-fx-font-weight: bold; -fx-text-fill: #e74c3c;" />
                         <Button fx:id="refreshButton" text="Rafraîchir" />
