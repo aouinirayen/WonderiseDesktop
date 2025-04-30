@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../StylesCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.ExperienceFrontController">
+<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../StylesCss.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.ExperienceFrontController">
     <top>
         <fx:include source="../NavBarFront.fxml" />
     </top>
     <center>
         <VBox spacing="20" style="-fx-padding: 20;">
             <HBox alignment="CENTER" spacing="20">
-                <Text styleClass="header-text" text="Discover Experiences"/>
-                <Button onAction="#showAddExperience" text="Add New Experience" 
-                        style="-fx-background-color: #2C3E50; -fx-text-fill: white; 
-                               -fx-font-size: 14px; -fx-padding: 8 16; -fx-background-radius: 5;"/>
+                <Text styleClass="header-text" text="Découvrir les experiences" />
+                <Button onAction="#showAddExperience" style="-fx-background-color: #2C3E50; -fx-text-fill: white;                                 -fx-font-size: 14px; -fx-padding: 8 16; -fx-background-radius: 5;" text="Ajoutez un experience" />
             </HBox>
             
             <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
-                <FlowPane fx:id="experienceContainer" hgap="20" vgap="20" alignment="CENTER">
+                <FlowPane fx:id="experienceContainer" alignment="CENTER" hgap="20" vgap="20">
                     <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
+                        <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
                 </FlowPane>
             </ScrollPane>

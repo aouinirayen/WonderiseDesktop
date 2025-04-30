@@ -28,19 +28,19 @@
                 <ImageView fitHeight="35.0" fitWidth="35.0">
                     <Image url="@../../icons/photo.png" />
                 </ImageView>
-                <Text styleClass="header-text" text="Add Experience" />
+                <Text styleClass="header-text" text="Ajouter une Expérience" />
             </HBox>
 
             <!-- Title Field -->
             <VBox spacing="2">
-                <TextField fx:id="titreField" promptText="Title" styleClass="modern-input" />
+                <TextField fx:id="titreField" promptText="Titre" styleClass="modern-input" />
                 <Label fx:id="titreErrorLabel" styleClass="error-label" visible="false" />
             </VBox>
 
             <!-- Location and Date -->
             <HBox spacing="20">
                 <VBox spacing="2" HBox.hgrow="ALWAYS">
-                    <TextField fx:id="lieuField" promptText="Location" styleClass="modern-input" />
+                    <TextField fx:id="lieuField" promptText="Lieu" styleClass="modern-input" />
                     <Label fx:id="lieuErrorLabel" styleClass="error-label" visible="false" />
                 </VBox>
                 <VBox spacing="2" HBox.hgrow="ALWAYS">
@@ -77,8 +77,8 @@
                     <ImageView fitHeight="35.0" fitWidth="35.0">
                         <Image url="@../../icons/photo.png" />
                     </ImageView>
-                    <TextField fx:id="photoPathField" editable="false" prefWidth="300.0" promptText="Photo path" styleClass="modern-input" />
-                    <Button onAction="#handlePhotoBrowse" styleClass="upload-button" text="Browse" />
+                    <TextField fx:id="photoPathField" editable="false" prefWidth="300.0" promptText="Chemin de la photo" styleClass="modern-input" />
+                    <Button onAction="#handlePhotoBrowse" styleClass="upload-button" text="Parcourir" />
                 </HBox>
                 
                 <!-- Photo Preview with border -->
@@ -94,7 +94,7 @@
                                 -fx-padding: 8 16; -fx-background-radius: 5;" />
 
             <!-- Submit Button -->
-            <Button fx:id="submitButton" onAction="#handleSubmit" text="Add Experience" 
+            <Button fx:id="submitButton" onAction="#handleSubmit" text="Ajouter l'Expérience" 
                     style="-fx-background-color: #2C3E50; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; 
                            -fx-padding: 10 25; -fx-background-radius: 10; 
                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);" />
