@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Tooltip?>
+
+<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../StylesCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.ExperienceFrontController">
+    <top>
+        <fx:include source="../NavBarFront.fxml" />
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="transparent-scroll-pane">
+            <VBox spacing="20" style="-fx-padding: 40;">
+                <!-- Back Button -->
+                <Button onAction="#showHome" text="🏡 Retour aux Expériences" styleClass="back-button"/>
+                
+                <!-- View Mode -->
+                <VBox fx:id="viewMode" spacing="20" styleClass="content-card">
+                    <!-- Image -->
+                    <ImageView fx:id="previewImageView" fitHeight="400.0" fitWidth="1000.0" preserveRatio="true" styleClass="experience-image"/>
+                    
+                    <!-- Title and Action Buttons -->
+                    <HBox spacing="20" alignment="CENTER_LEFT">
+                        <Label fx:id="titreLabel" styleClass="title-label" HBox.hgrow="ALWAYS"/>
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button fx:id="editButton" onAction="#handleEdit" text="✍️ Modifier" styleClass="edit-button"/>
+                            <Button fx:id="deleteButton" onAction="#handleDelete" text="🗑️ Supprimer" styleClass="delete-button"/>
+                        </HBox>
+                    </HBox>
+                    
+                    <!-- Info Row -->
+                    <HBox spacing="30" styleClass="info-row">
+                        <HBox spacing="5" alignment="CENTER_LEFT" styleClass="info-item">
+                            <Label text="📆" styleClass="info-icon"/>
+                            <Label fx:id="dateLabel" styleClass="info-text"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" styleClass="info-item">
+                            <Label text="📍" styleClass="info-icon"/>
+                            <Label fx:id="lieuLabel" styleClass="info-text"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" styleClass="info-item">
+                            <Label text="🏷️" styleClass="info-icon"/>
+                            <Label fx:id="categorieLabel" styleClass="info-text"/>
+                        </HBox>
+                    </HBox>
+                    
+                    <!-- Description -->
+                    <VBox spacing="10" styleClass="description-section">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="✏️ Description" styleClass="section-title" HBox.hgrow="ALWAYS"/>
+                            <Button fx:id="readDescriptionButton" 
+                                   text="🔊" 
+                                   onAction="#handleReadDescription"
+                                   styleClass="read-button">
+                                <tooltip>
+                                    <Tooltip text="Lire la description à haute voix"/>
+                                </tooltip>
+                            </Button>
+                            <Button fx:id="stopReadingButton" 
+                                   text="🛑" 
+                                   onAction="#handleStopReading"
+                                   styleClass="stop-button">
+                                <tooltip>
+                                    <Tooltip text="Arrêter la lecture"/>
+                                </tooltip>
+                            </Button>
+                        </HBox>
+                        <Text fx:id="descriptionLabel" styleClass="description-text" wrappingWidth="940"/>
+                    </VBox>
+                    
+                    <!-- Comments Section -->
+                    <VBox styleClass="comments-section" spacing="20">
+                        <Label text="💬 Commentaires" styleClass="section-title"/>
+                        
+                        <VBox styleClass="comment-form" spacing="10">
+                            <TextField fx:id="commentAuthorField" 
+                                     promptText="Votre nom (optionnel)"
+                                     styleClass="comment-input"/>
+                            <TextArea fx:id="commentContentField" 
+                                    promptText="Écrivez votre commentaire ici..."
+                                    styleClass="comment-input"
+                                    wrapText="true"/>
+                            <Button text="💭 Ajouter un commentaire" 
+                                    onAction="#handleCommentSubmit"
+                                    styleClass="action-button"/>
+                        </VBox>
+                        
+                        <ScrollPane fitToWidth="true" styleClass="transparent-scroll-pane">
+                            <VBox fx:id="commentsContainer" spacing="10"/>
+                        </ScrollPane>
+                    </VBox>
+                </VBox>
+
+                <!-- Edit Mode -->
+                <VBox fx:id="editMode" spacing="20" styleClass="edit-mode-card" visible="false">
+                    <Label text="✍️ Modifier l'expérience" styleClass="edit-title"/>
+                    
+                    <VBox spacing="15" styleClass="edit-form">
+                        <Label text="📝 Titre" styleClass="field-label"/>
+                        <TextField fx:id="editTitreField" styleClass="edit-input"/>
+                        
+                        <Label text="✏️ Description" styleClass="field-label"/>
+                        <TextArea fx:id="editDescriptionArea" styleClass="edit-textarea" wrapText="true" prefRowCount="4"/>
+                        
+                        <Label text="📍 Lieu" styleClass="field-label"/>
+                        <TextField fx:id="editLieuField" styleClass="edit-input"/>
+                        
+                        <Label text="🏷️ Catégorie" styleClass="field-label"/>
+                        <TextField fx:id="editCategorieField" styleClass="edit-input"/>
+                        
+                        <Label text="📆 Date" styleClass="field-label"/>
+                        <DatePicker fx:id="editDatePicker" styleClass="edit-datepicker"/>
+                    </VBox>
+
+                    <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="action-buttons">
+                        <Button onAction="#handleCancel" text="❌ Annuler" styleClass="cancel-button"/>
+                        <Button fx:id="saveButton" onAction="#handleSave" text="💾 Enregistrer" styleClass="save-button"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane> 
