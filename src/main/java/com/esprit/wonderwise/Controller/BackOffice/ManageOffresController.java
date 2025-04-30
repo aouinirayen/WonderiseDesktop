@@ -2,131 +2,260 @@ package com.esprit.wonderwise.Controller.BackOffice;
 
 import com.esprit.wonderwise.Model.offre;
 import com.esprit.wonderwise.Service.OffreService;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
-import java.io.IOException;
+import java.io.File;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 
 public class ManageOffresController {
 
     @FXML
-    private TableView<offre> offresTable;
-
+    private VBox offresContainer;
+    
     @FXML
-    private TableColumn<offre, String> titreColumn;
-
-    @FXML
-    private TableColumn<offre, String> descriptionColumn;
-
-    @FXML
-    private TableColumn<offre, Double> prixColumn;
-
-    @FXML
-    private TableColumn<offre, String> paysColumn;
-
-    @FXML
-    private TableColumn<offre, Void> actionsColumn;
+    private VBox emptyState;
 
     private OffreService offreService = new OffreService();
     private ObservableList<offre> offresList = FXCollections.observableArrayList();
+    private BackOfficeController backOfficeController; // Reference to BackOfficeController
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    // Method to set the BackOfficeController
+    public void setBackOfficeController(BackOfficeController controller) {
+        this.backOfficeController = controller;
+    }
 
     @FXML
     public void initialize() {
-        // Configurer les colonnes
-        titreColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitre()));
-        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
-        prixColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrix()).asObject());
-        paysColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPays()));
-
-        // Configurer la colonne Actions
-        actionsColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button editButton = new Button("Modifier");
-            private final Button deleteButton = new Button("Supprimer");
-
-            {
-                editButton.getStyleClass().addAll("button-action", "button-edit");
-                deleteButton.getStyleClass().addAll("button-action", "button-delete");
-
-                editButton.setOnAction(event -> {
-                    offre offre = getTableView().getItems().get(getIndex());
-                    handleEditOffre(offre);
-                });
-
-                deleteButton.setOnAction(event -> {
-                    offre offre = getTableView().getItems().get(getIndex());
-                    handleDeleteOffre(offre);
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(new HBox(10, editButton, deleteButton));
-                }
-            }
-        });
-
-        // Charger les offres
+        // Load offers
         loadOffres();
     }
 
     private void loadOffres() {
         try {
             offresList.setAll(offreService.readAll());
-            offresTable.setItems(offresList);
+            
+            // Show empty state if no offers
+            if (offresList.isEmpty()) {
+                emptyState.setVisible(true);
+                emptyState.setManaged(true);
+            } else {
+                emptyState.setVisible(false);
+                emptyState.setManaged(false);
+                
+                // Clear existing cards from container
+                offresContainer.getChildren().clear();
+                
+                // Create cards for each offer
+                for (offre offre : offresList) {
+                    offresContainer.getChildren().add(createOfferCard(offre));
+                }
+            }
         } catch (SQLException e) {
-            showAlert("Erreur", "Impossible de charger les offres : " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger les offres : " + e.getMessage());
         }
+    }
+    
+    private HBox createOfferCard(offre offre) {
+        // Create the main card container
+        HBox card = new HBox();
+        card.getStyleClass().add("offer-card");
+        card.setSpacing(15);
+        
+        // Left side: Image
+        StackPane imageContainer = new StackPane();
+        imageContainer.getStyleClass().add("card-image-container");
+        HBox.setMargin(imageContainer, new Insets(0, 0, 0, 0));
+        
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(150);
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(true);
+        imageView.getStyleClass().add("card-image");
+        
+        // Set image if available
+        if (offre.getImage() != null && !offre.getImage().isEmpty()) {
+            File file = new File(offre.getImage());
+            if (file.exists()) {
+                imageView.setImage(new Image(file.toURI().toString()));
+            } else {
+                // Default image
+                try {
+                    imageView.setImage(new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/default-offer.png")));
+                } catch (Exception e) {
+                    // If default image can't be loaded, just leave it empty
+                }
+            }
+        } else {
+            // Default image
+            try {
+                imageView.setImage(new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/default-offer.png")));
+            } catch (Exception e) {
+                // If default image can't be loaded, just leave it empty
+            }
+        }
+        
+        imageContainer.getChildren().add(imageView);
+        
+        // Middle: Offer Details
+        VBox contentBox = new VBox();
+        contentBox.setSpacing(10);
+        contentBox.getStyleClass().add("card-content");
+        HBox.setHgrow(contentBox, javafx.scene.layout.Priority.ALWAYS);
+        
+        // Title and country row
+        HBox titleRow = new HBox();
+        titleRow.setAlignment(Pos.CENTER_LEFT);
+        
+        Label titleLabel = new Label(offre.getTitre());
+        titleLabel.getStyleClass().add("card-title");
+        titleRow.getChildren().add(titleLabel);
+        
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+        titleRow.getChildren().add(spacer);
+        
+        Label paysLabel = new Label(offre.getPays());
+        paysLabel.getStyleClass().add("card-pays");
+        titleRow.getChildren().add(paysLabel);
+        
+        // Description
+        Text descriptionText = new Text(offre.getDescription());
+        descriptionText.getStyleClass().add("card-description");
+        descriptionText.setWrappingWidth(500);
+        
+        // Info row
+        HBox infoRow = new HBox();
+        infoRow.setSpacing(15);
+        infoRow.setAlignment(Pos.CENTER_LEFT);
+        
+        // Price
+        VBox priceBox = new VBox();
+        priceBox.getStyleClass().add("price-container");
+        Label priceLabel = new Label("Prix:");
+        priceLabel.getStyleClass().add("price-label");
+        Label priceValue = new Label(String.format("%.2f TND", offre.getPrix()));
+        priceValue.getStyleClass().add("price-value");
+        priceBox.getChildren().addAll(priceLabel, priceValue);
+        
+        // Places
+        VBox placesBox = new VBox();
+        placesBox.getStyleClass().add("places-container");
+        Label placesLabel = new Label("Places:");
+        placesLabel.getStyleClass().add("places-label");
+        Label placesValue = new Label(offre.getPlacesDisponibles() + "/" + offre.getNombrePlaces() + " places");
+        placesValue.getStyleClass().add("places-value");
+        placesBox.getChildren().addAll(placesLabel, placesValue);
+        
+        // Dates
+        VBox datesBox = new VBox();
+        datesBox.getStyleClass().add("dates-container");
+        Label datesLabel = new Label("Période:");
+        datesLabel.getStyleClass().add("dates-label");
+        
+        // Format dates if they exist
+        String dateRange = "";
+        if (offre.getDateDebut() != null && offre.getDateFin() != null) {
+            dateRange = offre.getDateDebut().format(dateFormatter) + " - " + offre.getDateFin().format(dateFormatter);
+        } else {
+            dateRange = "Dates non définies";
+        }
+        
+        Label datesValue = new Label(dateRange);
+        datesValue.getStyleClass().add("dates-value");
+        datesBox.getChildren().addAll(datesLabel, datesValue);
+        
+        infoRow.getChildren().addAll(priceBox, placesBox, datesBox);
+        
+        // Add all to content box
+        contentBox.getChildren().addAll(titleRow, descriptionText, infoRow);
+        
+        // Right side: Actions
+        VBox actionsBox = new VBox();
+        actionsBox.setSpacing(10);
+        actionsBox.setAlignment(Pos.CENTER);
+        actionsBox.getStyleClass().add("card-actions");
+        
+        // Edit button
+        Button editButton = new Button("Modifier");
+        editButton.getStyleClass().addAll("button-action", "button-edit");
+        
+        try {
+            ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/edit.png")));
+            editIcon.setFitHeight(12);
+            editIcon.setFitWidth(12);
+            editButton.setGraphic(editIcon);
+        } catch (Exception e) {
+            // If icon can't be loaded, just leave button without graphic
+        }
+        
+        editButton.setOnAction(event -> handleEditOffre(offre));
+        
+        // Delete button
+        Button deleteButton = new Button("Supprimer");
+        deleteButton.getStyleClass().addAll("button-action", "button-delete");
+        
+        try {
+            ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/delete.png")));
+            deleteIcon.setFitHeight(12);
+            deleteIcon.setFitWidth(12);
+            deleteButton.setGraphic(deleteIcon);
+        } catch (Exception e) {
+            // If icon can't be loaded, just leave button without graphic
+        }
+        
+        deleteButton.setOnAction(event -> handleDeleteOffre(offre));
+        
+        actionsBox.getChildren().addAll(editButton, deleteButton);
+        
+        // Add everything to the card
+        card.getChildren().addAll(imageContainer, contentBox, actionsBox);
+        
+        return card;
     }
 
     @FXML
     private void openAddOffreForm() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/com/esprit/wonderwise/BackOffice/AddOffre.fxml"));
-            Scene scene = new Scene(loader.load());
-            Stage stage = new Stage();
-            stage.setTitle("Ajouter une offre");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
-
-            // Attendre que la fenêtre soit fermée pour rafraîchir la table
-            stage.showAndWait();
-            loadOffres();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
+        if (backOfficeController != null) {
+            try {
+                // Load AddOffre.fxml into the contentPane
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/BackOffice/AddOffre.fxml"));
+                backOfficeController.loadContent(loader); // Use a custom method to load content
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "BackOfficeController n'est pas défini.");
         }
     }
 
     private void handleEditOffre(offre offre) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/BackOffice/AddOffre.fxml"));
-            Scene scene = new Scene(loader.load());
-            AddOffreController controller = loader.getController();
-            controller.initData(offre); // Passer les données de l'offre
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Modifier une offre");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-            // Recharger les offres après modification
-            loadOffres();
-        } catch (IOException e) {
-            showAlert("Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
+        if (backOfficeController != null) {
+            try {
+                // Load AddOffre.fxml into the contentPane
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/BackOffice/AddOffre.fxml"));
+                backOfficeController.loadContent(loader); // Load content first
+                AddOffreController controller = loader.getController();
+                controller.initData(offre); // Pass offer data for editing
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "BackOfficeController n'est pas défini.");
         }
     }
 
@@ -139,15 +268,16 @@ public class ManageOffresController {
             try {
                 offreService.delete(offre.getId());
                 offresList.remove(offre);
-                showAlert("Succès", "Offre supprimée avec succès.");
+                loadOffres(); // Reload the cards
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Offre supprimée avec succès.");
             } catch (SQLException e) {
-                showAlert("Erreur", "Impossible de supprimer l'offre : " + e.getMessage());
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer l'offre : " + e.getMessage());
             }
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

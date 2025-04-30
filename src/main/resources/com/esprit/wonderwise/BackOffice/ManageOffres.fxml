@@ -1,22 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
 
-<VBox spacing="15" alignment="CENTER" stylesheets="@ManageOffres.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.ManageOffresController">
-    <!-- TableView pour lister les offres -->
-    <TableView fx:id="offresTable" prefWidth="750">
-        <columns>
-            <TableColumn fx:id="titreColumn" text="Titre" prefWidth="150" />
-            <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="200" />
-            <TableColumn fx:id="prixColumn" text="Prix" prefWidth="100" />
-            <TableColumn fx:id="paysColumn" text="Pays" prefWidth="100" />
-            <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150" />
-        </columns>
-    </TableView>
-
-    <!-- Bouton Ajouter -->
-    <Button fx:id="addButton" text="Ajouter une offre" styleClass="button-add" onAction="#openAddOffreForm" />
+<VBox spacing="20" prefWidth="1200" stylesheets="@ManageOffres.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.ManageOffresController">
+    
+    <!-- Header with title and add button -->
+    <HBox styleClass="header-container" alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+            <Label styleClass="page-title" text="Gestion des Offres" />
+        </HBox>
+        <HBox alignment="CENTER">
+            <padding>
+                <Insets right="100.0" />
+            </padding>
+            <Button fx:id="addButton" text="Ajouter une offre" styleClass="button-add" onAction="#openAddOffreForm">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <image>
+                            <Image url="@../icons/add.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </HBox>
+    
+    <!-- Scrollable content area with proper scroll settings -->
+    <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="offers-scroll-pane" VBox.vgrow="ALWAYS" pannable="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
+        <content>
+            <VBox fx:id="offresContainer" styleClass="offers-container">
+                <!-- Cards will be added dynamically here -->
+            </VBox>
+        </content>
+    </ScrollPane>
+    
+    <!-- Empty state displayed when no offers exist -->
+    <VBox fx:id="emptyState" styleClass="empty-state" alignment="CENTER" visible="false" managed="false">
+        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
+            <image>
+                <Image url="@../icons/empty-list.png" />
+            </image>
+        </ImageView>
+        <Label styleClass="empty-state-text" text="Aucune offre disponible" />
+        <Button text="Ajouter une offre" styleClass="button-add" onAction="#openAddOffreForm" />
+    </VBox>
 </VBox>

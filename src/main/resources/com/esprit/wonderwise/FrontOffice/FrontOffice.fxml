@@ -5,29 +5,93 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane fx:id="mainPane" prefHeight="740.0" prefWidth="1070.0" stylesheets="@FrontOffice.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.FrontOfficeController">
+<BorderPane fx:id="mainPane" prefHeight="740.0" prefWidth="1300.0" stylesheets="@FrontOffice.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.FrontOfficeController">
 
   <!-- Navigation Bar -->
   <top>
     <fx:include fx:id="navBarFront" source="NavBarFront.fxml" />
   </top>
 
-  <!-- Hero Section -->
+  <!-- Main Content -->
   <center>
-    <StackPane style="-fx-background-color: #B0BEC5;">
-      <!-- Overlay for darkening the background -->
-      <StackPane style="-fx-background-color: rgba(0, 0, 0, 0.5);" />
+    <VBox>
+      <!-- Hero Section -->
+      <StackPane styleClass="hero-container">
+        <!-- Dark Overlay -->
+        <StackPane styleClass="hero-overlay"/>
 
-      <!-- Content (Text and Button) -->
-      <VBox alignment="CENTER" spacing="20">
-        <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="EXPLORE THE WORLD" />
-        <Label style="-fx-text-fill: white; -fx-font-size: 48px; -fx-font-weight: bold;" text="Let's The World Together!" />
-        <Text style="-fx-fill: white; -fx-font-size: 14px; -fx-text-alignment: center;" text="Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s," wrappingWidth="600" />
-        <Button styleClass="discover-button" text="Discover Now" />
+        <!-- Content (Text and Button) -->
+        <VBox styleClass="hero-content">
+          <Label styleClass="hero-subtitle" text="EXPLORE THE WORLD" />
+          <Label styleClass="hero-title" text="Découvrez le Monde Ensemble!" />
+          <Text styleClass="hero-description" text="Partez à l'aventure avec nos offres de voyage personnalisées. Des destinations exotiques aux classiques intemporels, nous créons des expériences inoubliables pour tous les voyageurs." wrappingWidth="600" />
+          <Button styleClass="discover-button" text="Découvrir Maintenant" onAction="#openPackages">
+            <graphic>
+              <ImageView fitHeight="16" fitWidth="16">
+                <image>
+                  <Image url="@../icons/arrow-right.png" />
+                </image>
+              </ImageView>
+            </graphic>
+          </Button>
+        </VBox>
+      </StackPane>
+
+      <!-- Feature Section -->
+      <VBox styleClass="feature-section">
+        <HBox alignment="CENTER">
+          <Label styleClass="section-title" text="Pourquoi Choisir WonderWise?" />
+        </HBox>
+
+        <HBox spacing="30" alignment="CENTER">
+          <!-- Feature 1 -->
+          <VBox styleClass="feature-card" maxWidth="300">
+            <ImageView fitHeight="64" fitWidth="64" preserveRatio="true">
+              <image>
+                <Image url="@../icons/destination.png" />
+              </image>
+            </ImageView>
+            <Label styleClass="feature-title" text="Destinations Exceptionnelles" />
+            <Text styleClass="feature-description" text="Des centaines de destinations soigneusement sélectionnées pour vous offrir la meilleure expérience de voyage." wrappingWidth="250" />
+          </VBox>
+
+          <!-- Feature 2 -->
+          <VBox styleClass="feature-card" maxWidth="300">
+            <ImageView fitHeight="64" fitWidth="64" preserveRatio="true">
+              <image>
+                <Image url="@../icons/wallet.png" />
+              </image>
+            </ImageView>
+            <Label styleClass="feature-title" text="Prix Compétitifs" />
+            <Text styleClass="feature-description" text="Nous vous garantissons les meilleurs prix sur le marché avec un excellent rapport qualité-prix pour toutes nos offres." wrappingWidth="250" />
+          </VBox>
+
+          <!-- Feature 3 -->
+          <VBox styleClass="feature-card" maxWidth="300">
+            <ImageView fitHeight="64" fitWidth="64" preserveRatio="true">
+              <image>
+                <Image url="@../icons/support.png" />
+              </image>
+            </ImageView>
+            <Label styleClass="feature-title" text="Support 24/7" />
+            <Text styleClass="feature-description" text="Notre équipe d'experts est disponible 24/7 pour vous assister et répondre à toutes vos questions avant, pendant et après votre voyage." wrappingWidth="250" />
+          </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER" spacing="20">
+          <padding>
+            <Insets top="30" />
+          </padding>
+          <Button styleClass="discover-button" text="Voir Nos Offres" onAction="#openPackages" />
+        </HBox>
       </VBox>
-    </StackPane>
+    </VBox>
   </center>
 
 </BorderPane>

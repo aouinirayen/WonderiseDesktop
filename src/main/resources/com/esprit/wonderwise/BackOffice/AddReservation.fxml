@@ -1,122 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<BorderPane prefWidth="600" prefHeight="500" stylesheets="@AddReservation.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.AddReservationController">
-    <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
-            <content>
-                <VBox fx:id="formVBox" alignment="CENTER" spacing="15" style="-fx-padding: 20;">
-                    <Label styleClass="label-title" text="Ajouter une réservation" />
 
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Offre ID :" styleClass="label-field" />
-                        <TextField fx:id="offreIdField" promptText="Entrez l'ID de l'offre" styleClass="text-field" />
-                    </HBox>
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Nom :" styleClass="label-field" />
-                        <TextField fx:id="nomField" promptText="Entrez le nom" styleClass="text-field" />
-                    </HBox>
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Prénom :" styleClass="label-field" />
-                        <TextField fx:id="prenomField" promptText="Entrez le prénom" styleClass="text-field" />
-                    </HBox>
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Email :" styleClass="label-field" />
-                        <TextField fx:id="emailField" promptText="Entrez l'email" styleClass="text-field" />
-                    </HBox>
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Téléphone :" styleClass="label-field" />
-                        <TextField fx:id="telephoneField" promptText="Entrez le téléphone" styleClass="text-field" />
-                    </HBox>
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Ville :" styleClass="label-field" />
-                        <TextField fx:id="villeField" promptText="Entrez la ville" styleClass="text-field" />
-                    </HBox>
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Nombre de personnes :" styleClass="label-field" />
-                        <TextField fx:id="nombrePersonneField" promptText="Entrez le nombre" styleClass="text-field" />
-                    </HBox>
-
-
-
-
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Type de voyage :" styleClass="label-field" />
+<VBox spacing="20" stylesheets="@AddReservation.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.AddReservationController">
+    
+    <!-- Header with title and back button -->
+    <HBox styleClass="header-container" alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+            <Label fx:id="formTitle" styleClass="page-title" text="Ajouter une réservation" />
+        </HBox>
+        <Button fx:id="backButton" text="Retour" styleClass="button-back" onAction="#handleCancel">
+            <graphic>
+                <ImageView fitHeight="16" fitWidth="16">
+                    <image>
+                        <Image url="@../icons/back.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+    </HBox>
+    
+    <!-- Form content in a scrollable container -->
+    <ScrollPane fitToWidth="true" styleClass="form-scroll-pane" VBox.vgrow="ALWAYS">
+        <VBox styleClass="form-container" spacing="20">
+            
+            <!-- Personal information section -->
+            <VBox styleClass="form-section">
+                <Label styleClass="section-title" text="Informations personnelles" />
+                
+                <HBox spacing="20" styleClass="form-row">
+                    <!-- Nom -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Nom *" />
+                        <TextField fx:id="nomField" promptText="Entrez le nom" styleClass="text-input" />
+                        <Label fx:id="nomError" styleClass="error-label" />
+                    </VBox>
+                    
+                    <!-- Prénom -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Prénom *" />
+                        <TextField fx:id="prenomField" promptText="Entrez le prénom" styleClass="text-input" />
+                        <Label fx:id="prenomError" styleClass="error-label" />
+                    </VBox>
+                </HBox>
+                
+                <HBox spacing="20" styleClass="form-row">
+                    <!-- Email -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Email *" />
+                        <TextField fx:id="emailField" promptText="Entrez l'email" styleClass="text-input" />
+                        <Label fx:id="emailError" styleClass="error-label" />
+                    </VBox>
+                    
+                    <!-- Téléphone -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Téléphone *" />
+                        <TextField fx:id="telephoneField" promptText="Entrez le numéro de téléphone" styleClass="text-input" />
+                        <Label fx:id="telephoneError" styleClass="error-label" />
+                    </VBox>
+                </HBox>
+                
+                <HBox spacing="20" styleClass="form-row">
+                    <!-- Ville -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Ville" />
+                        <TextField fx:id="villeField" promptText="Entrez la ville" styleClass="text-input" />
+                        <Label fx:id="villeError" styleClass="error-label" />
+                    </VBox>
+                    
+                    <!-- Nombre de personnes -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Nombre de personnes *" />
+                        <TextField fx:id="nombrePersonneField" promptText="Entrez le nombre de personnes" styleClass="text-input" />
+                        <Label fx:id="nombrePersonneError" styleClass="error-label" />
+                    </VBox>
+                </HBox>
+            </VBox>
+            
+            <!-- Reservation details section -->
+            <VBox styleClass="form-section">
+                <Label styleClass="section-title" text="Détails de la réservation" />
+                
+                <HBox spacing="20" styleClass="form-row">
+                    <!-- Offre ID -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Destination *" />
+                        <ChoiceBox fx:id="offreChoice" styleClass="choice-box" />
+                        <Label fx:id="offreIdError" styleClass="error-label" />
+                    </VBox>
+                    
+                    <!-- Date de départ -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Date de départ" />
+                        <DatePicker fx:id="dateDepartPicker" promptText="Sélectionnez une date" styleClass="date-picker" />
+                        <Label fx:id="dateDepartError" styleClass="error-label" />
+                    </VBox>
+                </HBox>
+                
+                <HBox spacing="20" styleClass="form-row">
+                    <!-- Type de voyage -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Type de voyage" />
                         <ChoiceBox fx:id="typeVoyageChoice" styleClass="choice-box">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Solo" />
+                                    <String fx:value="Individuel" />
                                     <String fx:value="Groupe" />
                                     <String fx:value="Famille" />
                                 </FXCollections>
                             </items>
                         </ChoiceBox>
-                    </HBox>
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Mode de paiement :" styleClass="label-field" />
+                        <Label fx:id="typeVoyageError" styleClass="error-label" />
+                    </VBox>
+                    
+                    <!-- Mode de paiement -->
+                    <VBox styleClass="form-field">
+                        <Label styleClass="field-label" text="Mode de paiement *" />
                         <ChoiceBox fx:id="modePaiementChoice" styleClass="choice-box">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Carte" />
+                                    <String fx:value="Carte bancaire" />
                                     <String fx:value="Espèces" />
                                     <String fx:value="Virement" />
+                                    <String fx:value="Chèque" />
                                 </FXCollections>
                             </items>
                         </ChoiceBox>
-                    </HBox>
-
-
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Commentaire :" styleClass="label-field" />
-                        <TextArea fx:id="commentaireField" promptText="Entrez un commentaire" prefHeight="60" styleClass="text-area" />
-                    </HBox>
-
-                    <HBox spacing="10" alignment="CENTER">
-                        <Label text="Statut :" styleClass="label-field" />
-                        <ChoiceBox fx:id="statutChoice" styleClass="choice-box">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="En attente" />
-                                    <String fx:value="Confirmée" />
-                                    <String fx:value="Annulée" />
-                                </FXCollections>
-                            </items>
-                        </ChoiceBox>
-                    </HBox>
-
-
-
-
+                        <Label fx:id="modePaiementError" styleClass="error-label" />
+                    </VBox>
+                </HBox>
+                
+                <!-- Régime alimentaire -->
+                <VBox styleClass="form-field">
+                    <Label styleClass="field-label" text="Régime alimentaire *" />
+                    <TextField fx:id="regimeAlimentaireField" promptText="Ex: Végétarien, Sans gluten, etc." styleClass="text-input" />
+                    <Label fx:id="regimeAlimentaireError" styleClass="error-label" />
                 </VBox>
-            </content>
-        </ScrollPane>
-    </center>
-
-    <bottom>
-        <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10; -fx-background-color: #FFFFFF;">
-            <Button fx:id="addButton" text="Ajouter" styleClass="button-add" onAction="#handleAddReservation" />
-            <Button fx:id="cancelButton" text="Annuler" styleClass="button-cancel" onAction="#handleCancel" />
-        </HBox>
-    </bottom>
-</BorderPane>
+                
+                <!-- Commentaire -->
+                <VBox styleClass="form-field">
+                    <Label styleClass="field-label" text="Commentaire" />
+                    <TextArea fx:id="commentaireField" promptText="Ajoutez un commentaire" styleClass="text-area" wrapText="true" />
+                    <Label fx:id="commentaireError" styleClass="error-label" />
+                </VBox>
+                
+                <!-- Statut -->
+                <VBox styleClass="form-field">
+                    <Label styleClass="field-label" text="Statut *" />
+                    <ChoiceBox fx:id="statutChoice" styleClass="choice-box">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="En attente" />
+                                <String fx:value="Confirmée" />
+                                <String fx:value="Annulée" />
+                            </FXCollections>
+                        </items>
+                    </ChoiceBox>
+                    <Label fx:id="statutError" styleClass="error-label" />
+                </VBox>
+            </VBox>
+            
+            <!-- Action buttons -->
+            <HBox styleClass="action-buttons">
+                <Button fx:id="addButton" styleClass="button-add" onAction="#handleAddReservation" text="Enregistrer" />
+                <Button styleClass="button-cancel" onAction="#handleCancel" text="Annuler" />
+            </HBox>
+            
+        </VBox>
+    </ScrollPane>
+</VBox>

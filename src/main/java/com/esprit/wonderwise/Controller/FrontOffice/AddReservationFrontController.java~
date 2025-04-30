@@ -1,0 +1,400 @@
+package com.esprit.wonderwise.Controller.FrontOffice;
+
+import com.esprit.wonderwise.Model.reservation;
+import com.esprit.wonderwise.Service.ReservationService;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AddReservationFrontController {
+
+    @FXML
+    private TextField nomField;
+    @FXML
+    private Label nomError;
+    @FXML
+    private TextField prenomField;
+    @FXML
+    private Label prenomError;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private Label emailError;
+    @FXML
+    private TextField telephoneField;
+    @FXML
+    private Label telephoneError;
+    @FXML
+    private TextField villeField;
+    @FXML
+    private TextField nombrePersonneField;
+    @FXML
+    private Label nombrePersonneError;
+    @FXML
+    private ChoiceBox<String> modePaiementChoice; 
+    @FXML
+    private Label modePaiementError;
+    @FXML
+    private TextField regimeAlimentaireField;
+    @FXML
+    private TextArea commentaireField;
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button cancelButton;
+    @FXML
+    private DatePicker dateDepartPicker;
+    @FXML
+    private TextField heureDepartField;
+    @FXML
+    private ChoiceBox<String> typeVoyageChoice;
+    @FXML
+    private ChoiceBox<String> statutChoice;
+    @FXML
+    private TextArea preferencesVoyageField;
+    @FXML
+    private TextField stripePaymentIdField;
+    @FXML
+    private VBox formContainer;
+    @FXML
+    private VBox listContainer;
+    @FXML
+    private FlowPane reservationContainer;
+
+    private ReservationService reservationService = new ReservationService();
+    private int offreId;
+    private reservation currentReservation;
+
+    public void initData(int offreId) {
+        this.offreId = offreId;
+    }
+
+    public void setReservationForModification(reservation reservation) {
+        this.currentReservation = reservation;
+        
+        // Pre-fill the form fields with reservation data
+        nomField.setText(reservation.getNom());
+        prenomField.setText(reservation.getPrenom());
+        emailField.setText(reservation.getEmail());
+        telephoneField.setText(reservation.getTelephone());
+        nombrePersonneField.setText(String.valueOf(reservation.getNombrePersonne()));
+        villeField.setText(reservation.getVille());
+        modePaiementChoice.setValue(reservation.getModePaiement());
+        regimeAlimentaireField.setText(reservation.getRegimeAlimentaire());
+        commentaireField.setText(reservation.getCommentaire());
+        
+        // Change button text to indicate modification
+        addButton.setText("Modifier");
+    }
+
+    @FXML
+    private void handleAddReservation() {
+        // Get all field values first
+        String nom = nomField.getText();
+        String prenom = prenomField.getText();
+        String email = emailField.getText();
+        String telephone = telephoneField.getText();
+        String nombrePersonneText = nombrePersonneField.getText();
+        String ville = villeField.getText();
+        String modePaiement = modePaiementChoice.getValue();
+        String regimeAlimentaire = regimeAlimentaireField.getText();
+        String commentaire = commentaireField.getText();
+
+        // Réinitialiser les styles d'erreur
+        resetErrorStyles();
+        
+        boolean hasError = false;
+
+        // Validation du nom
+        if (nom == null || nom.trim().isEmpty()) {
+            showFieldError(nomField, nomError, "Le nom est obligatoire");
+            hasError = true;
+        }
+
+        // Validation du prénom
+        if (prenom == null || prenom.trim().isEmpty()) {
+            showFieldError(prenomField, prenomError, "Le prénom est obligatoire");
+            hasError = true;
+        }
+
+        // Validation de l'email
+        if (email == null || email.trim().isEmpty()) {
+            showFieldError(emailField, emailError, "L'email est obligatoire");
+            hasError = true;
+        } else if (!email.trim().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            showFieldError(emailField, emailError, "Format d'email invalide");
+            hasError = true;
+        }
+
+        // Validation du téléphone
+        if (telephone == null || telephone.trim().isEmpty()) {
+            showFieldError(telephoneField, telephoneError, "Le téléphone est obligatoire");
+            hasError = true;
+        } else if (!telephone.trim().matches("^[0-9]{8}$")) {
+            showFieldError(telephoneField, telephoneError, "Le numéro doit contenir 8 chiffres");
+            hasError = true;
+        }
+
+        // Validation du nombre de personnes
+        if (nombrePersonneText == null || nombrePersonneText.trim().isEmpty()) {
+            showFieldError(nombrePersonneField, nombrePersonneError, "Le nombre de personnes est obligatoire");
+            hasError = true;
+        } else {
+            try {
+                int nombre = Integer.parseInt(nombrePersonneText.trim());
+                if (nombre <= 0) {
+                    showFieldError(nombrePersonneField, nombrePersonneError, "Le nombre doit être supérieur à 0");
+                    hasError = true;
+                }
+            } catch (NumberFormatException e) {
+                showFieldError(nombrePersonneField, nombrePersonneError, "Veuillez entrer un nombre valide");
+                hasError = true;
+            }
+        }
+
+        // Validation du mode de paiement
+        if (modePaiement == null) {
+            showFieldError(modePaiementChoice, modePaiementError, "Le mode de paiement est obligatoire");
+            hasError = true;
+        }
+
+        // S'il y a des erreurs, arrêter
+        if (hasError) {
+            return;
+        }
+
+        // Si tout est valide, procéder à la réservation
+        try {
+            reservation newReservation = currentReservation != null ? currentReservation : new reservation();
+            if (currentReservation != null) {
+                newReservation.setId(currentReservation.getId());
+                // Keep the original offre_id when modifying
+                newReservation.setOffreId(currentReservation.getOffreId());
+            } else {
+                // Only set new offre_id for new reservations
+                newReservation.setOffreId(offreId);
+            }
+
+            newReservation.setNom(nom.trim());
+            newReservation.setPrenom(prenom.trim());
+            newReservation.setEmail(email.trim());
+            newReservation.setTelephone(telephone.trim());
+            newReservation.setNombrePersonne(Integer.parseInt(nombrePersonneText.trim()));
+            newReservation.setVille(ville != null ? ville.trim() : null);
+            newReservation.setModePaiement(modePaiement);
+            newReservation.setRegimeAlimentaire(regimeAlimentaire != null ? regimeAlimentaire.trim() : null);
+            newReservation.setCommentaire(commentaire != null && !commentaire.trim().isEmpty() ? commentaire.trim() : null);
+            
+            // Définir des valeurs par défaut pour les champs non affichés
+            newReservation.setDateDepart(null);
+            newReservation.setHeureDepart(null);
+            newReservation.setTypeVoyage("N/A");
+            newReservation.setPreferencesVoyage(null);
+            newReservation.setStripePaymentId(null);
+            
+            // Définir la date de réservation et le statut
+            newReservation.setDateReservation(LocalDateTime.now());
+            newReservation.setStatut("En attente");
+
+            ReservationService reservationService = new ReservationService();
+            if (currentReservation != null) {
+                reservationService.update(newReservation);
+                showAlert("Succès", "Réservation modifiée avec succès !");
+            } else {
+                reservationService.create(newReservation);
+                showAlert("Succès", "Réservation effectuée avec succès !");
+            }
+            
+            // Show the reservations list and hide the form
+            loadReservations();
+            formContainer.setVisible(false);
+            listContainer.setVisible(true);
+
+        } catch (SQLException e) {
+            if (currentReservation != null) {
+                showAlert("Erreur", "Erreur lors de la modification de la réservation : " + e.getMessage());
+            } else {
+                showAlert("Erreur", "Erreur lors de la réservation : " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void handleCancel() {
+        closeWindow();
+    }
+
+    @FXML
+    private void handleRetourButton() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/FrontOffice/Packages.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) formContainer.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Erreur", "Erreur lors du retour à la page précédente : " + e.getMessage());
+        }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void closeWindow() {
+        Stage stage = (Stage) nomField.getScene().getWindow();
+        stage.close();
+    }
+
+    private void resetErrorStyles() {
+        // Réinitialiser les styles des champs
+        nomField.getStyleClass().remove("error");
+        prenomField.getStyleClass().remove("error");
+        emailField.getStyleClass().remove("error");
+        telephoneField.getStyleClass().remove("error");
+        nombrePersonneField.getStyleClass().remove("error");
+        modePaiementChoice.getStyleClass().remove("error");
+
+        // Cacher tous les messages d'erreur
+        nomError.setVisible(false);
+        nomError.setManaged(false);
+        prenomError.setVisible(false);
+        prenomError.setManaged(false);
+        emailError.setVisible(false);
+        emailError.setManaged(false);
+        telephoneError.setVisible(false);
+        telephoneError.setManaged(false);
+        nombrePersonneError.setVisible(false);
+        nombrePersonneError.setManaged(false);
+        modePaiementError.setVisible(false);
+        modePaiementError.setManaged(false);
+    }
+
+    private void showFieldError(Control field, Label errorLabel, String message) {
+        field.getStyleClass().add("error");
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
+        errorLabel.setManaged(true);
+    }
+
+    @FXML
+    private void showReservationForm() {
+        // Clear form fields
+        nomField.clear();
+        prenomField.clear();
+        emailField.clear();
+        telephoneField.clear();
+        nombrePersonneField.clear();
+        villeField.clear();
+        modePaiementChoice.setValue(null);
+        regimeAlimentaireField.clear();
+        commentaireField.clear();
+        
+        // Reset error styles
+        resetErrorStyles();
+        
+        // Show form and hide list
+        formContainer.setVisible(true);
+        listContainer.setVisible(false);
+        
+        // Reset currentReservation
+        currentReservation = null;
+        addButton.setText("Réserver");
+    }
+
+    private void loadReservations() {
+        try {
+            ReservationService reservationService = new ReservationService();
+            List<reservation> reservations = reservationService.readAll();
+            reservationContainer.getChildren().clear();
+            
+            for (reservation res : reservations) {
+                VBox card = createReservationCard(res);
+                reservationContainer.getChildren().add(card);
+            }
+        } catch (SQLException e) {
+            showAlert("Erreur", "Erreur lors du chargement des réservations : " + e.getMessage());
+        }
+    }
+
+    private VBox createReservationCard(reservation res) {
+        VBox card = new VBox(10);
+        card.getStyleClass().add("reservation-card");
+        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);");
+
+        Label name = new Label(res.getNom() + " " + res.getPrenom());
+        name.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+
+        Label email = new Label("Email: " + res.getEmail());
+        Label phone = new Label("Tél: " + res.getTelephone());
+        Label persons = new Label("Personnes: " + res.getNombrePersonne());
+        Label status = new Label("Statut: " + res.getStatut());
+        status.setStyle("-fx-text-fill: " + (res.getStatut().equals("En attente") ? "orange" : "green") + ";");
+
+        HBox buttons = new HBox(10);
+        buttons.setStyle("-fx-padding: 10 0 0 0;");
+
+        Button modifyBtn = new Button("Modifier");
+        modifyBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        modifyBtn.setOnAction(e -> modifyReservation(res));
+
+        Button deleteBtn = new Button("Supprimer");
+        deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+        deleteBtn.setOnAction(e -> {
+            try {
+                ReservationService reservationService = new ReservationService();
+                reservationService.delete(res.getId());
+                loadReservations();
+            } catch (SQLException ex) {
+                showAlert("Erreur", "Erreur lors de la suppression : " + ex.getMessage());
+            }
+        });
+
+        buttons.getChildren().addAll(modifyBtn, deleteBtn);
+        card.getChildren().addAll(name, email, phone, persons, status, buttons);
+        return card;
+    }
+
+    private void modifyReservation(reservation res) {
+        currentReservation = res;
+        
+        // Pre-fill form fields
+        nomField.setText(res.getNom());
+        prenomField.setText(res.getPrenom());
+        emailField.setText(res.getEmail());
+        telephoneField.setText(res.getTelephone());
+        nombrePersonneField.setText(String.valueOf(res.getNombrePersonne()));
+        villeField.setText(res.getVille());
+        modePaiementChoice.setValue(res.getModePaiement());
+        regimeAlimentaireField.setText(res.getRegimeAlimentaire());
+        commentaireField.setText(res.getCommentaire());
+        
+        // Change button text
+        addButton.setText("Modifier");
+        
+        // Show form
+        formContainer.setVisible(true);
+        listContainer.setVisible(false);
+    }
+}

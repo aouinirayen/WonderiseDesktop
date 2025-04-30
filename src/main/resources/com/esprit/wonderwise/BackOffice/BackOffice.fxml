@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="mainPane" prefHeight="740.0" prefWidth="1070.0" style="-fx-background-color: #ECF0F1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.BackOfficeController">
+<BorderPane fx:id="mainPane" prefHeight="740.0" prefWidth="1300.0" style="-fx-background-color: #ECF0F1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.BackOfficeController">
   <!-- Navigation Bar (Left) -->
   <left>
     <fx:include fx:id="navBar" source="NavBarBack.fxml" />
@@ -11,6 +11,6 @@
 
   <!-- Main Content Area (Center) -->
   <center>
-    <Pane fx:id="contentPane" prefWidth="800" prefHeight="700" />
+    <Pane fx:id="contentPane" prefWidth="1030" prefHeight="700" />
   </center>
 </BorderPane>

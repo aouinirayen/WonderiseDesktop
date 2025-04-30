@@ -2,7 +2,7 @@ package com.esprit.wonderwise.Controller.FrontOffice;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
+import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ public class FrontOfficeController {
     private BorderPane mainPane;
 
     @FXML
-    private NavBarFrontController navBarFrontController; // Injecte le contrôleur de NavBarFront
+    private NavBarFrontController navBarFrontController;
 
     @FXML
     public void initialize() {
@@ -24,10 +24,15 @@ public class FrontOfficeController {
         }
     }
 
+    @FXML
+    public void openPackages() {
+        loadContent("/com/esprit/wonderwise/FrontOffice/Packages.fxml");
+    }
+
     public void loadContent(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Pane newContent = loader.load();
+            Parent newContent = loader.load();
             mainPane.setCenter(newContent);
         } catch (IOException e) {
             e.printStackTrace();

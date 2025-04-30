@@ -1,0 +1,146 @@
+package com.esprit.wonderwise.Controller.FrontOffice;
+
+import com.esprit.wonderwise.Model.reservation;
+import com.esprit.wonderwise.Service.ReservationService;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+public class ReservationListController implements Initializable {
+
+    @FXML
+    private FlowPane reservationContainer;
+
+    private ReservationService reservationService;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        reservationService = new ReservationService();
+        loadReservations();
+    }
+
+    public void loadReservations() {
+        reservationContainer.getChildren().clear();
+        List<reservation> reservations = getReservations();
+
+        if (reservations != null) {
+            for (reservation res : reservations) {
+                VBox card = createReservationCard(res);
+                card.setUserData(res);
+                reservationContainer.getChildren().add(card);
+            }
+        }
+    }
+
+    private VBox createReservationCard(reservation res) {
+        VBox card = new VBox(10);
+        card.getStyleClass().add("reservation-item");
+        card.setPadding(new Insets(15));
+
+        Label name = new Label("Nom: " + res.getNom() + " " + res.getPrenom());
+        name.getStyleClass().add("info-label");
+
+        Label email = new Label("Email: " + res.getEmail());
+        email.getStyleClass().add("info-label");
+
+        Label phone = new Label("Téléphone: " + res.getTelephone());
+        phone.getStyleClass().add("info-label");
+
+        Label persons = new Label("Nombre de personnes: " + res.getNombrePersonne());
+        persons.getStyleClass().add("info-label");
+
+        Label status = new Label("Status: En attente");
+        status.getStyleClass().add("status-text");
+
+        HBox buttons = new HBox(10);
+        Button modifyBtn = new Button("Modifier");
+        modifyBtn.getStyleClass().add("Modifier");  
+        Button deleteBtn = new Button("Supprimer");
+        deleteBtn.getStyleClass().add("Supprimer"); 
+
+        modifyBtn.setOnAction(e -> modifyReservation(res));
+        deleteBtn.setOnAction(e -> deleteReservation(res));
+
+        buttons.getChildren().addAll(modifyBtn, deleteBtn);
+        buttons.setPadding(new Insets(10, 0, 0, 0));
+
+        card.getChildren().addAll(name, email, phone, persons, status, buttons);
+        return card;
+    }
+
+    private void modifyReservation(reservation res) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/FrontOffice/AddReservationFront.fxml"));
+            Parent root = loader.load();
+
+            AddReservationFrontController controller = loader.getController();
+            controller.setReservationForModification(res);
+
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/com/esprit/wonderwise/FrontOffice/AddReservationFront.css").toExternalForm());
+
+            Stage stage = new Stage();
+            stage.setTitle("Modifier Réservation");
+            stage.setScene(scene);
+            stage.showAndWait();
+
+            // Refresh the list after modification
+            loadReservations();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la modification: " + e.getMessage());
+        }
+    }
+
+    private void deleteReservation(reservation res) {
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Confirmation de suppression");
+        confirmDialog.setHeaderText("Supprimer la réservation");
+        confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer cette réservation ?");
+
+        Optional<ButtonType> result = confirmDialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                reservationService.delete(res.getId());
+                reservationContainer.getChildren().removeIf(node ->
+                        node instanceof VBox && node.getUserData() == res);
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Réservation supprimée avec succès!");
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la suppression: " + e.getMessage());
+            }
+        }
+    }
+
+    private List<reservation> getReservations() {
+        try {
+            return reservationService.readAll();
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors du chargement des réservations: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+}

@@ -13,6 +13,7 @@ public class NavBarBackController {
     @FXML
     private void openAddOffreForm() {
         if (backOfficeController != null) {
+            // Load ManageOffres.fxml to show the list of offers
             backOfficeController.loadContent("/com/esprit/wonderwise/BackOffice/ManageOffres.fxml");
         } else {
             System.err.println("BackOfficeController n'est pas défini.");

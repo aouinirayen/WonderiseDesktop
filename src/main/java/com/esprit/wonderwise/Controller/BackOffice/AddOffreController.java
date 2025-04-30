@@ -7,8 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -59,20 +57,31 @@ public class AddOffreController {
     private ImageView imagePreview;
     @FXML
     private TextField paysField;
-
     @FXML
     private Button addButton;
 
     private OffreService offreService = new OffreService();
     private offre offreToEdit = null;
-    private static final String IMAGE_DIR = "src/main/resources/images/offres/";
+    private static final String IMAGE_DIR = "src/main/resources/com/esprit/wonderwise/images/offres/";
+    private static final String IMAGE_WEB_PATH = "/com/esprit/wonderwise/images/offres/";
+    private BackOfficeController backOfficeController;
+
+    public void setBackOfficeController(BackOfficeController controller) {
+        this.backOfficeController = controller;
+    }
 
     @FXML
     public void initialize() {
-        // Create image directory if it doesn't exist
-        File dir = new File(IMAGE_DIR);
-        if (!dir.exists()) {
-            dir.mkdirs();
+        try {
+            // Créer le dossier des images s'il n'existe pas
+            File dir = new File(IMAGE_DIR);
+            if (!dir.exists()) {
+                if (!dir.mkdirs()) {
+                    System.err.println("Impossible de créer le dossier des images: " + IMAGE_DIR);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'initialisation du dossier des images: " + e.getMessage());
         }
     }
 
@@ -89,11 +98,22 @@ public class AddOffreController {
         paysField.setText(offre.getPays());
         addButton.setText("Modifier");
 
-        // Show image preview if image is available
+        // Charger l'image existante si disponible
         if (offre.getImage() != null && !offre.getImage().isEmpty()) {
             try {
-                imagePreview.setImage(new Image("file:" + IMAGE_DIR + offre.getImage().substring("/images/offres/".length())));
+                String imagePath = "file:" + IMAGE_DIR + offre.getImage().substring(offre.getImage().lastIndexOf('/') + 1);
+                Image image = new Image(imagePath);
+                if (!image.isError()) {
+                    imagePreview.setImage(image);
+                    imagePreview.setFitWidth(200);
+                    imagePreview.setFitHeight(150);
+                    imagePreview.setPreserveRatio(true);
+                } else {
+                    System.err.println("Erreur lors du chargement de l'image: " + imagePath);
+                    imagePreview.setImage(null);
+                }
             } catch (Exception e) {
+                System.err.println("Erreur lors du chargement de l'image: " + e.getMessage());
                 imagePreview.setImage(null);
             }
         }
@@ -104,28 +124,36 @@ public class AddOffreController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Sélectionner une image");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
 
         File selectedFile = fileChooser.showOpenDialog(selectImageButton.getScene().getWindow());
         if (selectedFile != null) {
             try {
-                // Generate a unique filename based on current time
-                String fileName = System.currentTimeMillis() + "_" + selectedFile.getName();
+                // Générer un nom de fichier unique
+                String originalFileName = selectedFile.getName();
+                String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                String fileName = System.currentTimeMillis() + extension;
+                
+                // Créer le chemin complet
                 Path targetPath = Paths.get(IMAGE_DIR + fileName);
-
-                // Copy file to the target image directory
+                
+                // Copier le fichier
                 Files.copy(selectedFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-
-                // Update image field and preview
-                imageField.setText("/images/offres/" + fileName);
-                imagePreview.setImage(new Image(selectedFile.toURI().toString()));
+                
+                // Mettre à jour le champ et l'aperçu
+                imageField.setText(IMAGE_WEB_PATH + fileName);
+                
+                // Charger et afficher l'aperçu
+                Image image = new Image(selectedFile.toURI().toString());
+                imagePreview.setImage(image);
                 imagePreview.setFitWidth(200);
                 imagePreview.setFitHeight(150);
                 imagePreview.setPreserveRatio(true);
-
+                
             } catch (IOException e) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors du chargement de l'image: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -163,7 +191,6 @@ public class AddOffreController {
             boolean hasError = false;
             LocalDate today = LocalDate.now();
 
-            // Validate the title
             if (titreField.getText().trim().isEmpty()) {
                 showError(titreError, titreField, "Le titre est obligatoire");
                 hasError = true;
@@ -172,7 +199,6 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validate the description
             if (descriptionField.getText().trim().isEmpty()) {
                 showError(descriptionError, descriptionField, "La description est obligatoire");
                 hasError = true;
@@ -181,7 +207,6 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validate the price
             try {
                 double prix = Double.parseDouble(prixField.getText().trim());
                 if (prix <= 0) {
@@ -193,7 +218,6 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validate the number of places
             try {
                 int nombrePlaces = Integer.parseInt(nombrePlacesField.getText().trim());
                 if (nombrePlaces <= 0) {
@@ -205,7 +229,6 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validate available places
             try {
                 int placesDisponibles = Integer.parseInt(placesDisponiblesField.getText().trim());
                 int nombrePlaces = Integer.parseInt(nombrePlacesField.getText().trim());
@@ -221,11 +244,10 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Validate dates
             if (dateDebutPicker.getValue() == null) {
                 showError(dateDebutError, dateDebutPicker, "La date de début est obligatoire");
                 hasError = true;
-            } else if (dateDebutPicker.getValue().isBefore(today)) {
+            } else if (dateDebutPicker.getValue().isBefore(today))  {
                 showError(dateDebutError, dateDebutPicker, "La date de début doit être supérieure ou égale à aujourd'hui");
                 hasError = true;
             }
@@ -238,7 +260,6 @@ public class AddOffreController {
                 hasError = true;
             }
 
-            // Check that the end date is after the start date
             if (dateDebutPicker.getValue() != null && dateFinPicker.getValue() != null) {
                 if (dateFinPicker.getValue().isBefore(dateDebutPicker.getValue())) {
                     showError(dateFinError, dateFinPicker, "La date de fin doit être après la date de début");
@@ -246,7 +267,6 @@ public class AddOffreController {
                 }
             }
 
-            // Validate image field
             if (imageField.getText().trim().isEmpty()) {
                 showError(imageError, imageField, "L'image est obligatoire");
                 hasError = true;
@@ -256,7 +276,6 @@ public class AddOffreController {
                 return;
             }
 
-            // If no errors, create/update the offer
             offre offre = offreToEdit != null ? offreToEdit : new offre();
             offre.setTitre(titreField.getText().trim());
             offre.setDescription(descriptionField.getText().trim());
@@ -267,6 +286,7 @@ public class AddOffreController {
             offre.setDateFin(dateFinPicker.getValue().atStartOfDay());
             offre.setDateCreation(LocalDateTime.now());
             offre.setImage(imageField.getText());
+            offre.setPays(paysField.getText().trim());
 
             if (offreToEdit != null) {
                 offreService.update(offre);
@@ -276,7 +296,10 @@ public class AddOffreController {
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Offre ajoutée avec succès !");
             }
 
-            closeWindow();
+            if (backOfficeController != null) {
+                backOfficeController.loadContent("/com/esprit/wonderwise/BackOffice/ManageOffres.fxml");
+            }
+
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'opération : " + e.getMessage());
         }
@@ -284,7 +307,9 @@ public class AddOffreController {
 
     @FXML
     private void handleCancel() {
-        closeWindow();
+        if (backOfficeController != null) {
+            backOfficeController.loadContent("/com/esprit/wonderwise/BackOffice/ManageOffres.fxml");
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
@@ -293,10 +318,5 @@ public class AddOffreController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private void closeWindow() {
-        Stage stage = (Stage) titreField.getScene().getWindow();
-        stage.close();
     }
 }

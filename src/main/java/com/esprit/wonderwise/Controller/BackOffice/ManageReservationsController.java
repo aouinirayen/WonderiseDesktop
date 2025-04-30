@@ -8,139 +8,190 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Priority;
+import javafx.geometry.Pos;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class ManageReservationsController {
 
     @FXML
-    private TableView<reservation> reservationsTable;
-
+    private VBox reservationsContainer;
+    
     @FXML
-    private TableColumn<reservation, Integer> idColumn;
-
-    @FXML
-    private TableColumn<reservation, Integer> offreIdColumn;
-
-    @FXML
-    private TableColumn<reservation, String> nomColumn;
-
-    @FXML
-    private TableColumn<reservation, String> prenomColumn;
-
-    @FXML
-    private TableColumn<reservation, String> emailColumn;
-
-    @FXML
-    private TableColumn<reservation, Integer> nombrePersonneColumn;
-
-
-
-    @FXML
-    private TableColumn<reservation, String> statutColumn;
-
-    @FXML
-    private TableColumn<reservation, Void> actionsColumn;
+    private VBox emptyState;
 
     private ReservationService reservationService = new ReservationService();
     private ObservableList<reservation> reservationsList = FXCollections.observableArrayList();
+    private BackOfficeController backOfficeController;
+
+    public void setBackOfficeController(BackOfficeController controller) {
+        this.backOfficeController = controller;
+    }
 
     @FXML
     public void initialize() {
-        // Configurer les colonnes
-        idColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        offreIdColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getOffreId()).asObject());
-        nomColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNom()));
-        prenomColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPrenom()));
-        emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
-        nombrePersonneColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getNombrePersonne()).asObject());
-
-        statutColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatut()));
-
-        // Configurer la colonne Actions
-        actionsColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button editButton = new Button("Modifier");
-            private final Button deleteButton = new Button("Supprimer");
-
-            {
-                editButton.getStyleClass().addAll("button-action", "button-edit");
-                deleteButton.getStyleClass().addAll("button-action", "button-delete");
-
-                editButton.setOnAction(event -> {
-                    reservation res = getTableView().getItems().get(getIndex());
-                    handleEditReservation(res);
-                });
-
-                deleteButton.setOnAction(event -> {
-                    reservation res = getTableView().getItems().get(getIndex());
-                    handleDeleteReservation(res);
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(new HBox(10, editButton, deleteButton));
-                }
-            }
-        });
-
-        // Charger les réservations
         loadReservations();
     }
 
     private void loadReservations() {
         try {
-            reservationsList.setAll(reservationService.readAll());
-            reservationsTable.setItems(reservationsList);
+            // Clear previous data
+            reservationsList.clear();
+            reservationsContainer.getChildren().clear();
+            
+            // Load all reservations
+            List<reservation> allReservations = reservationService.readAll();
+            reservationsList.addAll(allReservations);
+            
+            // Check if we have reservations to display
+            if (reservationsList.isEmpty()) {
+                reservationsContainer.setVisible(false);
+                reservationsContainer.setManaged(false);
+                emptyState.setVisible(true);
+                emptyState.setManaged(true);
+                System.out.println("No reservations found to display.");
+            } else {
+                reservationsContainer.setVisible(true);
+                reservationsContainer.setManaged(true);
+                emptyState.setVisible(false);
+                emptyState.setManaged(false);
+                
+                System.out.println("Loading " + reservationsList.size() + " reservations.");
+                
+                // Create cards for each reservation and add to container
+                for (reservation res : reservationsList) {
+                    HBox card = createReservationCard(res);
+                    reservationsContainer.getChildren().add(card);
+                }
+                
+                // Ensure proper layout
+                reservationsContainer.setMinHeight(reservationsList.size() * 150);
+                reservationsContainer.applyCss();
+                reservationsContainer.layout();
+                
+                System.out.println("Loaded " + reservationsContainer.getChildren().size() + " reservation cards.");
+            }
         } catch (SQLException e) {
-            showAlert("Erreur", "Impossible de charger les réservations : " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger les réservations : " + e.getMessage());
         }
+    }
+    
+    private HBox createReservationCard(reservation res) {
+        // Main card container
+        HBox card = new HBox();
+        card.getStyleClass().add("reservation-card");
+        card.setSpacing(15);
+        
+        // Client info section
+        VBox clientInfo = new VBox();
+        clientInfo.getStyleClass().add("card-client-info");
+        
+        Label nameLabel = new Label(res.getNom() + " " + res.getPrenom());
+        nameLabel.getStyleClass().add("card-title");
+        
+        Label emailLabel = new Label(res.getEmail());
+        emailLabel.getStyleClass().add("client-email");
+        
+        Label statusBadge = new Label(res.getStatut());
+        statusBadge.getStyleClass().addAll("status-badge");
+        // Add specific style based on status
+        if ("En attente".equals(res.getStatut())) {
+            statusBadge.getStyleClass().add("status-pending");
+        } else if ("Confirmé".equals(res.getStatut())) {
+            statusBadge.getStyleClass().add("status-confirmed");
+        } else if ("Annulé".equals(res.getStatut())) {
+            statusBadge.getStyleClass().add("status-cancelled");
+        }
+        
+        clientInfo.getChildren().addAll(nameLabel, emailLabel, statusBadge);
+        
+        // Reservation details section
+        VBox details = new VBox();
+        details.getStyleClass().add("reservation-details");
+        
+        // Number of people
+        VBox personnesBox = new VBox();
+        Label personnesLabel = new Label("Nombre de personnes");
+        personnesLabel.getStyleClass().add("detail-label");
+        Label personnesValue = new Label(String.valueOf(res.getNombrePersonne()));
+        personnesValue.getStyleClass().add("detail-value");
+        personnesBox.getChildren().addAll(personnesLabel, personnesValue);
+        
+        // Departure date
+        VBox dateBox = new VBox();
+        Label dateLabel = new Label("Date de départ");
+        dateLabel.getStyleClass().add("detail-label");
+        
+        String dateValue = "Non définie";
+        if (res.getDateDepart() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            dateValue = res.getDateDepart().format(formatter);
+        }
+        Label dateValueLabel = new Label(dateValue);
+        dateValueLabel.getStyleClass().add("detail-value");
+        dateBox.getChildren().addAll(dateLabel, dateValueLabel);
+        
+        details.getChildren().addAll(personnesBox, dateBox);
+        
+        // Spacer to push actions to the right
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        
+        // Actions section
+        VBox actions = new VBox();
+        actions.getStyleClass().add("card-actions");
+        actions.setAlignment(Pos.CENTER);
+        
+        Button editButton = new Button("Modifier");
+        editButton.getStyleClass().addAll("button-action", "button-edit");
+        editButton.setOnAction(event -> handleEditReservation(res));
+        
+        Button deleteButton = new Button("Supprimer");
+        deleteButton.getStyleClass().addAll("button-action", "button-delete");
+        deleteButton.setOnAction(event -> handleDeleteReservation(res));
+        
+        actions.getChildren().addAll(editButton, deleteButton);
+        
+        // Add all sections to the card
+        card.getChildren().addAll(clientInfo, details, spacer, actions);
+        
+        return card;
     }
 
     @FXML
     private void openAddReservationForm() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/BackOffice/AddReservation.fxml"));
-            Scene scene = new Scene(loader.load());
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Ajouter une réservation");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-            // Recharger les réservations après ajout
-            loadReservations();
-        } catch (IOException e) {
-            showAlert("Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
+        if (backOfficeController != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/BackOffice/AddReservation.fxml"));
+                backOfficeController.loadContent(loader);
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "BackOfficeController n'est pas défini.");
         }
     }
 
     private void handleEditReservation(reservation res) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/BackOffice/AddReservation.fxml"));
-            Scene scene = new Scene(loader.load(), 600, 500);
-            AddReservationController controller = loader.getController();
-            controller.initData(res);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Modifier une réservation");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.showAndWait();
-            // Recharger les réservations après modification
-            loadReservations();
-        } catch (IOException e) {
-            showAlert("Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
+        if (backOfficeController != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/BackOffice/AddReservation.fxml"));
+                backOfficeController.loadContent(loader);
+                AddReservationController controller = loader.getController();
+                controller.initData(res);
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "BackOfficeController n'est pas défini.");
         }
     }
 
@@ -153,15 +204,16 @@ public class ManageReservationsController {
             try {
                 reservationService.delete(res.getId());
                 reservationsList.remove(res);
-                showAlert("Succès", "Réservation supprimée avec succès.");
+                loadReservations(); // Reload cards
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Réservation supprimée avec succès.");
             } catch (SQLException e) {
-                showAlert("Erreur", "Impossible de supprimer la réservation : " + e.getMessage());
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer la réservation : " + e.getMessage());
             }
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

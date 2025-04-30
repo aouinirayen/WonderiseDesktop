@@ -10,12 +10,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane prefWidth="450" prefHeight="600" stylesheets="@addOffre.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.AddOffreController">
+<BorderPane prefWidth="800" prefHeight="700" stylesheets="@addOffre.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.AddOffreController">
     <center>
-        <ScrollPane fitToWidth="true">
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
             <content>
-                <VBox styleClass="form-container">
+                <VBox styleClass="form-container" alignment="CENTER">
                     <Label styleClass="label-title" text="Ajouter une nouvelle offre" />
 
                     <!-- Titre -->
@@ -25,7 +27,7 @@
                             <Label styleClass="required-label" text="*" />
                             <Label text=" :" />
                         </HBox>
-                        <TextField fx:id="titreField" promptText="Entrez le titre" />
+                        <TextField fx:id="titreField" promptText="Entrez le titre de l'offre" />
                         <Label fx:id="titreError" styleClass="error-label" />
                     </VBox>
 
@@ -36,80 +38,84 @@
                             <Label styleClass="required-label" text="*" />
                             <Label text=" :" />
                         </HBox>
-                        <TextArea fx:id="descriptionField" promptText="Entrez la description" />
+                        <TextArea fx:id="descriptionField" promptText="Décrivez l'offre en détail" wrapText="true" />
                         <Label fx:id="descriptionError" styleClass="error-label" />
                     </VBox>
 
-                    <!-- Prix -->
-                    <VBox styleClass="field-container">
-                        <HBox styleClass="field-row">
-                            <Label text="Prix" />
-                            <Label styleClass="required-label" text="*" />
-                            <Label text=" :" />
-                        </HBox>
-                        <TextField fx:id="prixField" promptText="Entrez le prix (ex. 999.99)" />
-                        <Label fx:id="prixError" styleClass="error-label" />
-                    </VBox>
+                    <!-- Prix et Places en ligne -->
+                    <HBox spacing="20">
+                        <!-- Prix -->
+                        <VBox styleClass="field-container" HBox.hgrow="ALWAYS">
+                            <HBox styleClass="field-row">
+                                <Label text="Prix" />
+                                <Label styleClass="required-label" text="*" />
+                                <Label text=" :" />
+                            </HBox>
+                            <TextField fx:id="prixField" promptText="Entrez le prix (ex. 999.99)" />
+                            <Label fx:id="prixError" styleClass="error-label" />
+                        </VBox>
 
-                    <!-- Nombre de places -->
-                    <VBox styleClass="field-container">
-                        <HBox styleClass="field-row">
-                            <Label text="Nombre de places" />
-                            <Label styleClass="required-label" text="*" />
-                            <Label text=" :" />
-                        </HBox>
-                        <TextField fx:id="nombrePlacesField" promptText="Entrez le nombre de places" />
-                        <Label fx:id="nombrePlacesError" styleClass="error-label" />
-                    </VBox>
+                        <!-- Pays -->
+                        <VBox styleClass="field-container" HBox.hgrow="ALWAYS">
+                            <HBox styleClass="field-row">
+                                <Label text="Pays" />
+                                <Label styleClass="required-label" text="*" />
+                                <Label text=" :" />
+                            </HBox>
+                            <TextField fx:id="paysField" promptText="Entrez le pays de destination" />
+                            <Label fx:id="paysError" styleClass="error-label" />
+                        </VBox>
+                    </HBox>
 
-                    <!-- Places disponibles -->
-                    <VBox styleClass="field-container">
-                        <HBox styleClass="field-row">
-                            <Label text="Places disponibles" />
-                            <Label styleClass="required-label" text="*" />
-                            <Label text=" :" />
-                        </HBox>
-                        <TextField fx:id="placesDisponiblesField" promptText="Entrez les places disponibles" />
-                        <Label fx:id="placesDisponiblesError" styleClass="error-label" />
-                    </VBox>
+                    <!-- Places totales et disponibles en ligne -->
+                    <HBox spacing="20">
+                        <!-- Nombre de places -->
+                        <VBox styleClass="field-container" HBox.hgrow="ALWAYS">
+                            <HBox styleClass="field-row">
+                                <Label text="Nombre de places" />
+                                <Label styleClass="required-label" text="*" />
+                                <Label text=" :" />
+                            </HBox>
+                            <TextField fx:id="nombrePlacesField" promptText="Nombre total de places" />
+                            <Label fx:id="nombrePlacesError" styleClass="error-label" />
+                        </VBox>
 
-                    <!-- Pays -->
-                    <VBox styleClass="field-container">
-                        <HBox styleClass="field-row">
-                            <Label text="Pays" />
-                            <Label styleClass="required-label" text="*" />
-                            <Label text=" :" />
-                        </HBox>
-                        <TextField fx:id="paysField" promptText="Entrez le pays" />
-                        <Label fx:id="paysError" styleClass="error-label" />
-                    </VBox>
+                        <!-- Places disponibles -->
+                        <VBox styleClass="field-container" HBox.hgrow="ALWAYS">
+                            <HBox styleClass="field-row">
+                                <Label text="Places disponibles" />
+                                <Label styleClass="required-label" text="*" />
+                                <Label text=" :" />
+                            </HBox>
+                            <TextField fx:id="placesDisponiblesField" promptText="Nombre de places disponibles" />
+                            <Label fx:id="placesDisponiblesError" styleClass="error-label" />
+                        </VBox>
+                    </HBox>
 
-                    <!-- Rating -->
+                    <!-- Dates en ligne -->
+                    <HBox spacing="20">
+                        <!-- Date de début -->
+                        <VBox styleClass="field-container" HBox.hgrow="ALWAYS">
+                            <HBox styleClass="field-row">
+                                <Label text="Date de début" />
+                                <Label styleClass="required-label" text="*" />
+                                <Label text=" :" />
+                            </HBox>
+                            <DatePicker fx:id="dateDebutPicker" promptText="Sélectionnez la date de début" />
+                            <Label fx:id="dateDebutError" styleClass="error-label" />
+                        </VBox>
 
-
-
-
-                    <!-- Date de début -->
-                    <VBox styleClass="field-container">
-                        <HBox styleClass="field-row">
-                            <Label text="Date de début" />
-                            <Label styleClass="required-label" text="*" />
-                            <Label text=" :" />
-                        </HBox>
-                        <DatePicker fx:id="dateDebutPicker" promptText="Sélectionnez la date de début" />
-                        <Label fx:id="dateDebutError" styleClass="error-label" />
-                    </VBox>
-
-                    <!-- Date de fin -->
-                    <VBox styleClass="field-container">
-                        <HBox styleClass="field-row">
-                            <Label text="Date de fin" />
-                            <Label styleClass="required-label" text="*" />
-                            <Label text=" :" />
-                        </HBox>
-                        <DatePicker fx:id="dateFinPicker" promptText="Sélectionnez la date de fin" />
-                        <Label fx:id="dateFinError" styleClass="error-label" />
-                    </VBox>
+                        <!-- Date de fin -->
+                        <VBox styleClass="field-container" HBox.hgrow="ALWAYS">
+                            <HBox styleClass="field-row">
+                                <Label text="Date de fin" />
+                                <Label styleClass="required-label" text="*" />
+                                <Label text=" :" />
+                            </HBox>
+                            <DatePicker fx:id="dateFinPicker" promptText="Sélectionnez la date de fin" />
+                            <Label fx:id="dateFinError" styleClass="error-label" />
+                        </VBox>
+                    </HBox>
 
                     <!-- Image -->
                     <VBox styleClass="field-container">
@@ -118,17 +124,19 @@
                             <Label styleClass="required-label" text="*" />
                             <Label text=" :" />
                         </HBox>
-                        <HBox spacing="10">
-                            <TextField fx:id="imageField" promptText="Sélectionnez une image" editable="false" HBox.hgrow="ALWAYS" />
-                            <Button fx:id="selectImageButton" text="Parcourir" onAction="#handleImageSelection" />
+                        <HBox styleClass="image-button-container" spacing="10">
+                            <TextField fx:id="imageField" promptText="Aucune image sélectionnée" editable="false" HBox.hgrow="ALWAYS" />
+                            <Button fx:id="selectImageButton" text="Parcourir" onAction="#handleImageSelection" styleClass="button-browse" />
                         </HBox>
-                        <ImageView fx:id="imagePreview" fitWidth="200" fitHeight="150" preserveRatio="true" />
+                        <VBox styleClass="image-preview" alignment="CENTER">
+                            <ImageView fx:id="imagePreview" fitWidth="240" fitHeight="160" preserveRatio="true" />
+                        </VBox>
                         <Label fx:id="imageError" styleClass="error-label" />
                     </VBox>
 
                     <!-- Boutons -->
                     <HBox styleClass="button-container">
-                        <Button fx:id="addButton" styleClass="button-add" onAction="#handleAddOffre" text="Ajouter" />
+                        <Button fx:id="addButton" styleClass="button-add" onAction="#handleAddOffre" text="Ajouter l'offre" />
                         <Button fx:id="cancelButton" styleClass="button-cancel" onAction="#handleCancel" text="Annuler" />
                     </HBox>
                 </VBox>
