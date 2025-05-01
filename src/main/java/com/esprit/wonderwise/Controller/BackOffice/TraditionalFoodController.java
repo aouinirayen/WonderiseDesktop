@@ -32,6 +32,9 @@ public class TraditionalFoodController {
     @FXML private ComboBox<Country> countryComboBox;
     @FXML private Label nameLabel, descLabel, recipeLabel;
     @FXML private ImageView detailImageView;
+    // Advanced search fields
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> countryCombo;
 
     private TraditionalFoodService foodService = new TraditionalFoodService();
     private CountryService countryService = new CountryService();
@@ -41,7 +44,8 @@ public class TraditionalFoodController {
     @FXML
     public void initialize() {
         if (foodCards != null) {
-            loadFoods();
+            setupAdvancedSearch();
+            loadFoods(foodService.readAll());
         }
         if (countryComboBox != null) {
             loadCountries();
@@ -55,6 +59,136 @@ public class TraditionalFoodController {
             recipeField.textProperty().addListener((obs, oldVal, newVal) -> {
                 if (newVal.length() > 2000) recipeField.setText(oldVal);
             });
+        }
+    }
+
+    private void setupAdvancedSearch() {
+        if (searchField == null || countryCombo == null) return;
+        // Populate countryCombo
+        countryCombo.getItems().clear();
+        countryCombo.getItems().add("All");
+        for (Country c : countryService.readAll()) {
+            countryCombo.getItems().add(c.getName());
+        }
+        countryCombo.getSelectionModel().selectFirst();
+
+        // Add listeners for live search
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+        countryCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+    }
+
+    private void applyAdvancedSearch() {
+        if (searchField == null || countryCombo == null) return;
+        String keyword = searchField.getText() != null ? searchField.getText().toLowerCase().trim() : "";
+        String selectedCountry = countryCombo.getValue();
+        List<TraditionalFood> allFoods = foodService.readAll();
+        List<TraditionalFood> filtered = allFoods.stream().filter(food -> {
+            boolean matchesKeyword = keyword.isEmpty() ||
+                    (food.getName() != null && food.getName().toLowerCase().contains(keyword)) ||
+                    (food.getDescription() != null && food.getDescription().toLowerCase().contains(keyword));
+            boolean matchesCountry = selectedCountry == null || selectedCountry.equals("All");
+            if (!matchesCountry) {
+                Country country = countryService.getById(food.getCountryId());
+                matchesCountry = country != null && selectedCountry.equals(country.getName());
+            }
+            return matchesKeyword && matchesCountry;
+        }).toList();
+        loadFoods(filtered);
+    }
+
+    private void loadFoods(List<TraditionalFood> foods) {
+        foodCards.getChildren().clear();
+        if (foods == null || foods.isEmpty()) {
+            VBox indicator = new VBox(16);
+            indicator.setAlignment(Pos.CENTER);
+            indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+
+            ImageView icon = new ImageView();
+            try {
+                Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                icon.setImage(emptyIcon);
+            } catch (Exception e) {
+                // fallback: no icon
+            }
+            icon.setFitWidth(90);
+            icon.setFitHeight(90);
+            icon.setPreserveRatio(true);
+            icon.setSmooth(true);
+
+            Label mainText = new Label("No foods found");
+            mainText.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+            Label subText = new Label("Try adjusting your search or add a new food.");
+            subText.setStyle("-fx-font-size: 14px; -fx-text-fill: #7f8c8d;");
+
+            indicator.getChildren().addAll(icon, mainText, subText);
+            foodCards.getChildren().add(indicator);
+            return;
+        }
+        for (TraditionalFood food : foods) {
+            VBox card = new VBox(15);
+            card.getStyleClass().add("country-card");
+            card.setPrefWidth(250);
+            card.setPrefHeight(300);
+            card.setAlignment(Pos.CENTER);
+
+            ImageView imageView = new ImageView();
+            File imageFile = new File(IMAGE_DESTINATION_DIR + food.getImg());
+            if (imageFile.exists()) {
+                Image image = new Image(imageFile.toURI().toString(), 200, 150, true, true);
+                imageView.setImage(image);
+            } else {
+                Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 200, 150, true, true);
+                imageView.setImage(fallback);
+            }
+            imageView.setFitWidth(200);
+            imageView.setFitHeight(150);
+            imageView.getStyleClass().add("rounded-image");
+
+            Label name = new Label(food.getName());
+            name.setStyle("-fx-font-size: 18px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
+
+            Country country = countryService.getById(food.getCountryId());
+            String countryName = (country != null) ? country.getName() : "Unknown Country";
+            Label snippet = new Label("Country: " + countryName);
+            snippet.setStyle("-fx-font-size: 12px; -fx-text-fill: #7F8C8D;");
+
+            HBox buttons = new HBox(10);
+            buttons.setAlignment(Pos.CENTER);
+            Button detailsBtn = new Button("Details");
+            Button editBtn = new Button("Edit");
+            Button deleteBtn = new Button("Delete");
+
+            detailsBtn.getStyleClass().add("action-button");
+            editBtn.getStyleClass().add("action-button");
+            deleteBtn.getStyleClass().addAll("action-button", "delete-button");
+
+            detailsBtn.setOnAction(e -> {
+                try {
+                    showDetails(food);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+            editBtn.setOnAction(e -> {
+                try {
+                    showEditFood(food);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+            deleteBtn.setOnAction(e -> {
+                try {
+                    deleteFood(food.getId());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+            buttons.getChildren().addAll(detailsBtn, editBtn, deleteBtn);
+            card.getChildren().addAll(imageView, name, snippet, buttons);
+            foodCards.getChildren().add(card);
         }
     }
 
@@ -207,7 +341,16 @@ public class TraditionalFoodController {
         if (!sourceFile.exists()) return "";
         String fileName = sourceFile.getName();
         File destFile = new File(IMAGE_DESTINATION_DIR + fileName);
-        Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        try {
+            // First copy the image
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            // Apply watermark
+            com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
+        } catch (Exception e) {
+            // If watermarking fails, fallback to normal copy
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.err.println("Failed to apply watermark: " + e.getMessage());
+        }
         return fileName;
     }
 

@@ -5,10 +5,6 @@ import com.esprit.wonderwise.Model.Country;
 import com.esprit.wonderwise.Service.CelebrityService;
 import com.esprit.wonderwise.Service.CountryService;
 import com.esprit.wonderwise.Utils.DialogUtils;
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamResolution;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -23,8 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,25 +26,82 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.util.UUID;
+
+
 public class CelebrityController {
-    @FXML private FlowPane celebrityCards;
-    @FXML private TextField nameField, workField, imgPathField, descField, jobField, nationalityField, notableWorksField, personalLifeField, netWorthField;
-    @FXML private DatePicker dobPicker;
-    @FXML private ComboBox<Country> countryComboBox;
-    @FXML private Label nameLabel, workLabel, descLabel, jobLabel, dobLabel, nationalityLabel, notableWorksLabel, personalLifeLabel, netWorthLabel;
-    @FXML private ImageView detailImageView;
+    @FXML
+    private FlowPane celebrityCards;
+    @FXML
+    private TextField nameField, workField, imgPathField, descField, jobField, nationalityField, notableWorksField, personalLifeField, netWorthField;
+    @FXML
+    private ImageView webcamPreview;
+    @FXML
+    private DatePicker dobPicker;
+    @FXML
+    private ComboBox<Country> countryComboBox;
+    @FXML
+    private Label nameLabel, workLabel, descLabel, jobLabel, dobLabel, nationalityLabel, notableWorksLabel, personalLifeLabel, netWorthLabel;
+    @FXML
+    private ImageView detailImageView;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private ComboBox<String> jobCombo, countryCombo;
+
+
+
 
     private CelebrityService celebrityService = new CelebrityService();
     private CountryService countryService = new CountryService();
     private Celebrity selectedCelebrity;
     private static final String IMAGE_DESTINATION_DIR = "C:\\xampp\\htdocs\\pidev3\\";
+    private Webcam webcam = null;
+
+
+    @FXML
+    public void handleWebcamCapture() {
+        new Thread(() -> {
+            try {
+                if (webcam == null) {
+                    webcam = Webcam.getDefault();
+                    webcam.setViewSize(WebcamResolution.QVGA.getSize());
+                }
+                webcam.open();
+                BufferedImage grabbedImage = webcam.getImage();
+                if (grabbedImage != null) {
+                    // Save captured image to disk
+                    String filename = "celebrity_" + UUID.randomUUID() + ".png";
+                    File outputFile = new File(IMAGE_DESTINATION_DIR + filename);
+                    ImageIO.write(grabbedImage, "PNG", outputFile);
+                    // Update imgPathField and preview in JavaFX thread
+                    Platform.runLater(() -> {
+                        imgPathField.setText(IMAGE_DESTINATION_DIR + filename);
+                        webcamPreview.setImage(SwingFXUtils.toFXImage(grabbedImage, null));
+                        webcamPreview.setVisible(true);
+                        webcamPreview.setManaged(true);
+                    });
+                }
+                webcam.close();
+            } catch (Exception e) {
+                Platform.runLater(() -> DialogUtils.showCustomDialog("Webcam Error", "Failed to capture image: " + e.getMessage(), false, getCurrentStage()));
+            }
+        }).start();
+    }
 
     @FXML
     public void initialize() {
         if (celebrityCards != null) {
+            // Advanced search setup
+            setupAdvancedSearch();
             loadCelebrities();
         }
         if (countryComboBox != null) {
@@ -58,9 +109,86 @@ public class CelebrityController {
         }
     }
 
+    private void setupAdvancedSearch() {
+        if (searchField == null || jobCombo == null || countryCombo == null) return;
+        // Populate jobCombo
+        List<Celebrity> allCelebrities = celebrityService.readAll();
+        jobCombo.getItems().clear();
+        jobCombo.getItems().add("All");
+        allCelebrities.stream().map(Celebrity::getJob).distinct().forEach(job -> {
+            if (job != null && !job.trim().isEmpty()) jobCombo.getItems().add(job);
+        });
+        jobCombo.getSelectionModel().selectFirst();
+        // Populate countryCombo
+        countryCombo.getItems().clear();
+        countryCombo.getItems().add("All");
+        List<Country> countries = countryService.readAll();
+        for (Country c : countries) {
+            countryCombo.getItems().add(c.getName());
+        }
+        countryCombo.getSelectionModel().selectFirst();
+        // Listeners
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+        jobCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+        countryCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+    }
+
+    private void applyAdvancedSearch() {
+        if (celebrityCards == null || searchField == null || jobCombo == null || countryCombo == null) return;
+        String keyword = searchField.getText() != null ? searchField.getText().toLowerCase().trim() : "";
+        String selectedJob = jobCombo.getValue();
+        String selectedCountry = countryCombo.getValue();
+        List<Celebrity> allCelebrities = celebrityService.readAll();
+        List<Celebrity> filtered = allCelebrities.stream().filter(c -> {
+            boolean matchesKeyword = keyword.isEmpty() ||
+                    (c.getName() != null && c.getName().toLowerCase().contains(keyword)) ||
+                    (c.getWork() != null && c.getWork().toLowerCase().contains(keyword)) ||
+                    (c.getDescription() != null && c.getDescription().toLowerCase().contains(keyword));
+            boolean matchesJob = selectedJob == null || selectedJob.equals("All") || (c.getJob() != null && c.getJob().equals(selectedJob));
+            String countryName = "";
+            Country country = countryService.getById(c.getCountryId());
+            if (country != null) countryName = country.getName();
+            boolean matchesCountry = selectedCountry == null || selectedCountry.equals("All") || countryName.equals(selectedCountry);
+            return matchesKeyword && matchesJob && matchesCountry;
+        }).toList();
+        loadCelebrities(filtered);
+    }
+
     private void loadCelebrities() {
+        loadCelebrities(celebrityService.readAll());
+    }
+
+    private void loadCelebrities(List<Celebrity> celebrities) {
         celebrityCards.getChildren().clear();
-        List<Celebrity> celebrities = celebrityService.readAll();
+        if (celebrities == null || celebrities.isEmpty()) {
+            VBox indicator = new VBox(16);
+            indicator.setAlignment(Pos.CENTER);
+            indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+
+            ImageView icon = new ImageView();
+            try {
+                Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                icon.setImage(emptyIcon);
+                icon.setFitWidth(90);
+                icon.setFitHeight(90);
+                icon.setPreserveRatio(true);
+                icon.setSmooth(true);
+            } catch (Exception e) {
+                // fallback: no icon
+            }
+            icon.setFitWidth(90);
+            icon.setFitHeight(90);
+            icon.setPreserveRatio(true);
+
+            Label mainText = new Label("No celebrities found");
+            mainText.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+            Label subText = new Label("Try adjusting your search or add a new celebrity.");
+            subText.setStyle("-fx-font-size: 14px; -fx-text-fill: #7f8c8d;");
+
+            indicator.getChildren().addAll(icon, mainText, subText);
+            celebrityCards.getChildren().add(indicator);
+            return;
+        }
         for (Celebrity celebrity : celebrities) {
             VBox card = new VBox(15);
             card.getStyleClass().add("country-card");
@@ -217,7 +345,26 @@ public class CelebrityController {
         if (!sourceFile.exists()) return "";
         String fileName = sourceFile.getName();
         File destFile = new File(IMAGE_DESTINATION_DIR + fileName);
-        Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+// If sourcePath is already in IMAGE_DESTINATION_DIR, skip copy
+        if (sourceFile.getAbsolutePath().equals(destFile.getAbsolutePath())) {
+            // Optionally, apply watermark here if needed
+            try {
+                com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
+            } catch (Exception e) {
+                System.err.println("Failed to apply watermark: " + e.getMessage());
+            }
+            return fileName;
+        }
+        try {
+            // First copy the image
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            // Apply watermark
+            com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
+        } catch (Exception e) {
+            // If watermarking fails, fallback to normal copy
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.err.println("Failed to apply watermark: " + e.getMessage());
+        }
         return fileName;
     }
 
@@ -344,40 +491,4 @@ public class CelebrityController {
                 nameField != null ? nameField.getScene().getWindow() :
                         nameLabel.getScene().getWindow());
     }
-
-
-    private Webcam webcam = null;
-    @FXML private ImageView webcamPreview;
-
-    @FXML
-    public void handleWebcamCapture() {
-        new Thread(() -> {
-            try {
-                if (webcam == null) {
-                    webcam = Webcam.getDefault();
-                    webcam.setViewSize(WebcamResolution.QVGA.getSize());
-                }
-                webcam.open();
-                BufferedImage grabbedImage = webcam.getImage();
-                if (grabbedImage != null) {
-                    // Save captured image to disk
-                    String filename = "celebrity_" + UUID.randomUUID() + ".png";
-                    File outputFile = new File(IMAGE_DESTINATION_DIR + filename);
-                    ImageIO.write(grabbedImage, "PNG", outputFile);
-
-                    // Update imgPathField and preview in JavaFX thread
-                    Platform.runLater(() -> {
-                        imgPathField.setText(IMAGE_DESTINATION_DIR  + filename);
-                        webcamPreview.setImage(SwingFXUtils.toFXImage(grabbedImage, null));
-                        webcamPreview.setVisible(true);
-                        webcamPreview.setManaged(true);
-                    });
-                }
-                webcam.close();
-            } catch (Exception e) {
-                Platform.runLater(() -> DialogUtils.showCustomDialog("Webcam Error", "Failed to capture image: " + e.getMessage(), false, getCurrentStage()));
-            }
-        }).start();
-    }
-
 }

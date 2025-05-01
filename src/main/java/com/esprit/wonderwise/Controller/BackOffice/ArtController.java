@@ -32,6 +32,14 @@ public class ArtController {
     @FXML private ComboBox<Country> countryComboBox;
     @FXML private Label nameLabel, descLabel, dateLabel, typeLabel;
     @FXML private ImageView detailImageView;
+    // Advanced search controls
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> typeCombo;
+    @FXML private ComboBox<String> countryCombo;
+
+    private List<Art> allArts = null;
+    private List<Art> filteredArts = null;
+    private List<Country> allCountries = null;
 
     private ArtService artService = new ArtService();
     private CountryService countryService = new CountryService();
@@ -42,7 +50,37 @@ public class ArtController {
     public void initialize() {
         System.out.println("Initializing ArtController...");
         if (artCards != null) {
-            System.out.println("Art list view detected, loading arts...");
+            // Load all arts and countries only once
+            allArts = artService.readAll();
+            filteredArts = allArts;
+            allCountries = countryService.readAll();
+
+            // Populate typeCombo with 'All' + distinct types
+            List<String> typeOptions = new java.util.ArrayList<>();
+            typeOptions.add("All");
+            typeOptions.addAll(allArts.stream().map(Art::getType).filter(s -> s != null && !s.isEmpty()).distinct().sorted().toList());
+            if (typeCombo != null) {
+                typeCombo.getItems().setAll(typeOptions);
+                typeCombo.getSelectionModel().selectFirst();
+            }
+
+            // Populate countryCombo with 'All' + country names
+            List<String> countryOptions = new java.util.ArrayList<>();
+            countryOptions.add("All");
+            countryOptions.addAll(allCountries.stream().map(Country::getName).distinct().sorted().toList());
+            if (countryCombo != null) {
+                countryCombo.getItems().setAll(countryOptions);
+                countryCombo.getSelectionModel().selectFirst();
+            }
+
+            // Add listeners for live search/filter
+            if (searchField != null)
+                searchField.textProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+            if (typeCombo != null)
+                typeCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+            if (countryCombo != null)
+                countryCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+
             loadArts();
         }
         // Load countries regardless of the view (list, add, or edit)
@@ -58,10 +96,54 @@ public class ArtController {
         }
     }
 
+    private void applyAdvancedSearch() {
+        String keyword = (searchField != null && searchField.getText() != null) ? searchField.getText().trim().toLowerCase() : "";
+        String type = (typeCombo != null) ? typeCombo.getValue() : null;
+        String country = (countryCombo != null) ? countryCombo.getValue() : null;
+        filteredArts = allArts.stream()
+                .filter(a -> (keyword.isEmpty() || (a.getName() != null && a.getName().toLowerCase().contains(keyword)) || (a.getDescription() != null && a.getDescription().toLowerCase().contains(keyword))))
+                .filter(a -> (type == null || type.equals("All") || type.isEmpty() || (a.getType() != null && a.getType().equals(type))))
+                .filter(a -> (country == null || country.equals("All") || country.isEmpty() || (getCountryNameById(a.getCountryId()).equals(country))))
+                .toList();
+        loadArts();
+    }
+
+    private String getCountryNameById(int countryId) {
+        if (allCountries == null) return "";
+        return allCountries.stream().filter(c -> c.getId() == countryId).map(Country::getName).findFirst().orElse("");
+    }
+
     private void loadArts() {
         artCards.getChildren().clear();
-        List<Art> arts = artService.readAll();
+        List<Art> arts = (filteredArts != null) ? filteredArts : artService.readAll();
         System.out.println("Number of arts loaded: " + arts.size());
+
+        if (arts == null || arts.isEmpty()) {
+            VBox indicator = new VBox(16);
+            indicator.setAlignment(Pos.CENTER);
+            indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+
+            ImageView icon = new ImageView();
+            try {
+                Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                icon.setImage(emptyIcon);
+            } catch (Exception e) {
+                // fallback: no icon
+            }
+            icon.setFitWidth(90);
+            icon.setFitHeight(90);
+            icon.setPreserveRatio(true);
+            icon.setSmooth(true);
+
+            Label mainText = new Label("No arts found");
+            mainText.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+            Label subText = new Label("Try adjusting your search or add a new art.");
+            subText.setStyle("-fx-font-size: 14px; -fx-text-fill: #7f8c8d;");
+
+            indicator.getChildren().addAll(icon, mainText, subText);
+            artCards.getChildren().add(indicator);
+            return;
+        }
 
         for (Art art : arts) {
             VBox card = new VBox(15);
@@ -220,7 +302,16 @@ public class ArtController {
         if (!sourceFile.exists()) return "";
         String fileName = sourceFile.getName();
         File destFile = new File(IMAGE_DESTINATION_DIR + fileName);
-        Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        try {
+            // First copy the image
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            // Apply watermark
+            com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
+        } catch (Exception e) {
+            // If watermarking fails, fallback to normal copy
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.err.println("Failed to apply watermark: " + e.getMessage());
+        }
         return fileName;
     }
 

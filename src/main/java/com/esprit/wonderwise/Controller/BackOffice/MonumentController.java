@@ -32,6 +32,9 @@ public class MonumentController {
     @FXML private ComboBox<Country> countryComboBox;
     @FXML private Label nameLabel, descLabel;
     @FXML private ImageView detailImageView;
+    // Advanced search fields
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> countryCombo;
 
     private MonumentService monumentService = new MonumentService();
     private CountryService countryService = new CountryService();
@@ -40,15 +43,12 @@ public class MonumentController {
 
     @FXML
     public void initialize() {
-        System.out.println("Initializing MonumentController...");
         if (monumentCards != null) {
-            System.out.println("Monument list view detected, loading monuments...");
-            loadMonuments();
+            setupAdvancedSearch();
+            loadMonuments(monumentService.readAll());
         }
         if (countryComboBox != null) {
             loadCountries();
-        } else {
-            System.out.println("countryComboBox is null in this view.");
         }
         if (descField != null) {
             descField.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -57,11 +57,65 @@ public class MonumentController {
         }
     }
 
-    private void loadMonuments() {
-        monumentCards.getChildren().clear();
-        List<Monument> monuments = monumentService.readAll();
-        System.out.println("Number of monuments loaded: " + monuments.size());
+    private void setupAdvancedSearch() {
+        if (searchField == null || countryCombo == null) return;
+        countryCombo.getItems().clear();
+        countryCombo.getItems().add("All");
+        for (Country c : countryService.readAll()) {
+            countryCombo.getItems().add(c.getName());
+        }
+        countryCombo.getSelectionModel().selectFirst();
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+        countryCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+    }
 
+    private void applyAdvancedSearch() {
+        if (searchField == null || countryCombo == null) return;
+        String keyword = searchField.getText() != null ? searchField.getText().toLowerCase().trim() : "";
+        String selectedCountry = countryCombo.getValue();
+        List<Monument> allMonuments = monumentService.readAll();
+        List<Monument> filtered = allMonuments.stream().filter(monument -> {
+            boolean matchesKeyword = keyword.isEmpty() ||
+                    (monument.getName() != null && monument.getName().toLowerCase().contains(keyword)) ||
+                    (monument.getDescription() != null && monument.getDescription().toLowerCase().contains(keyword));
+            boolean matchesCountry = selectedCountry == null || selectedCountry.equals("All");
+            if (!matchesCountry) {
+                Country country = countryService.getById(monument.getCountryId());
+                matchesCountry = country != null && selectedCountry.equals(country.getName());
+            }
+            return matchesKeyword && matchesCountry;
+        }).toList();
+        loadMonuments(filtered);
+    }
+
+    private void loadMonuments(List<Monument> monuments) {
+        monumentCards.getChildren().clear();
+        if (monuments == null || monuments.isEmpty()) {
+            VBox indicator = new VBox(16);
+            indicator.setAlignment(Pos.CENTER);
+            indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+
+            ImageView icon = new ImageView();
+            try {
+                Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                icon.setImage(emptyIcon);
+            } catch (Exception e) {
+                // fallback: no icon
+            }
+            icon.setFitWidth(90);
+            icon.setFitHeight(90);
+            icon.setPreserveRatio(true);
+            icon.setSmooth(true);
+
+            Label mainText = new Label("No monuments found");
+            mainText.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+            Label subText = new Label("Try adjusting your search or add a new monument.");
+            subText.setStyle("-fx-font-size: 14px; -fx-text-fill: #7f8c8d;");
+
+            indicator.getChildren().addAll(icon, mainText, subText);
+            monumentCards.getChildren().add(indicator);
+            return;
+        }
         for (Monument monument : monuments) {
             VBox card = new VBox(15);
             card.getStyleClass().add("country-card");
@@ -217,7 +271,16 @@ public class MonumentController {
         if (!sourceFile.exists()) return "";
         String fileName = sourceFile.getName();
         File destFile = new File(IMAGE_DESTINATION_DIR + fileName);
-        Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        try {
+            // First copy the image
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            // Apply watermark
+            com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
+        } catch (Exception e) {
+            // If watermarking fails, fallback to normal copy
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.err.println("Failed to apply watermark: " + e.getMessage());
+        }
         return fileName;
     }
 
