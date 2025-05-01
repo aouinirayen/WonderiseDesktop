@@ -33,13 +33,21 @@
 .bar-chart .chart-bar {
     -fx-bar-fill: #64b5f6;
 }
+/* Titre du graphique avec dégradé de fond */
 .chart .chart-title {
-    -fx-font-size: 20px;
+    -fx-font-size: 25px;
     -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #ff7f50, #1e90ff); /* Dégradé de fond */
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #ff7f50, #ff6347, #1e90ff); /* Dégradé vibrant de couleurs */
+    -fx-text-fill: white; /* Texte en blanc pour contraster avec le dégradé */
     -fx-padding: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 0); /* Ombre légère pour ajouter de la profondeur */
 }
 
+
+/* Pour rendre "Type" et "Occurrences" en gras */
+.chart .axis-label {
+    -fx-font-weight: bold;
+}
 
 .primary-button {
     -fx-background-color: #2196f3;
@@ -63,7 +71,7 @@
     -fx-translate-y: 300;
 }
 #totalButton {
-    -fx-background-color: #4CAF50; /* Vert */
+    -fx-background-color: #2E2E2E;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 10;

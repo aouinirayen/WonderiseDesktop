@@ -14,23 +14,17 @@
     <VBox spacing="20" alignment="TOP_CENTER">
         <HBox spacing="30" alignment="CENTER">
             <VBox alignment="CENTER">
-                <Label fx:id="totalLabel" text="Total"/>
-                <Button fx:id="totalButton" text="Total"/>
+                <Label fx:id="totalLabel" text="Total" />
+                <Button fx:id="totalButton" text="Total" />
             </VBox>
             <VBox alignment="CENTER">
-                <Label fx:id="frequentLabel" text="Fréquent"/>
-                <Button fx:id="frequentButton" text="Fréquent"/>
+                <Label fx:id="frequentLabel" text="Fréquent" />
+                <Button fx:id="frequentButton" text="Fréquent" />
             </VBox>
         </HBox>
 
-
-
         <!-- Chart Section -->
         <VBox spacing="15" alignment="CENTER" styleClass="chart-card">
-
-            <!-- Le Label manuel est optionnel maintenant -->
-            <!--<Label text="📊 Réclamations les plus fréquentes"
-                   styleClass="title-label special-title"/>-->
 
             <BarChart fx:id="barChart"
                       title="📊 Réclamations les plus fréquentes"
@@ -38,10 +32,10 @@
                       prefHeight="400" prefWidth="700"
                       legendVisible="false">
                 <xAxis>
-                    <CategoryAxis label="Type"/>
+                    <CategoryAxis fx:id="categoryAxis" label="Type" />
                 </xAxis>
                 <yAxis>
-                    <NumberAxis label="Occurrences"/>
+                    <NumberAxis fx:id="numberAxis" label="Occurrences" />
                 </yAxis>
             </BarChart>
 
@@ -49,12 +43,10 @@
             <HBox spacing="20" alignment="CENTER">
                 <Button text="✓ Supprimer la plus fréquente"
                         onAction="#handleDeleteMostFrequent"
-                        styleClass="primary-button"/>
+                        styleClass="primary-button" />
                 <Button text="← Retour"
                         fx:id="backButton"
-                        onAction="#handleBack"/>
-
-
+                        onAction="#handleBack" />
             </HBox>
         </VBox>
     </VBox>

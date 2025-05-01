@@ -33,6 +33,7 @@ public class ReclamationStatsController {
     @FXML
     public void initialize() {
         loadChartData();
+        applyFadeInEffect();
     }
 
     private void loadChartData() {
@@ -59,14 +60,23 @@ public class ReclamationStatsController {
         updateMetrics(total, frequentType);
     }
 
+    private void applyFadeInEffect() {
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(500), rootPane);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.play();
+    }
+
     private void animateChart() {
         for (XYChart.Series<String, Number> series : barChart.getData()) {
+            int delay = 0;
             for (XYChart.Data<String, Number> data : series.getData()) {
                 data.getNode().setScaleY(0);
                 ScaleTransition st = new ScaleTransition(Duration.millis(600), data.getNode());
-
                 st.setToY(1);
+                st.setDelay(Duration.millis(delay));  // Delay each bar's animation
                 st.play();
+                delay += 100;  // Increase delay for the next bar
             }
         }
     }
@@ -74,7 +84,6 @@ public class ReclamationStatsController {
     private void updateMetrics(int total, String frequentType) {
         totalLabel.setText("Total: " + total);
         frequentLabel.setText("Fréquent: " + (frequentType.isEmpty() ? "Aucune" : frequentType));
-
     }
 
     @FXML
