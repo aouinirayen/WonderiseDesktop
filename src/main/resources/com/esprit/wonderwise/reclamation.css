@@ -78,3 +78,10 @@
     -fx-padding: 8 16;
 }
 
+#backButton {
+    -fx-background-color: #f44336; /* Rouge vif */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 8 16;
+}

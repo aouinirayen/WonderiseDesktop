@@ -51,8 +51,9 @@
                         onAction="#handleDeleteMostFrequent"
                         styleClass="primary-button"/>
                 <Button text="← Retour"
-                         fx:id="backButton"
-                         onAction="#handleBack"/>
+                        fx:id="backButton"
+                        onAction="#handleBack"/>
+
 
             </HBox>
         </VBox>
