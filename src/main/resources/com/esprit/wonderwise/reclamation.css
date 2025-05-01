@@ -1,122 +1,56 @@
-/* === Main Styles === */
 .root {
+    -fx-font-family: 'Segoe UI', sans-serif;
     -fx-background-color: #f9f9f9;
 }
 
-.stats-title {
-    -fx-font-size: 36px;
-    -fx-font-weight: 800;
-    -fx-text-fill: linear-gradient(to right, #2C3E50, #4CA1AF);
-    -fx-padding: 25px 0 15px 0;
-    -fx-font-family: "Montserrat", "Segoe UI", sans-serif;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 0, 2, 2, 0);
+.metric-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 4);
+    -fx-font-size: 16px;
 }
 
-.chart-container {
-    -fx-background-color: #FFFFFF;
-    -fx-padding: 20px;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+.chart-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);
 }
 
-/* === Chart Styles === */
-.bar-chart {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
-}
-
-.chart-plot-background {
-    -fx-background-color: transparent;
-}
-
-.chart-vertical-grid-lines,
-.chart-horizontal-grid-lines {
-    -fx-stroke: #e0e0e0;
-}
-
-.chart-bar {
-    -fx-bar-fill: #4CA1AF;
-    -fx-background-radius: 3 3 0 0;
-}
-
-.chart-bar:hover {
-    -fx-bar-fill: #2C3E50;
-}
-
-/* === Axis Styles === */
-.axis {
-    -fx-tick-label-fill: #7f8c8d;
-    -fx-font-family: "Segoe UI", sans-serif;
-    -fx-font-size: 12px;
-}
-
-.axis-label {
-    -fx-text-fill: #2c3e50;
-    -fx-font-size: 13px;
+.title-label {
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
-/* === Button Container === */
-.button-container {
-    -fx-alignment: center;
-    -fx-spacing: 15px;
-    -fx-padding: 20px 0;
+.special-title {
+    -fx-text-fill: linear-gradient(to right, #2196f3, #21cbf3);
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
 }
 
-/* === Base Button Style === */
-.action-button {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-padding: 12px 30px;
-    -fx-background-radius: 6px;
-    -fx-cursor: hand;
-    -fx-font-family: "Segoe UI", sans-serif;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1);
+.bar-chart .chart-bar {
+    -fx-bar-fill: #64b5f6;
+}
+
+.primary-button {
+    -fx-background-color: #2196f3;
     -fx-text-fill: white;
-    -fx-transition: all 0.3s ease;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
 }
 
-.action-button:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
-    -fx-translate-y: -2px;
+.secondary-button {
+    -fx-background-color: #9e9e9e;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
 }
 
-/* === Green Delete Button === */
-.button-delete-green {
-    -fx-background-color: #2ecc71; /* Vibrant green */
-    -fx-effect: dropshadow(gaussian, rgba(46, 204, 113, 0.4), 6, 0, 0, 3);
-}
-
-.button-delete-green:hover {
-    -fx-background-color: #27ae60; /* Darker green */
-    -fx-effect: dropshadow(gaussian, rgba(39, 174, 96, 0.6), 8, 0, 0, 4);
-}
-
-/* === Purple Back Button === */
-.button-back-purple {
-    -fx-background-color: #9b59b6; /* Soft purple */
-    -fx-effect: dropshadow(gaussian, rgba(155, 89, 182, 0.4), 6, 0, 0, 3);
-}
-
-.button-back-purple:hover {
-    -fx-background-color: #8e44ad; /* Darker purple */
-    -fx-effect: dropshadow(gaussian, rgba(142, 68, 173, 0.6), 8, 0, 0, 4);
-}
-
-/* === Animation Effects === */
-.action-button:pressed {
-    -fx-scale-x: 0.98;
-    -fx-scale-y: 0.98;
-}
-
-/* === Highlight Styles === */
-.highest-bar {
-    -fx-bar-fill: #e74c3c;
-}
-
-.lowest-bar {
-    -fx-bar-fill: #7f8c8d;
+.snackbar {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-translate-y: 300;
 }

@@ -1,49 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.wonderwise.Controller.BackOffice.ReclamationStatsController"
-            stylesheets="@../reclamation.css"
-            prefHeight="740.0" prefWidth="1070.0">
+<StackPane fx:id="rootPane"
+           xmlns="http://javafx.com/javafx/8"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.esprit.wonderwise.Controller.BackOffice.ReclamationStatsController"
+           stylesheets="@../reclamation.css"
+           prefHeight="750.0" prefWidth="1100.0">
 
-    <center>
-        <VBox alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
-            <Label text="📊 Réclamations les plus fréquentes"
-                   styleClass="stats-title" />
+    <VBox spacing="20" alignment="TOP_CENTER">
+        <!-- Metrics -->
+        <HBox spacing="30" alignment="CENTER">
+            <Label fx:id="totalLabel" styleClass="metric-card"/>
+            <Label fx:id="frequentLabel" styleClass="metric-card"/>
+            <Label fx:id="updatedLabel" styleClass="metric-card"/>
+        </HBox>
 
-            <VBox styleClass="chart-container" alignment="CENTER" spacing="25">
-                <BarChart fx:id="barChart"
-                          title=""
-                          styleClass="bar-chart"
-                          prefHeight="500.0" prefWidth="800.0"
-                          legendVisible="false">
-                    <xAxis>
-                        <CategoryAxis fx:id="xAxis" label="Types de réclamations" />
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis fx:id="yAxis" label="Nombre d'occurrences" upperBound="100" tickUnit="20" />
-                    </yAxis>
-                </BarChart>
+        <!-- Chart Section -->
+        <VBox spacing="15" alignment="CENTER" styleClass="chart-card">
+            <Label text="📊 Réclamations les plus fréquentes" styleClass="title-label special-title"/>
+            <BarChart fx:id="barChart" categoryGap="30" barGap="10"
+                      prefHeight="400" prefWidth="700" legendVisible="false">
+                <xAxis><CategoryAxis label="Type"/></xAxis>
+                <yAxis><NumberAxis label="Occurrences"/></yAxis>
+            </BarChart>
 
-                <HBox styleClass="button-container" spacing="20" alignment="CENTER">
-                    <Button text="✓ Supprimer la plus fréquente"
-                            onAction="#handleDeleteMostFrequent"
-                            styleClass="action-button button-delete-green" />
-
-                    <Button text="← Retour"
-                            onAction="#handleBack"
-                            styleClass="action-button button-back-purple" />
-                </HBox>
-            </VBox>
+            <!-- Buttons -->
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="✓ Supprimer la plus fréquente" onAction="#handleDeleteMostFrequent" styleClass="primary-button"/>
+                <Button text="← Retour" onAction="#handleBack" styleClass="secondary-button"/>
+            </HBox>
         </VBox>
-    </center>
-</BorderPane>
+    </VBox>
+</StackPane>

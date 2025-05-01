@@ -7,11 +7,11 @@ import com.esprit.wonderwise.Model.Status;
 public class ReclamationWorkflowValidator {
 
     public static void validateTransition(Status current, Status newStatus) {
-        if (current == newStatus) return; // Pas de changement
+        if (current == newStatus) return;
 
         switch (current) {
             case ENVOYEE:
-                if (newStatus != Status.EN_COURS && newStatus != Status.REJETEE) {
+                if (newStatus != Status.EN_COURS && newStatus != Status.REJETEE && newStatus != Status.TRAITEE) {
                     throw new IllegalStateException("Transition invalide: " + current + " → " + newStatus);
                 }
                 break;

@@ -1,4 +1,5 @@
 package com.esprit.wonderwise.Controller.BackOffice;
+import com.esprit.wonderwise.Service.ReclamationWorkflowValidator;
 
 import com.esprit.wonderwise.Model.Reclamation;
 import com.esprit.wonderwise.Model.Status;
@@ -7,6 +8,9 @@ import com.esprit.wonderwise.Utils.DialogUtils;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Pane;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -19,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import com.esprit.wonderwise.Service.SentimentAnalyzer;
 
 import java.io.IOException;
 import java.util.List;
@@ -102,6 +107,15 @@ public class ReclamationBackController {
         Label objet = new Label("Objet: " + r.getObjet());
         objet.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2C3E50;");
 
+        // ➕ Sentiment affiché à droite avec emoji
+        String sentiment = SentimentAnalyzer.analyzeSentiment(r.getDescription());
+        String sentimentDisplay = SentimentAnalyzer.generateSentimentHTML(sentiment);
+        Label sentimentLabel = new Label(sentimentDisplay);
+        sentimentLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #8e44ad; -fx-font-style: italic;");
+        sentimentLabel.setMaxWidth(Double.MAX_VALUE);
+        sentimentLabel.setAlignment(javafx.geometry.Pos.BASELINE_RIGHT);
+        sentimentLabel.setWrapText(true);
+
         Label desc = new Label("Description: " + r.getDescription());
         desc.setWrapText(true);
         desc.setStyle("-fx-font-size: 14px; -fx-text-fill: #34495E;");
@@ -111,8 +125,6 @@ public class ReclamationBackController {
 
         Label statusLabel = new Label("Statut: " + r.getStatus().getLabel());
         updateStatusLabelStyle(statusLabel, r.getStatus());
-
-        // ➡️ Rendre le statut cliquable
         statusLabel.setOnMouseClicked(event -> handleStatusClick(r, statusLabel));
         statusLabel.setStyle(statusLabel.getStyle() + "-fx-cursor: hand;");
 
@@ -127,10 +139,15 @@ public class ReclamationBackController {
         responseButton.setOnAction(event -> handleResponse(r));
 
         buttonBox.getChildren().addAll(deleteButton, responseButton);
-        card.getChildren().addAll(objet, desc, date, statusLabel, buttonBox);
+
+
+        card.getChildren().addAll(objet, sentimentLabel, desc, date, statusLabel, buttonBox);
 
         return card;
     }
+
+
+
 
     private void updateStatusLabelStyle(Label label, Status status) {
         String style = "-fx-font-weight: bold; -fx-font-size: 14px;";
@@ -200,12 +217,12 @@ public class ReclamationBackController {
         dialog.setHeaderText("Sélectionnez un nouveau statut pour la réclamation");
         dialog.setContentText("Nouveau statut :");
 
-        // ✨ Ajouter une petite icône (optionnel, à toi de choisir)
+
         Label graphicLabel = new Label("🛠️");
         graphicLabel.setStyle("-fx-font-size: 48px;");
         dialog.setGraphic(graphicLabel);
 
-        // ✨ Customiser l'affichage de la liste
+
         ListView<Status> listView = (ListView<Status>) dialog.getDialogPane().lookup(".list-view");
         if (listView != null) {
             listView.setCellFactory(lv -> new ListCell<>() {
@@ -222,19 +239,18 @@ public class ReclamationBackController {
             });
         }
 
-        // ✨ Appliquer un style CSS doux
         DialogPane pane = dialog.getDialogPane();
         pane.setStyle("-fx-background-color: #f8f9fa; -fx-border-radius: 10; -fx-background-radius: 10;");
         pane.lookupButton(ButtonType.OK).setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
         pane.lookupButton(ButtonType.CANCEL).setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
 
-        // ✨ Optionnel: Douce animation d'ouverture (fade-in)
+
         FadeTransition ft = new FadeTransition(Duration.millis(300), pane);
         ft.setFromValue(0);
         ft.setToValue(1);
         ft.play();
 
-        // ✨ Afficher le choix
+
         Optional<Status> result = dialog.showAndWait();
         result.ifPresent(newStatus -> updateStatusDirectly(r, newStatus, statusLabel));
     }
@@ -246,7 +262,7 @@ public class ReclamationBackController {
             statusLabel.setText("Statut: " + newStatus.getLabel());
             updateStatusLabelStyle(statusLabel, newStatus);
 
-            // 🎨 Animation douce pour montrer le changement
+
             FadeTransition fade = new FadeTransition(Duration.millis(400), statusLabel);
             fade.setFromValue(0.5);
             fade.setToValue(1.0);

@@ -4,9 +4,11 @@ module com.esprit.wonderwise {
     requires java.sql;
     requires javafx.graphics;
     requires java.desktop;
-    requires org.json;
+
     requires jakarta.mail;
     requires java.net.http;
+    requires org.json;
+
     opens com.esprit.wonderwise to javafx.fxml;
     exports com.esprit.wonderwise;
 

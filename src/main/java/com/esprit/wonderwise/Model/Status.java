@@ -24,15 +24,15 @@ public enum Status {
             case ENVOYEE:
                 return EN_COURS;
             case EN_COURS:
-                return TRAITEE; // par défaut passer à TRAITEE
+                return TRAITEE;
             default:
-                return null; // TRAITEE et REJETEE sont terminaux
+                return null;
         }
     }
 
     public Status getAlternativeStatus() {
         if (this == EN_COURS) {
-            return REJETEE; // Si en cours, possibilité de rejet
+            return REJETEE;
         }
         return null;
     }
