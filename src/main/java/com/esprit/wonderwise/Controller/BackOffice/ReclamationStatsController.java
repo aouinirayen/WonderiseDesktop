@@ -24,7 +24,7 @@ import java.util.Optional;
 public class ReclamationStatsController {
 
     @FXML private BarChart<String, Number> barChart;
-    @FXML private Label totalLabel, frequentLabel, updatedLabel;
+    @FXML private Label totalLabel, frequentLabel;
     @FXML private StackPane rootPane;
 
     private final ReclamationService reclamationService = new ReclamationService();
@@ -74,7 +74,7 @@ public class ReclamationStatsController {
     private void updateMetrics(int total, String frequentType) {
         totalLabel.setText("Total: " + total);
         frequentLabel.setText("Fréquent: " + (frequentType.isEmpty() ? "Aucune" : frequentType));
-        updatedLabel.setText("Mis à jour: Maintenant");
+
     }
 
     @FXML

@@ -62,3 +62,19 @@
     -fx-background-radius: 5;
     -fx-translate-y: 300;
 }
+#totalButton {
+    -fx-background-color: #4CAF50; /* Vert */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 8 16;
+}
+
+#frequentButton {
+    -fx-background-color: #f44336; /* Rouge */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 8 16;
+}
+

@@ -12,12 +12,18 @@
            prefHeight="750.0" prefWidth="1100.0">
 
     <VBox spacing="20" alignment="TOP_CENTER">
-        <!-- Metrics -->
         <HBox spacing="30" alignment="CENTER">
-            <Label fx:id="totalLabel" styleClass="metric-card"/>
-            <Label fx:id="frequentLabel" styleClass="metric-card"/>
-            <Label fx:id="updatedLabel" styleClass="metric-card"/>
+            <VBox alignment="CENTER">
+                <Label fx:id="totalLabel" text="Total"/>
+                <Button fx:id="totalButton" text="Total"/>
+            </VBox>
+            <VBox alignment="CENTER">
+                <Label fx:id="frequentLabel" text="Fréquent"/>
+                <Button fx:id="frequentButton" text="Fréquent"/>
+            </VBox>
         </HBox>
+
+
 
         <!-- Chart Section -->
         <VBox spacing="15" alignment="CENTER" styleClass="chart-card">
@@ -45,8 +51,9 @@
                         onAction="#handleDeleteMostFrequent"
                         styleClass="primary-button"/>
                 <Button text="← Retour"
-                        onAction="#handleBack"
-                        styleClass="secondary-button"/>
+                         fx:id="backButton"
+                         onAction="#handleBack"/>
+
             </HBox>
         </VBox>
     </VBox>
