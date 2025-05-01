@@ -45,6 +45,24 @@
     <artifactId>json</artifactId>
     <version>20210307</version>
   </dependency>
+    <!-- Reconnaissance vocale offline -->
+    <dependency>
+      <groupId>com.alphacephei</groupId>
+      <artifactId>vosk</artifactId>
+      <version>0.3.45</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20231013</version>
+    </dependency>
+    <!-- Vosk repose sur JNA pour dialoguer avec la librairie native -->
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna-platform</artifactId>
+      <version>5.14.0</version>
+    </dependency>
+
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>jakarta.mail</artifactId>

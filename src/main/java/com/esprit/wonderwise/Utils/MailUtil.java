@@ -43,14 +43,14 @@ public class MailUtil {
                             "<tr><td align='center'>" +
                             "<table width='600' style='background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);'>" + // Maintained original width
 
-                            // En-tête bleu, texte plus grand et en gras
+                            // En-tête bleu, texte                                                                                                                                       plus grand et en gras
                             "<tr style='background-color: #007BFF;'>" +
                             "<td style='padding: 20px; text-align: center; color: white; font-size: 28px; font-weight: bold;'>Équipe WonderWise</td>" +
                             "</tr>" +
 
                             // Contenu principal
                             "<tr><td style='padding: 30px; font-size: 16px; color: #333333;'>" +
-                            "<p style='font-size: 18px;'>Bonjour " + userName + ",</p>" +
+                            "<p style='font-size: 18px;'> " + userName + ",</p>" +
                             "<p>Nous tenons à vous informer que nous prenons en considération votre réclamation.</p>" +
                             "<p>Nous vous invitons à visiter notre plateforme pour découvrir nos nouvelles fonctionnalités.</p>" +
                             "<p style='text-align: center;'><a href='https://wonderwise.com' class='btn'>Visiter WonderWise</a></p>" +

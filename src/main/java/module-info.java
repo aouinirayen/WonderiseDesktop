@@ -8,6 +8,7 @@ module com.esprit.wonderwise {
     requires jakarta.mail;
     requires java.net.http;
     requires org.json;
+    requires vosk;
 
     opens com.esprit.wonderwise to javafx.fxml;
     exports com.esprit.wonderwise;
