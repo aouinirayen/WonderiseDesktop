@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
@@ -13,6 +14,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
 <BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../StylesCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.ExperienceFrontController">
     <top>
@@ -27,7 +30,7 @@
                 <!-- View Mode -->
                 <VBox fx:id="viewMode" spacing="20" styleClass="content-card">
                     <!-- Image -->
-                    <ImageView fx:id="previewImageView" fitHeight="400.0" fitWidth="1000.0" preserveRatio="true" styleClass="experience-image"/>
+                    <ImageView fx:id="experienceImage" fitHeight="400.0" fitWidth="1000.0" preserveRatio="true" styleClass="experience-image"/>
                     
                     <!-- Title and Action Buttons -->
                     <HBox spacing="20" alignment="CENTER_LEFT">
@@ -83,13 +86,9 @@
                         <Label text="💬 Commentaires" styleClass="section-title"/>
                         
                         <VBox styleClass="comment-form" spacing="10">
-                            <TextField fx:id="commentAuthorField" 
-                                     promptText="Votre nom (optionnel)"
+                            <TextField fx:id="commentField" 
+                                     promptText="Écrivez votre commentaire ici..."
                                      styleClass="comment-input"/>
-                            <TextArea fx:id="commentContentField" 
-                                    promptText="Écrivez votre commentaire ici..."
-                                    styleClass="comment-input"
-                                    wrapText="true"/>
                             <Button text="💭 Ajouter un commentaire" 
                                     onAction="#handleCommentSubmit"
                                     styleClass="action-button"/>
@@ -116,7 +115,17 @@
                         <TextField fx:id="editLieuField" styleClass="edit-input"/>
                         
                         <Label text="🏷️ Catégorie" styleClass="field-label"/>
-                        <TextField fx:id="editCategorieField" styleClass="edit-input"/>
+                        <ComboBox fx:id="editCategorieComboBox" styleClass="edit-input" promptText="Choisir une catégorie">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="sortie" />
+                                    <String fx:value="balade" />
+                                    <String fx:value="visite" />
+                                    <String fx:value="sport" />
+                                    <String fx:value="voyage" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
                         
                         <Label text="📆 Date" styleClass="field-label"/>
                         <DatePicker fx:id="editDatePicker" styleClass="edit-datepicker"/>

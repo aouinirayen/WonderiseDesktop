@@ -6,12 +6,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="740.0" prefWidth="1070.0" style="-fx-background-color: #ECF0F1;" stylesheets="@styles/moderation.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="com.esprit.wonderwise.Controller.BackOffice.ModerationController">
+<BorderPane prefHeight="740.0" prefWidth="1070.0" style="-fx-background-color: #ECF0F1;" stylesheets="@../../styles/moderation.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.esprit.wonderwise.Controller.BackOffice.ModerationController">
     
     <!-- Left Navigation Bar -->
     <left>
-        <fx:include source="BackOffice/NavBarBack.fxml" />
+        <fx:include source="../NavBarBack.fxml" />
     </left>
     
     <center>
@@ -26,7 +26,6 @@
                         <Button fx:id="backButton" text="← Retour" onAction="#handleBackButton" styleClass="back-button"/>
                         <Label text="Modération de Contenu" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Button fx:id="testModerationButton" text="Tester l'API" onAction="#handleTestModeration" styleClass="secondary-button" />
                         <Label text="En attente:" />
                         <Label fx:id="pendingCountLabel" text="0" style="-fx-font-weight: bold; -fx-text-fill: #e74c3c;" />
                         <Button fx:id="refreshButton" text="Rafraîchir" />
@@ -53,13 +52,21 @@
                     </HBox>
                     
                     <!-- Filter Section -->
-                    <HBox alignment="CENTER" spacing="15" style="-fx-padding: 15; -fx-background-color: #F8FAFC; -fx-background-radius: 12;">
+                    <HBox alignment="CENTER" spacing="15" styleClass="filter-section">
                         <Label text="Filtrer par:" style="-fx-font-size: 16px; -fx-text-fill: #2C3E50;" />
                         <ComboBox fx:id="statusFilter" promptText="Status" prefWidth="150" />
-                        <ComboBox fx:id="typeFilter" promptText="Type de contenu" prefWidth="200" />
-                        <TextField fx:id="searchField" promptText="Rechercher..." prefWidth="250" />
+                        <ComboBox fx:id="typeFilter" promptText="Type de contenu" prefWidth="160" />
+                        <ComboBox fx:id="reasonFilter" promptText="Raison du signalement" prefWidth="180" />
+                        <ComboBox fx:id="dateRangeFilter" promptText="Période" prefWidth="150" />
+                        
+                        <!-- Search Field with Icon -->
+                        <HBox alignment="CENTER_LEFT" spacing="0" styleClass="search-field-container">
+                            <Label text="🔍" style="-fx-padding: 0 0 0 10; -fx-text-fill: #95a5a6;" />
+                            <TextField fx:id="searchField" promptText="Rechercher..." prefWidth="200" style="-fx-border-radius: 0 4 4 0; -fx-background-radius: 0 4 4 0; -fx-padding: 6 10 6 5;" />
+                        </HBox>
+                        
                         <Button text="Appliquer" onAction="#applyFilters" styleClass="primary-button" />
-                        <Button text="Réinitialiser" onAction="#resetFilters" styleClass="secondary-button" />
+                        <Button text="Réinitialiser" onAction="#resetFilters" styleClass="reset-filters-button" />
                     </HBox>
                     
                     <!-- Main Content Area -->
@@ -67,6 +74,9 @@
                         <!-- Card List -->
                         <VBox fx:id="moderationCardsContainer" spacing="15" HBox.hgrow="ALWAYS" styleClass="moderation-list">
                             <Label text="Contenus à modérer" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                            
+                            <!-- Filter results info -->
+                            <Label fx:id="filteredResultsInfo" styleClass="filtered-results-info" text="Affichage de tous les éléments (0)" />
                             
                             <!-- This will be filled dynamically with moderation cards -->
                             <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="transparent-scroll-pane">

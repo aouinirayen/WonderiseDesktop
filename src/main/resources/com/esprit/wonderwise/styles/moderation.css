@@ -223,4 +223,205 @@
     -fx-font-size: 18px;
     -fx-text-fill: #7f8c8d;
     -fx-font-weight: bold;
+}
+
+/* Active filter indicator */
+.combo-box:focused,
+.combo-box.filtered {
+    -fx-background-color: #3498db10;
+    -fx-border-color: #3498db;
+}
+
+.text-field:focused,
+.text-field.filtered {
+    -fx-background-color: #3498db10;
+    -fx-border-color: #3498db;
+}
+
+/* Filter badge indicator */
+.filter-badge {
+    -fx-background-color: #3498db;
+    -fx-background-radius: 100;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-padding: 2 5 2 5;
+}
+
+/* Filtered results info */
+.filtered-results-info {
+    -fx-font-size: 13px;
+    -fx-text-fill: #7f8c8d;
+    -fx-padding: 5 0 5 0;
+}
+
+/* Empty state for filtered results */
+.filtered-empty-state {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.filtered-empty-state-icon {
+    -fx-font-size: 36px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.filtered-empty-state-text {
+    -fx-font-size: 16px;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-weight: bold;
+}
+
+.filtered-empty-state-subtext {
+    -fx-font-size: 13px;
+    -fx-text-fill: #95a5a6;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+/* ComboBox styling */
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 0;
+}
+
+.combo-box:hover {
+    -fx-border-color: #bdc3c7;
+}
+
+.combo-box:focused {
+    -fx-border-color: #3498db;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 4px 10px 4px 10px;
+    -fx-text-fill: #2c3e50;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #95a5a6;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.0, 0, 3);
+    -fx-padding: 0;
+}
+
+.combo-box-popup .list-cell {
+    -fx-padding: 8px 12px;
+    -fx-text-fill: #2c3e50;
+    -fx-background-color: white;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #ecf0f1;
+}
+
+.combo-box-popup .list-cell:filled:selected, 
+.combo-box-popup .list-cell:filled:selected:hover {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+/* TextField styling */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 10px;
+}
+
+.text-field:hover {
+    -fx-border-color: #bdc3c7;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498db;
+}
+
+/* Active filter indicator - enhanced */
+.combo-box.filtered {
+    -fx-background-color: #edf7fd;
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.15), 5, 0, 0, 0);
+}
+
+.text-field.filtered {
+    -fx-background-color: #edf7fd;
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.15), 5, 0, 0, 0);
+}
+
+/* Filter results animation */
+.filtered-results-info {
+    -fx-font-size: 13px;
+    -fx-text-fill: #7f8c8d;
+    -fx-padding: 8px 12px;
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 4px;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4px;
+}
+
+/* Filter section background enhancement */
+.filter-section {
+    -fx-background-color: linear-gradient(to bottom, #f8fafc, #edf7fd);
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);
+    -fx-padding: 15px;
+}
+
+/* Reset button */
+.reset-filters-button {
+    -fx-background-color: #ecf0f1;
+    -fx-text-fill: #7f8c8d;
+    -fx-background-radius: 4px;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 4px;
+}
+
+.reset-filters-button:hover {
+    -fx-background-color: #dfe6e9;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Search field container style */
+.search-field-container {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.search-field-container:hover {
+    -fx-border-color: #bdc3c7;
+}
+
+.search-field-container .text-field {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.search-field-container:hover .text-field {
+    -fx-border-color: transparent;
+}
+
+.search-field-container .text-field:focused {
+    -fx-border-color: transparent;
+}
+
+.search-field-container:focused-within {
+    -fx-border-color: #3498db;
 } 

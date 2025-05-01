@@ -5,12 +5,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
 <BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../StylesCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.ExperienceFrontController">
     <top>
@@ -40,7 +43,17 @@
                     <TextArea fx:id="descriptionField" promptText="Description" wrapText="true" prefRowCount="5" styleClass="modern-textarea" />
 
             <!-- Category -->
-            <TextField fx:id="categorieField" promptText="Category" styleClass="modern-input" />
+            <ComboBox fx:id="categorieField" promptText="Choisir une catégorie" styleClass="modern-input" prefWidth="300">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="sortie" />
+                        <String fx:value="balade" />
+                        <String fx:value="visite" />
+                        <String fx:value="sport" />
+                        <String fx:value="voyage" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
 
             <!-- Photo Upload Section -->
             <VBox spacing="10" alignment="CENTER">
