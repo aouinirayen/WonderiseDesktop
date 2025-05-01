@@ -7,20 +7,34 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BadWordsFilter {
 
     private static final String API_URL = "https://www.purgomalum.com/service/containsprofanity?text=";
+
+    // 🛑 Ajoute ici tes propres mots à filtrer
+    private static final Set<String> customBadWords = new HashSet<>(Set.of(
+            "catas", "null"
+    ));
 
     public static boolean containsBadWords(String text) {
         if (text == null || text.isEmpty()) {
             return false;
         }
 
-        try {
-            // Proper URL encoding for all special characters
-            String encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
+        // 1️⃣ Vérification locale
+        String lowerText = text.toLowerCase();
+        for (String word : customBadWords) {
+            if (lowerText.contains(word.toLowerCase())) {
+                return true;
+            }
+        }
 
+        // 2️⃣ Vérification via l'API
+        try {
+            String encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_URL + encodedText))
@@ -32,7 +46,7 @@ public class BadWordsFilter {
             return Boolean.parseBoolean(response.body().trim());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return false; // Default to allowing content if API fails
+            return false;
         }
     }
 }

@@ -44,7 +44,7 @@ public class ReclamationBackController {
     private Status selectedStatus = null;
     private String searchQuery = "";
 
-    // 🔥 Nouvelle map de transitions
+
     private static final Map<Status, List<Status>> transitions = Map.of(
             Status.ENVOYEE, List.of(Status.EN_COURS),
             Status.EN_COURS, List.of(Status.TRAITEE, Status.REJETEE)

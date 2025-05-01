@@ -45,7 +45,7 @@ public class ReponseController {
             return;
         }
 
-        // Enregistrement de la réponse
+
         ReponseService reponseService = new ReponseService();
         reponseService.addReponseToReclamation(responseText, reclamationId);
 
