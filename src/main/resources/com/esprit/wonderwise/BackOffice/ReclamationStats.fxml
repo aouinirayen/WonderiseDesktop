@@ -21,17 +21,32 @@
 
         <!-- Chart Section -->
         <VBox spacing="15" alignment="CENTER" styleClass="chart-card">
-            <Label text="📊 Réclamations les plus fréquentes" styleClass="title-label special-title"/>
-            <BarChart fx:id="barChart" categoryGap="30" barGap="10"
-                      prefHeight="400" prefWidth="700" legendVisible="false">
-                <xAxis><CategoryAxis label="Type"/></xAxis>
-                <yAxis><NumberAxis label="Occurrences"/></yAxis>
+
+            <!-- Le Label manuel est optionnel maintenant -->
+            <!--<Label text="📊 Réclamations les plus fréquentes"
+                   styleClass="title-label special-title"/>-->
+
+            <BarChart fx:id="barChart"
+                      title="📊 Réclamations les plus fréquentes"
+                      categoryGap="30" barGap="10"
+                      prefHeight="400" prefWidth="700"
+                      legendVisible="false">
+                <xAxis>
+                    <CategoryAxis label="Type"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Occurrences"/>
+                </yAxis>
             </BarChart>
 
             <!-- Buttons -->
             <HBox spacing="20" alignment="CENTER">
-                <Button text="✓ Supprimer la plus fréquente" onAction="#handleDeleteMostFrequent" styleClass="primary-button"/>
-                <Button text="← Retour" onAction="#handleBack" styleClass="secondary-button"/>
+                <Button text="✓ Supprimer la plus fréquente"
+                        onAction="#handleDeleteMostFrequent"
+                        styleClass="primary-button"/>
+                <Button text="← Retour"
+                        onAction="#handleBack"
+                        styleClass="secondary-button"/>
             </HBox>
         </VBox>
     </VBox>
