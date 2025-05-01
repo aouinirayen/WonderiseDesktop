@@ -33,19 +33,32 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileOutputStream;
+
 public class CountryController {
-    @FXML private FlowPane countryCards;
-    @FXML private FlowPane artsFlowPane;
-    @FXML private FlowPane monumentsFlowPane;
-    @FXML private FlowPane foodsFlowPane;
-    @FXML private FlowPane celebritiesFlowPane;
-    @FXML private TextField nameField, imgPathField, descField, currencyField, isoField, callingField, climateField;
-    @FXML private Label nameLabel, currencyLabel, isoLabel, callingLabel, climateLabel;
-    @FXML private Text descLabel;
-    @FXML private ImageView detailImageView;
-
-
-
+    @FXML
+    private FlowPane countryCards;
+    @FXML
+    private FlowPane artsFlowPane;
+    @FXML
+    private FlowPane monumentsFlowPane;
+    @FXML
+    private FlowPane foodsFlowPane;
+    @FXML
+    private FlowPane celebritiesFlowPane;
+    @FXML
+    private TextField nameField, imgPathField, descField, currencyField, isoField, callingField, climateField;
+    @FXML
+    private Label nameLabel, currencyLabel, isoLabel, callingLabel, climateLabel;
+    @FXML
+    private Text descLabel;
+    @FXML
+    private ImageView detailImageView;
+    // Advanced search controls
     @FXML
     private TextField searchField;
     @FXML
@@ -53,6 +66,8 @@ public class CountryController {
     @FXML
     private ComboBox<String> climateCombo;
 
+    private List<Country> allCountries = null;
+    private List<Country> filteredCountries = null;
 
     private CountryService countryService = new CountryService();
     private ArtService artService = new ArtService();
@@ -62,16 +77,108 @@ public class CountryController {
     private Country selectedCountry;
     private static final String IMAGE_DESTINATION_DIR = "C:\\xampp\\htdocs\\pidev3\\";
 
-
-    private List<Country> allCountries = null;
-    private List<Country> filteredCountries = null;
-
+    @FXML
+    private void exportCountriesToExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export Countries to Excel");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+        fileChooser.setInitialFileName("countries.xlsx");
+        Stage stage = getCurrentStage();
+        java.io.File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            try (Workbook workbook = new XSSFWorkbook()) {
+                Sheet sheet = workbook.createSheet("Countries");
+                // Create header style
+                CellStyle headerStyle = workbook.createCellStyle();
+                Font headerFont = workbook.createFont();
+                headerFont.setBold(true);
+                headerFont.setFontHeightInPoints((short) 12);
+                headerFont.setColor(IndexedColors.WHITE.getIndex());
+                headerStyle.setFont(headerFont);
+                headerStyle.setFillForegroundColor(IndexedColors.DARK_BLUE.getIndex());
+                headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                headerStyle.setAlignment(HorizontalAlignment.CENTER);
+                // Create alternating row style
+                CellStyle altRowStyle = workbook.createCellStyle();
+                altRowStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+                altRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                // Write header
+                String[] header = {"Country Name", "Description", "Currency", "ISO Code", "Calling Code", "Climate"};
+                Row headerRow = sheet.createRow(0);
+                for (int i = 0; i < header.length; i++) {
+                    Cell cell = headerRow.createCell(i);
+                    cell.setCellValue(header[i]);
+                    cell.setCellStyle(headerStyle);
+                }
+                // Write data rows
+                int rowIdx = 1;
+                for (Country country : filteredCountries) {
+                    Row row = sheet.createRow(rowIdx);
+                    Cell[] cells = new Cell[6];
+                    cells[0] = row.createCell(0);
+                    cells[0].setCellValue(country.getName());
+                    cells[1] = row.createCell(1);
+                    cells[1].setCellValue(country.getDescription());
+                    cells[2] = row.createCell(2);
+                    cells[2].setCellValue(country.getCurrency());
+                    cells[3] = row.createCell(3);
+                    cells[3].setCellValue(country.getIsoCode());
+                    cells[4] = row.createCell(4);
+                    cells[4].setCellValue(country.getCallingCode());
+                    cells[5] = row.createCell(5);
+                    cells[5].setCellValue(country.getClimate());
+                    if (rowIdx % 2 == 0) {
+                        for (Cell cell : cells) cell.setCellStyle(altRowStyle);
+                    }
+                    rowIdx++;
+                }
+                // Autosize columns
+                for (int i = 0; i < header.length; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    workbook.write(fos);
+                }
+            } catch (Exception e) {
+                DialogUtils.showCustomDialog("Export Error", "Failed to export countries: " + e.getMessage(), false, stage);
+            }
+        }
+    }
 
     @FXML
     public void initialize() {
         if (countryCards != null) {
+            // Load all countries only once
             allCountries = countryService.readAll();
             filteredCountries = allCountries;
+
+            // Populate ComboBoxes with 'All' option
+            List<String> currencyOptions = new java.util.ArrayList<>();
+            currencyOptions.add("All");
+            currencyOptions.addAll(allCountries.stream().map(Country::getCurrency).distinct().sorted().toList());
+            if (currencyCombo != null) {
+                currencyCombo.getItems().setAll(currencyOptions);
+                currencyCombo.getSelectionModel().selectFirst();
+            }
+
+            List<String> climateOptions = new java.util.ArrayList<>();
+            climateOptions.add("All");
+            climateOptions.addAll(allCountries.stream().map(Country::getClimate).distinct().sorted().toList());
+            if (climateCombo != null) {
+                climateCombo.getItems().setAll(climateOptions);
+                climateCombo.getSelectionModel().selectFirst();
+            }
+
+            // Add listeners for live search/filter
+            if (searchField != null)
+                searchField.textProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+            if (currencyCombo != null)
+                currencyCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+            if (climateCombo != null)
+                climateCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
+
+            loadCountries();
+
             if (countryCards.getParent() instanceof ScrollPane) {
                 ScrollPane scrollPane = (ScrollPane) countryCards.getParent();
                 scrollPane.setPrefHeight(500);
@@ -93,32 +200,8 @@ public class CountryController {
                 if (newVal.length() > 5) callingField.setText(oldVal);
             });
         }
-        List<String> currencyOptions = new java.util.ArrayList<>();
-        currencyOptions.add("All");
-        currencyOptions.addAll(allCountries.stream().map(Country::getCurrency).distinct().sorted().toList());
-        if (currencyCombo != null) {
-            currencyCombo.getItems().setAll(currencyOptions);
-            currencyCombo.getSelectionModel().selectFirst();
-        }
-
-        List<String> climateOptions = new java.util.ArrayList<>();
-        climateOptions.add("All");
-        climateOptions.addAll(allCountries.stream().map(Country::getClimate).distinct().sorted().toList());
-        if (climateCombo != null) {
-            climateCombo.getItems().setAll(climateOptions);
-            climateCombo.getSelectionModel().selectFirst();
-        }
-
-        // Add listeners for live search/filter
-        if (searchField != null)
-            searchField.textProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
-        if (currencyCombo != null)
-            currencyCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
-        if (climateCombo != null)
-            climateCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyAdvancedSearch());
-        loadCountries();
-
     }
+
     private void applyAdvancedSearch() {
         String keyword = (searchField != null && searchField.getText() != null) ? searchField.getText().trim().toLowerCase() : "";
         String currency = (currencyCombo != null) ? currencyCombo.getValue() : null;
@@ -130,9 +213,37 @@ public class CountryController {
                 .toList();
         loadCountries();
     }
+
     private void loadCountries() {
         countryCards.getChildren().clear();
         List<Country> countries = (filteredCountries != null) ? filteredCountries : countryService.readAll();
+
+        if (countries == null || countries.isEmpty()) {
+            VBox indicator = new VBox(16);
+            indicator.setAlignment(Pos.CENTER);
+            indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+
+            ImageView icon = new ImageView();
+            try {
+                Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                icon.setImage(emptyIcon);
+            } catch (Exception e) {
+                // fallback: no icon
+            }
+            icon.setFitWidth(90);
+            icon.setFitHeight(90);
+            icon.setPreserveRatio(true);
+            icon.setSmooth(true);
+
+            Label mainText = new Label("No countries found");
+            mainText.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+            Label subText = new Label("Try adjusting your search or add a new country.");
+            subText.setStyle("-fx-font-size: 14px; -fx-text-fill: #7f8c8d;");
+
+            indicator.getChildren().addAll(icon, mainText, subText);
+            countryCards.getChildren().add(indicator);
+            return;
+        }
 
         for (Country country : countries) {
             VBox card = new VBox(15);
@@ -203,7 +314,7 @@ public class CountryController {
             countryCards.getChildren().add(card);
         }
     }
-//BUUTON ADD
+
     @FXML
     public void showAddCountry() throws IOException {
         loadScene("CountryAdd.fxml", null);
@@ -234,7 +345,7 @@ public class CountryController {
             imgPathField.setText(file.getAbsolutePath());
         }
     }
-//TèEL EDIT COUNTRY
+
     @FXML
     public void showEditCountry(Country country) throws IOException {
         selectedCountry = country;
@@ -246,7 +357,7 @@ public class CountryController {
         Stage stage = (Stage) (countryCards != null ? countryCards.getScene().getWindow() : nameField.getScene().getWindow());
         stage.setScene(new Scene(root));
     }
-//FUCNTION UPDATE
+
     @FXML
     public void updateCountry() throws IOException {
         if (selectedCountry == null) {
@@ -274,10 +385,19 @@ public class CountryController {
         if (!sourceFile.exists()) return "";
         String fileName = sourceFile.getName();
         File destFile = new File(IMAGE_DESTINATION_DIR + fileName);
-        Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        try {
+            // First copy the image
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            // Apply watermark
+            com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
+        } catch (Exception e) {
+            // If watermarking fails, fallback to normal copy
+            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.err.println("Failed to apply watermark: " + e.getMessage());
+        }
         return fileName;
     }
-// DTAT UPDATE
+
     public void setCountryData(Country country) {
         nameField.setText(country.getName());
         imgPathField.setText(IMAGE_DESTINATION_DIR + country.getImg());
@@ -313,7 +433,7 @@ public class CountryController {
         Stage stage = (Stage) (countryCards != null ? countryCards.getScene().getWindow() : nameLabel.getScene().getWindow());
         stage.setScene(new Scene(root));
     }
-// TA3MER DATA F SHOW DETAILS
+
     public void setDetailsData(Country country) {
         nameLabel.setText(country.getName());
         descLabel.setText(country.getDescription());
@@ -341,27 +461,45 @@ public class CountryController {
         if (artsFlowPane != null) {
             artsFlowPane.getChildren().clear();
             List<Art> arts = artService.readByCountryId(country.getId());
-            for (Art art : arts) {
-                VBox artCard = new VBox(10);
-                artCard.setPrefWidth(200);
-                artCard.setAlignment(Pos.CENTER);
-
-                ImageView artImage = new ImageView();
-                File artImageFile = new File(IMAGE_DESTINATION_DIR + art.getImg());
-                if (artImageFile.exists()) {
-                    Image image = new Image(artImageFile.toURI().toString(), 150, 100, true, true);
-                    artImage.setImage(image);
-                } else {
-                    Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 150, 100, true, true);
-                    artImage.setImage(fallback);
+            if (arts == null || arts.isEmpty()) {
+                VBox indicator = new VBox(16);
+                indicator.setAlignment(Pos.CENTER);
+                indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+                ImageView icon = new ImageView();
+                try {
+                    Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                    icon.setImage(emptyIcon);
+                } catch (Exception e) {
+                    // fallback: no icon
                 }
-                artImage.getStyleClass().add("rounded-image");
-
-                Label artName = new Label(art.getName());
-                artName.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
-
-                artCard.getChildren().addAll(artImage, artName);
-                artsFlowPane.getChildren().add(artCard);
+                icon.setFitWidth(90);
+                icon.setFitHeight(90);
+                icon.setPreserveRatio(true);
+                icon.setSmooth(true);
+                Label msg = new Label("No arts available for this country");
+                msg.setStyle("-fx-text-fill: #7b8794; -fx-font-size: 16px; -fx-font-family: 'Poppins', 'Arial', sans-serif;");
+                indicator.getChildren().addAll(icon, msg);
+                artsFlowPane.getChildren().add(indicator);
+            } else {
+                for (Art art : arts) {
+                    VBox artCard = new VBox(10);
+                    artCard.setPrefWidth(200);
+                    artCard.setAlignment(Pos.CENTER);
+                    ImageView artImage = new ImageView();
+                    File artImageFile = new File(IMAGE_DESTINATION_DIR + art.getImg());
+                    if (artImageFile.exists()) {
+                        Image image = new Image(artImageFile.toURI().toString(), 150, 100, true, true);
+                        artImage.setImage(image);
+                    } else {
+                        Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 150, 100, true, true);
+                        artImage.setImage(fallback);
+                    }
+                    artImage.getStyleClass().add("rounded-image");
+                    Label artName = new Label(art.getName());
+                    artName.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
+                    artCard.getChildren().addAll(artImage, artName);
+                    artsFlowPane.getChildren().add(artCard);
+                }
             }
             System.out.println("Loaded " + arts.size() + " arts for country " + country.getName());
         } else {
@@ -372,27 +510,45 @@ public class CountryController {
         if (monumentsFlowPane != null) {
             monumentsFlowPane.getChildren().clear();
             List<Monument> monuments = monumentService.readByCountryId(country.getId());
-            for (Monument monument : monuments) {
-                VBox monumentCard = new VBox(10);
-                monumentCard.setPrefWidth(200);
-                monumentCard.setAlignment(Pos.CENTER);
-
-                ImageView monumentImage = new ImageView();
-                File monumentImageFile = new File(IMAGE_DESTINATION_DIR + monument.getImg());
-                if (monumentImageFile.exists()) {
-                    Image image = new Image(monumentImageFile.toURI().toString(), 150, 100, true, true);
-                    monumentImage.setImage(image);
-                } else {
-                    Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 150, 100, true, true);
-                    monumentImage.setImage(fallback);
+            if (monuments == null || monuments.isEmpty()) {
+                VBox indicator = new VBox(16);
+                indicator.setAlignment(Pos.CENTER);
+                indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+                ImageView icon = new ImageView();
+                try {
+                    Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                    icon.setImage(emptyIcon);
+                } catch (Exception e) {
+                    // fallback: no icon
                 }
-                monumentImage.getStyleClass().add("rounded-image");
-
-                Label monumentName = new Label(monument.getName());
-                monumentName.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
-
-                monumentCard.getChildren().addAll(monumentImage, monumentName);
-                monumentsFlowPane.getChildren().add(monumentCard);
+                icon.setFitWidth(90);
+                icon.setFitHeight(90);
+                icon.setPreserveRatio(true);
+                icon.setSmooth(true);
+                Label msg = new Label("No monuments available for this country");
+                msg.setStyle("-fx-text-fill: #7b8794; -fx-font-size: 16px; -fx-font-family: 'Poppins', 'Arial', sans-serif;");
+                indicator.getChildren().addAll(icon, msg);
+                monumentsFlowPane.getChildren().add(indicator);
+            } else {
+                for (Monument monument : monuments) {
+                    VBox monumentCard = new VBox(10);
+                    monumentCard.setPrefWidth(200);
+                    monumentCard.setAlignment(Pos.CENTER);
+                    ImageView monumentImage = new ImageView();
+                    File monumentImageFile = new File(IMAGE_DESTINATION_DIR + monument.getImg());
+                    if (monumentImageFile.exists()) {
+                        Image image = new Image(monumentImageFile.toURI().toString(), 150, 100, true, true);
+                        monumentImage.setImage(image);
+                    } else {
+                        Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 150, 100, true, true);
+                        monumentImage.setImage(fallback);
+                    }
+                    monumentImage.getStyleClass().add("rounded-image");
+                    Label monumentName = new Label(monument.getName());
+                    monumentName.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
+                    monumentCard.getChildren().addAll(monumentImage, monumentName);
+                    monumentsFlowPane.getChildren().add(monumentCard);
+                }
             }
             System.out.println("Loaded " + monuments.size() + " monuments for country " + country.getName());
         } else {
@@ -403,27 +559,45 @@ public class CountryController {
         if (foodsFlowPane != null) {
             foodsFlowPane.getChildren().clear();
             List<TraditionalFood> foods = foodService.readByCountryId(country.getId());
-            for (TraditionalFood food : foods) {
-                VBox foodCard = new VBox(10);
-                foodCard.setPrefWidth(200);
-                foodCard.setAlignment(Pos.CENTER);
-
-                ImageView foodImage = new ImageView();
-                File foodImageFile = new File(IMAGE_DESTINATION_DIR + food.getImg());
-                if (foodImageFile.exists()) {
-                    Image image = new Image(foodImageFile.toURI().toString(), 150, 100, true, true);
-                    foodImage.setImage(image);
-                } else {
-                    Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 150, 100, true, true);
-                    foodImage.setImage(fallback);
+            if (foods == null || foods.isEmpty()) {
+                VBox indicator = new VBox(16);
+                indicator.setAlignment(Pos.CENTER);
+                indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+                ImageView icon = new ImageView();
+                try {
+                    Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                    icon.setImage(emptyIcon);
+                } catch (Exception e) {
+                    // fallback: no icon
                 }
-                foodImage.getStyleClass().add("rounded-image");
-
-                Label foodName = new Label(food.getName());
-                foodName.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
-
-                foodCard.getChildren().addAll(foodImage, foodName);
-                foodsFlowPane.getChildren().add(foodCard);
+                icon.setFitWidth(90);
+                icon.setFitHeight(90);
+                icon.setPreserveRatio(true);
+                icon.setSmooth(true);
+                Label msg = new Label("No traditional foods available for this country");
+                msg.setStyle("-fx-text-fill: #7b8794; -fx-font-size: 16px; -fx-font-family: 'Poppins', 'Arial', sans-serif;");
+                indicator.getChildren().addAll(icon, msg);
+                foodsFlowPane.getChildren().add(indicator);
+            } else {
+                for (TraditionalFood food : foods) {
+                    VBox foodCard = new VBox(10);
+                    foodCard.setPrefWidth(200);
+                    foodCard.setAlignment(Pos.CENTER);
+                    ImageView foodImage = new ImageView();
+                    File foodImageFile = new File(IMAGE_DESTINATION_DIR + food.getImg());
+                    if (foodImageFile.exists()) {
+                        Image image = new Image(foodImageFile.toURI().toString(), 150, 100, true, true);
+                        foodImage.setImage(image);
+                    } else {
+                        Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 150, 100, true, true);
+                        foodImage.setImage(fallback);
+                    }
+                    foodImage.getStyleClass().add("rounded-image");
+                    Label foodName = new Label(food.getName());
+                    foodName.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
+                    foodCard.getChildren().addAll(foodImage, foodName);
+                    foodsFlowPane.getChildren().add(foodCard);
+                }
             }
             System.out.println("Loaded " + foods.size() + " traditional foods for country " + country.getName());
         } else {
@@ -434,27 +608,45 @@ public class CountryController {
         if (celebritiesFlowPane != null) {
             celebritiesFlowPane.getChildren().clear();
             List<Celebrity> celebrities = celebrityService.readByCountryId(country.getId());
-            for (Celebrity celebrity : celebrities) {
-                VBox celebrityCard = new VBox(10);
-                celebrityCard.setPrefWidth(200);
-                celebrityCard.setAlignment(Pos.CENTER);
-
-                ImageView celebrityImage = new ImageView();
-                File celebrityImageFile = new File(IMAGE_DESTINATION_DIR + celebrity.getImg());
-                if (celebrityImageFile.exists()) {
-                    Image image = new Image(celebrityImageFile.toURI().toString(), 150, 100, true, true);
-                    celebrityImage.setImage(image);
-                } else {
-                    Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 150, 100, true, true);
-                    celebrityImage.setImage(fallback);
+            if (celebrities == null || celebrities.isEmpty()) {
+                VBox indicator = new VBox(16);
+                indicator.setAlignment(Pos.CENTER);
+                indicator.setStyle("-fx-padding: 40; -fx-background-color: #f8fafd; -fx-background-radius: 12;");
+                ImageView icon = new ImageView();
+                try {
+                    Image emptyIcon = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/icons/empty-box.png"));
+                    icon.setImage(emptyIcon);
+                } catch (Exception e) {
+                    // fallback: no icon
                 }
-                celebrityImage.getStyleClass().add("rounded-image");
-
-                Label celebrityName = new Label(celebrity.getName());
-                celebrityName.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
-
-                celebrityCard.getChildren().addAll(celebrityImage, celebrityName);
-                celebritiesFlowPane.getChildren().add(celebrityCard);
+                icon.setFitWidth(90);
+                icon.setFitHeight(90);
+                icon.setPreserveRatio(true);
+                icon.setSmooth(true);
+                Label msg = new Label("No celebrities available for this country");
+                msg.setStyle("-fx-text-fill: #7b8794; -fx-font-size: 16px; -fx-font-family: 'Poppins', 'Arial', sans-serif;");
+                indicator.getChildren().addAll(icon, msg);
+                celebritiesFlowPane.getChildren().add(indicator);
+            } else {
+                for (Celebrity celebrity : celebrities) {
+                    VBox celebrityCard = new VBox(10);
+                    celebrityCard.setPrefWidth(200);
+                    celebrityCard.setAlignment(Pos.CENTER);
+                    ImageView celebrityImage = new ImageView();
+                    File celebrityImageFile = new File(IMAGE_DESTINATION_DIR + celebrity.getImg());
+                    if (celebrityImageFile.exists()) {
+                        Image image = new Image(celebrityImageFile.toURI().toString(), 150, 100, true, true);
+                        celebrityImage.setImage(image);
+                    } else {
+                        Image fallback = new Image(getClass().getResourceAsStream("/com/esprit/wonderwise/images/notfound.png"), 150, 100, true, true);
+                        celebrityImage.setImage(fallback);
+                    }
+                    celebrityImage.getStyleClass().add("rounded-image");
+                    Label celebrityName = new Label(celebrity.getName());
+                    celebrityName.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;");
+                    celebrityCard.getChildren().addAll(celebrityImage, celebrityName);
+                    celebritiesFlowPane.getChildren().add(celebrityCard);
+                }
             }
             System.out.println("Loaded " + celebrities.size() + " celebrities for country " + country.getName());
         } else {
@@ -501,7 +693,7 @@ public class CountryController {
         }
         return true;
     }
-// BLOUR DIALOG
+
     private Stage getCurrentStage() {
         return (Stage) (countryCards != null ? countryCards.getScene().getWindow() :
                 nameField != null ? nameField.getScene().getWindow() :

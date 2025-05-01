@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../../khalilstyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.ArtController">
+<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../../khalilstyle.css,@../../search-filter.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.ArtController">
     <left>
-        <fx:include source="../NavBarBack.fxml"/>
+        <fx:include source="../NavBarBack.fxml" />
     </left>
     <center>
-        <VBox alignment="CENTER" spacing="30" style="-fx-padding: 30;">
+        <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-padding: 15;">
             <HBox alignment="CENTER" spacing="15">
                 <ImageView fitHeight="40.0" fitWidth="40.0">
-                    <Image url="@../../icons/art.png"/>
+                    <Image url="@../../icons/art.png" />
                 </ImageView>
-                <Text styleClass="header-text" text="Manage Arts"/>
+                <Text styleClass="header-text" text="Manage Arts" />
             </HBox>
-            <Button text="Add New Art" onAction="#showAddArt" style="-fx-background-color: #2C3E50; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 10 25; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);"/>
-            <ScrollPane fitToWidth="true" fitToHeight="false" style="-fx-background: transparent; -fx-background-color: transparent;">
-                <FlowPane fx:id="artCards" hgap="25" vgap="25" alignment="CENTER" style="-fx-padding: 20;"/>
+            <Button onAction="#showAddArt" style="-fx-background-color: #2C3E50; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 10 25; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);" text="Add New Art" />
+            <!-- Advanced Search Section -->
+            <HBox alignment="CENTER" spacing="16" style="-fx-background-color: #fff; -fx-padding: 14 24 14 24; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8,0,0,2);">
+                <TextField fx:id="searchField" promptText="Mot-clé..." styleClass="custom-beauty" />
+                <ComboBox fx:id="typeCombo" promptText="Type" styleClass="custom-beauty" />
+                <ComboBox fx:id="countryCombo" promptText="Pays" styleClass="custom-beauty" />
+            </HBox>
+            <ScrollPane fitToHeight="false" fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
+                <FlowPane fx:id="artCards" alignment="CENTER" hgap="25" style="-fx-padding: 20; -fx-background-color: #FFFFFF; -fx-background-radius:12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);" vgap="25" />
             </ScrollPane>
         </VBox>
     </center>

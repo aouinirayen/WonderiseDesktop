@@ -5,12 +5,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class CustomDialogController {
     @FXML private ImageView iconView;
-    @FXML private Label titleLabel;
-    @FXML private Label messageLabel;
+    @FXML private Text titleLabel;
+    @FXML private Text messageLabel;
     @FXML private Button closeButton;
 
     public void setDialogData(String title, String message, boolean isSuccess) {

@@ -58,6 +58,13 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Button fx:id="ratingBtn" onAction="#handleRatingButton" styleClass="nav-button" text="Rating">
+            <graphic>
+                <ImageView fitHeight="30.0" fitWidth="30.0">
+                    <Image url="@../icons/rate.png" />
+                </ImageView>
+            </graphic>
+        </Button>
     </VBox>
     <Region VBox.vgrow="ALWAYS" />
     <Button styleClass="logout-button" text="Logout">

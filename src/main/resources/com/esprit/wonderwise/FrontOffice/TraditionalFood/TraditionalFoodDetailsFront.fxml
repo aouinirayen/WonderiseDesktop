@@ -45,6 +45,12 @@
                         <Label text="Recipe" style="-fx-font-size: 14px; -fx-text-fill: #4A4A4A; -fx-font-weight: bold; -fx-font-family: 'Roboto', 'Arial', sans-serif;" />
                         <Text fx:id="recipeLabel" wrappingWidth="380" style="-fx-font-size: 14px; -fx-fill: #666666; -fx-font-family: 'Roboto', 'Arial', sans-serif;" />
                     </VBox>
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <VBox>
+                            <Label text="Scannez pour la recette Google" style="-fx-font-size: 14px; -fx-text-fill: #4A4A4A; -fx-font-family: 'Roboto', 'Arial', sans-serif;" />
+                            <ImageView fx:id="qrCodeImageView" fitHeight="120" fitWidth="120" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0, 0, 2); -fx-background-radius: 10;" />
+                        </VBox>
+                    </HBox>
                     <Button onAction="#goBack" text="Back to List" styleClass="frontoffice-action-button" />
                 </VBox>
             </HBox>

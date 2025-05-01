@@ -101,10 +101,10 @@ public class ArtController {
         String type = (typeCombo != null) ? typeCombo.getValue() : null;
         String country = (countryCombo != null) ? countryCombo.getValue() : null;
         filteredArts = allArts.stream()
-                .filter(a -> (keyword.isEmpty() || (a.getName() != null && a.getName().toLowerCase().contains(keyword)) || (a.getDescription() != null && a.getDescription().toLowerCase().contains(keyword))))
-                .filter(a -> (type == null || type.equals("All") || type.isEmpty() || (a.getType() != null && a.getType().equals(type))))
-                .filter(a -> (country == null || country.equals("All") || country.isEmpty() || (getCountryNameById(a.getCountryId()).equals(country))))
-                .toList();
+            .filter(a -> (keyword.isEmpty() || (a.getName() != null && a.getName().toLowerCase().contains(keyword)) || (a.getDescription() != null && a.getDescription().toLowerCase().contains(keyword))))
+            .filter(a -> (type == null || type.equals("All") || type.isEmpty() || (a.getType() != null && a.getType().equals(type))))
+            .filter(a -> (country == null || country.equals("All") || country.isEmpty() || (getCountryNameById(a.getCountryId()).equals(country))))
+            .toList();
         loadArts();
     }
 

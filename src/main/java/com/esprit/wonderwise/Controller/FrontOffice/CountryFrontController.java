@@ -336,20 +336,20 @@ public class CountryFrontController {
         dislikeGroup.getChildren().addAll(dislikeBtn, dislikeCount);
 
         Runnable handleLike = () -> {
-
+            
             ratingService.add(new Rating(0, country.getId(), true, java.time.LocalDateTime.now()));
             int newLikes = ratingService.countLikes(country.getId());
             int newDislikes = ratingService.countDislikes(country.getId());
-
+            
             likeCount.setText(String.valueOf(newLikes));
             dislikeCount.setText(String.valueOf(newDislikes));
         };
         Runnable handleDislike = () -> {
-
+            
             ratingService.add(new Rating(0, country.getId(), false, java.time.LocalDateTime.now()));
             int newLikes = ratingService.countLikes(country.getId());
             int newDislikes = ratingService.countDislikes(country.getId());
-
+            
             likeCount.setText(String.valueOf(newLikes));
             dislikeCount.setText(String.valueOf(newDislikes));
         };

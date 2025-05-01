@@ -339,36 +339,36 @@ public class CelebrityController {
         showCelebrityList();
     }
 
-    private String copyImageToDestination(String sourcePath) throws IOException {
-        if (sourcePath == null || sourcePath.isEmpty()) return "";
-        File sourceFile = new File(sourcePath);
-        if (!sourceFile.exists()) return "";
-        String fileName = sourceFile.getName();
-        File destFile = new File(IMAGE_DESTINATION_DIR + fileName);
+private String copyImageToDestination(String sourcePath) throws IOException {
+if (sourcePath == null || sourcePath.isEmpty()) return "";
+File sourceFile = new File(sourcePath);
+if (!sourceFile.exists()) return "";
+String fileName = sourceFile.getName();
+File destFile = new File(IMAGE_DESTINATION_DIR + fileName);
 // If sourcePath is already in IMAGE_DESTINATION_DIR, skip copy
-        if (sourceFile.getAbsolutePath().equals(destFile.getAbsolutePath())) {
-            // Optionally, apply watermark here if needed
-            try {
-                com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
-            } catch (Exception e) {
-                System.err.println("Failed to apply watermark: " + e.getMessage());
-            }
-            return fileName;
-        }
-        try {
-            // First copy the image
-            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            // Apply watermark
-            com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
-        } catch (Exception e) {
-            // If watermarking fails, fallback to normal copy
-            Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            System.err.println("Failed to apply watermark: " + e.getMessage());
-        }
-        return fileName;
+if (sourceFile.getAbsolutePath().equals(destFile.getAbsolutePath())) {
+    // Optionally, apply watermark here if needed
+    try {
+        com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
+    } catch (Exception e) {
+        System.err.println("Failed to apply watermark: " + e.getMessage());
     }
+    return fileName;
+}
+try {
+    // First copy the image
+    Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    // Apply watermark
+    com.esprit.wonderwise.Utils.WatermarkUtils.applyTextWatermark(destFile, destFile, "WonderWise");
+} catch (Exception e) {
+    // If watermarking fails, fallback to normal copy
+    Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    System.err.println("Failed to apply watermark: " + e.getMessage());
+}
+return fileName;
+}
 
-    public void setCelebrityData(Celebrity celebrity) {
+public void setCelebrityData(Celebrity celebrity) {
         nameField.setText(celebrity.getName());
         workField.setText(celebrity.getWork());
         imgPathField.setText(IMAGE_DESTINATION_DIR + celebrity.getImg());

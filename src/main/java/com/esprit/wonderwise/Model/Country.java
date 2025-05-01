@@ -9,11 +9,12 @@ public class Country {
     private String isoCode;
     private String callingCode;
     private String climate;
+    private String continent;
 
     // Constructors
     public Country() {}
 
-    public Country(int id, String name, String img, String description, String currency, String isoCode, String callingCode, String climate) {
+    public Country(int id, String name, String img, String description, String currency, String isoCode, String callingCode, String climate, String continent) {
         this.id = id;
         this.name = name;
         this.img = img;
@@ -22,6 +23,11 @@ public class Country {
         this.isoCode = isoCode;
         this.callingCode = callingCode;
         this.climate = climate;
+        this.continent = continent;
+    }
+    // For backward compatibility
+    public Country(int id, String name, String img, String description, String currency, String isoCode, String callingCode, String climate) {
+        this(id, name, img, description, currency, isoCode, callingCode, climate, null);
     }
 
     // Getters and Setters
@@ -41,6 +47,8 @@ public class Country {
     public void setCallingCode(String callingCode) { this.callingCode = callingCode; }
     public String getClimate() { return climate; }
     public void setClimate(String climate) { this.climate = climate; }
+    public String getContinent() { return continent; }
+    public void setContinent(String continent) { this.continent = continent; }
 
     @Override
     public String toString() {

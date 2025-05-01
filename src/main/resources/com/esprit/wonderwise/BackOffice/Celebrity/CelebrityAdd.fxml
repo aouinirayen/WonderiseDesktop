@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -18,7 +19,7 @@
     <center>
         <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40; -fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 10); -fx-max-width: 600;">
             <BorderPane.margin>
-                <Insets top="40" bottom="40"/>
+                <Insets bottom="40" top="40" />
             </BorderPane.margin>
             <HBox alignment="CENTER" spacing="10">
                 <ImageView fitHeight="35.0" fitWidth="35.0">
@@ -30,40 +31,27 @@
                 <TextField fx:id="nameField" promptText="Name" styleClass="modern-input" HBox.hgrow="ALWAYS" />
                 <TextField fx:id="workField" promptText="Work" styleClass="modern-input" HBox.hgrow="ALWAYS" />
             </HBox>
-            <ComboBox fx:id="countryComboBox" promptText="Select Country" styleClass="modern-input" prefWidth="200.0" />
+            <ComboBox fx:id="countryComboBox" prefWidth="200.0" promptText="Select Country" styleClass="modern-input" />
             <HBox alignment="CENTER" spacing="15">
                 <ImageView fitHeight="35.0" fitWidth="35.0">
                     <Image url="@../../icons/photo.png" />
                 </ImageView>
-                <TextField fx:id="imgPathField" editable="false" prefWidth="300.0" promptText="Image Path" styleClass="modern-input" />
+                <TextField fx:id="imgPathField" editable="false" prefHeight="42.0" prefWidth="227.0" promptText="Image Path" styleClass="modern-input" />
                 <Button onAction="#handleImgBrowse" styleClass="upload-button" text="Browse" />
-
-
-
-                <Button onAction="#handleWebcamCapture" styleClass="upload-button" text="Webcam" />
-
-
-
+<Button onAction="#handleWebcamCapture" styleClass="upload-button" text="Webcam" />
             </HBox>
             <ImageView fx:id="webcamPreview" fitHeight="95.0" fitWidth="130.0" style="-fx-border-color: #bbb; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 6;" visible="false" managed="false" />
-
-
-
-
-
-
-
-            <TextField fx:id="descField" promptText="Description" styleClass="modern-input" />
+<TextField fx:id="descField" promptText="Description" styleClass="modern-input" />
             <HBox spacing="20">
                 <TextField fx:id="jobField" promptText="Job" styleClass="modern-input" HBox.hgrow="ALWAYS" />
                 <TextField fx:id="nationalityField" promptText="Nationality" styleClass="modern-input" HBox.hgrow="ALWAYS" />
+               <DatePicker fx:id="dobPicker" promptText="Date of Birth" styleClass="modern-datepicker" />
             </HBox>
-            <DatePicker fx:id="dobPicker" promptText="Date of Birth" styleClass="modern-datepicker" />
             <HBox spacing="20">
                 <TextField fx:id="notableWorksField" promptText="Notable Works" styleClass="modern-input" HBox.hgrow="ALWAYS" />
+               <TextField fx:id="netWorthField" promptText="Net Worth" styleClass="modern-input" />
                 <TextField fx:id="personalLifeField" promptText="Personal Life" styleClass="modern-input" HBox.hgrow="ALWAYS" />
             </HBox>
-            <TextField fx:id="netWorthField" promptText="Net Worth" styleClass="modern-input" />
             <HBox alignment="CENTER" spacing="20">
                 <Button onAction="#addCelebrity" style="-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-padding: 10 25; -fx-background-radius: 10;" text="Save" />
                 <Button onAction="#showCelebrityList" style="-fx-background-color: #E74C3C; -fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-padding: 10 25; -fx-background-radius: 10;" text="Cancel" />

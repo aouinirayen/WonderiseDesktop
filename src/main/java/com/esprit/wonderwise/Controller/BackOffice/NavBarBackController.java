@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class NavBarBackController {
-    @FXML private Button dashboardBtn, countryBtn, artBtn, monumentBtn, foodBtn, celebrityBtn;
+    @FXML private Button dashboardBtn, countryBtn, artBtn, monumentBtn, foodBtn, celebrityBtn, ratingBtn;
 
     @FXML
     private void handleDashboardButton(ActionEvent event) throws IOException {
@@ -39,8 +39,13 @@ public class NavBarBackController {
     }
 
     @FXML
-    public void handleCelebrityButton(ActionEvent event) throws IOException {
+    private void handleCelebrityButton(ActionEvent event) throws IOException {
         loadScene("Celebrity/Celebrity.fxml", event);
+    }
+
+    @FXML
+    private void handleRatingButton(ActionEvent event) throws IOException {
+        loadScene("Rating/DashboardRating.fxml", event);
     }
 
     private void loadScene(String fxml, ActionEvent event) throws IOException {

@@ -1,0 +1,66 @@
+/* Modern Beautiful Pagination Styles */
+
+.pagination > .pagination-control > .control-box {
+    -fx-spacing: 8;
+    -fx-alignment: center;
+}
+
+.pagination > .pagination-control > .control-box > .number-button,
+.pagination > .pagination-control > .control-box > .bullet-button,
+.pagination > .pagination-control > .control-box > .left-arrow-button,
+.pagination > .pagination-control > .control-box > .right-arrow-button {
+    -fx-background-insets: 0;
+    -fx-background-color: #F0F4F8;
+    -fx-min-width: 38;
+    -fx-min-height: 38;
+    -fx-max-width: 38;
+    -fx-max-height: 38;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #d1dbe8;
+    -fx-border-width: 1.5;
+    -fx-font-size: 17px;
+    -fx-font-family: 'Poppins', 'Arial', sans-serif;
+    -fx-text-fill: #2C3E50;
+    -fx-effect: dropshadow(gaussian, rgba(44,62,80,0.08), 3,0,0,1);
+    -fx-cursor: hand;
+    -fx-padding: 0 3 0 3;
+    -fx-transition: all 0.18s cubic-bezier(.4,0,.2,1);
+}
+
+.pagination > .pagination-control > .control-box > .number-button:hover,
+.pagination > .pagination-control > .control-box > .bullet-button:hover,
+.pagination > .pagination-control > .control-box > .left-arrow-button:hover,
+.pagination > .pagination-control > .control-box > .right-arrow-button:hover {
+    -fx-background-color: #e0e6ef;
+    -fx-effect: dropshadow(gaussian, rgba(44,62,80,0.18), 6,0,0,2);
+    -fx-text-fill: #1a202c;
+}
+
+.pagination > .pagination-control > .control-box > .number-button:selected,
+.pagination > .pagination-control > .control-box > .bullet-button:selected {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #2C3E50 80%, #4E5D6C 100%);
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(44,62,80,0.22), 8,0,0,3);
+    -fx-border-color: #2C3E50;
+    -fx-border-width: 2;
+}
+
+/* Hide ugly focus ring */
+.pagination > .pagination-control > .control-box > .number-button:focused,
+.pagination > .pagination-control > .control-box > .bullet-button:focused,
+.pagination > .pagination-control > .control-box > .left-arrow-button:focused,
+.pagination > .pagination-control > .control-box > .right-arrow-button:focused {
+    -fx-background-insets: 0;
+    -fx-effect: none;
+    -fx-border-color: #a0aec0;
+}
+
+/* Smooth transition for all buttons */
+.pagination > .pagination-control > .control-box > .number-button,
+.pagination > .pagination-control > .control-box > .bullet-button,
+.pagination > .pagination-control > .control-box > .left-arrow-button,
+.pagination > .pagination-control > .control-box > .right-arrow-button {
+    -fx-transition: all 0.18s cubic-bezier(.4,0,.2,1);
+}
