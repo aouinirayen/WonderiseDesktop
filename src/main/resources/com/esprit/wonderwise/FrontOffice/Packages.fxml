@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.FlowPane?>
@@ -11,14 +12,30 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.shape.SVGPath?>
+<?import javafx.geometry.Insets?>
 
-<VBox alignment="TOP_CENTER" spacing="20" stylesheets="@ModernPackages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.PackagesController">
+<VBox alignment="TOP_CENTER" spacing="20" stylesheets="@Packages.css,@FrontOffice.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.PackagesController">
     <ScrollPane fitToWidth="true" styleClass="main-scroll-pane">
         <VBox alignment="TOP_CENTER" spacing="20">
+            <!-- Title -->
             <HBox styleClass="section-title-container" alignment="CENTER">
                 <Label styleClass="section-title" text="Nos Offres de Voyage" />
             </HBox>
+
+            <!-- Search Container with Background -->
+            <VBox alignment="CENTER" styleClass="search-section">
+                <HBox alignment="CENTER" styleClass="search-container">
+                    <HBox alignment="CENTER" styleClass="search-box">
+                        <TextField fx:id="searchField" promptText="Rechercher votre prochaine destination..." styleClass="search-field" />
+                        <HBox styleClass="search-icon-container">
+                            <SVGPath content="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" 
+                                 styleClass="search-icon"/>
+                        </HBox>
+                    </HBox>
+                </HBox>
+            </VBox>
 
             <!-- Loading Indicator -->
             <StackPane fx:id="loadingPane" styleClass="loading-indicator">

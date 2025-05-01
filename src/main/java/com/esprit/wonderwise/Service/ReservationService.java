@@ -2,6 +2,7 @@ package com.esprit.wonderwise.Service;
 
 import com.esprit.wonderwise.Model.reservation;
 import com.esprit.wonderwise.Utils.DataSource;
+import com.esprit.wonderwise.Service.OffreService;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -13,35 +14,53 @@ import java.util.List;
 public class ReservationService {
 
     private Connection cnx = DataSource.getInstance().getCnx();
+    private OffreService offreService = new OffreService();
 
     public void create(reservation res) throws SQLException {
-        String sql = "INSERT INTO reservation (offre_id, nom, prenom, email, telephone, ville, nombre_personne, date_depart, heure_depart, type_voyage, mode_paiement, preferences_voyage, commentaire, date_reservation, statut, date_paiement, stripe_payment_id, regime_alimentaire) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, res.getOffreId());
-            stmt.setString(2, res.getNom());
-            stmt.setString(3, res.getPrenom());
-            stmt.setString(4, res.getEmail());
-            stmt.setString(5, res.getTelephone());
-            stmt.setString(6, res.getVille());
-            stmt.setInt(7, res.getNombrePersonne());
-            stmt.setDate(8, res.getDateDepart() != null ? Date.valueOf(res.getDateDepart()) : null);
-            stmt.setTime(9, res.getHeureDepart() != null ? Time.valueOf(res.getHeureDepart()) : null);
-            stmt.setString(10, res.getTypeVoyage());
-            stmt.setString(11, res.getModePaiement());
-            stmt.setString(12, res.getPreferencesVoyage());
-            stmt.setString(13, res.getCommentaire());
-            stmt.setTimestamp(14, res.getDateReservation() != null ? Timestamp.valueOf(res.getDateReservation()) : null);
-            stmt.setString(15, res.getStatut());
-            stmt.setTimestamp(16, res.getDatePaiement() != null ? Timestamp.valueOf(res.getDatePaiement()) : null);
-            stmt.setString(17, res.getStripePaymentId());
-            stmt.setString(18, res.getRegimeAlimentaire());
-            stmt.executeUpdate();
+        // Début de la transaction
+        cnx.setAutoCommit(false);
+        try {
+            String sql = "INSERT INTO reservation (offre_id, nom, prenom, email, telephone, ville, nombre_personne, date_depart, heure_depart, type_voyage, mode_paiement, preferences_voyage, commentaire, date_reservation, statut, date_paiement, stripe_payment_id, regime_alimentaire) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement stmt = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                stmt.setInt(1, res.getOffreId());
+                stmt.setString(2, res.getNom());
+                stmt.setString(3, res.getPrenom());
+                stmt.setString(4, res.getEmail());
+                stmt.setString(5, res.getTelephone());
+                stmt.setString(6, res.getVille());
+                stmt.setInt(7, res.getNombrePersonne());
+                stmt.setDate(8, res.getDateDepart() != null ? Date.valueOf(res.getDateDepart()) : null);
+                stmt.setTime(9, res.getHeureDepart() != null ? Time.valueOf(res.getHeureDepart()) : null);
+                stmt.setString(10, res.getTypeVoyage());
+                stmt.setString(11, res.getModePaiement());
+                stmt.setString(12, res.getPreferencesVoyage());
+                stmt.setString(13, res.getCommentaire());
+                stmt.setTimestamp(14, res.getDateReservation() != null ? Timestamp.valueOf(res.getDateReservation()) : null);
+                stmt.setString(15, res.getStatut());
+                stmt.setTimestamp(16, res.getDatePaiement() != null ? Timestamp.valueOf(res.getDatePaiement()) : null);
+                stmt.setString(17, res.getStripePaymentId());
+                stmt.setString(18, res.getRegimeAlimentaire());
+                stmt.executeUpdate();
 
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    res.setId(rs.getInt(1));
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        res.setId(rs.getInt(1));
+                    }
                 }
             }
+
+            // Mise à jour du nombre de places disponibles
+            offreService.updatePlacesDisponibles(res.getOffreId(), res.getNombrePersonne());
+
+            // Validation de la transaction
+            cnx.commit();
+        } catch (SQLException e) {
+            // En cas d'erreur, annulation de la transaction
+            cnx.rollback();
+            throw e;
+        } finally {
+            // Rétablissement du mode auto-commit
+            cnx.setAutoCommit(true);
         }
     }
 

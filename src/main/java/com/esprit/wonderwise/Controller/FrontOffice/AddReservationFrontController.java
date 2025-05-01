@@ -2,8 +2,11 @@ package com.esprit.wonderwise.Controller.FrontOffice;
 
 import com.esprit.wonderwise.Model.offre;
 import com.esprit.wonderwise.Model.reservation;
+import com.esprit.wonderwise.Service.EmailService;
 import com.esprit.wonderwise.Service.OffreService;
+import com.esprit.wonderwise.Service.PaymentService;
 import com.esprit.wonderwise.Service.ReservationService;
+import com.stripe.exception.StripeException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -231,30 +234,24 @@ public class AddReservationFrontController {
         String regimeAlimentaire = regimeAlimentaireField.getText();
         String commentaire = commentaireField.getText();
 
-        // Réinitialiser les styles d'erreur
+        // Reset error styles
         resetErrorStyles();
 
         boolean hasError = false;
-        
-        // Validation de l'offre
+
+        // Validation of fields
         if (selectedOffre == null) {
             showFieldError(offreChoice, offreError, "Veuillez sélectionner une destination");
             hasError = true;
         }
-
-        // Validation du nom
         if (nom == null || nom.trim().isEmpty()) {
             showFieldError(nomField, nomError, "Le nom est obligatoire");
             hasError = true;
         }
-
-        // Validation du prénom
         if (prenom == null || prenom.trim().isEmpty()) {
             showFieldError(prenomField, prenomError, "Le prénom est obligatoire");
             hasError = true;
         }
-
-        // Validation de l'email
         if (email == null || email.trim().isEmpty()) {
             showFieldError(emailField, emailError, "L'email est obligatoire");
             hasError = true;
@@ -262,8 +259,6 @@ public class AddReservationFrontController {
             showFieldError(emailField, emailError, "Format d'email invalide");
             hasError = true;
         }
-
-        // Validation du téléphone
         if (telephone == null || telephone.trim().isEmpty()) {
             showFieldError(telephoneField, telephoneError, "Le téléphone est obligatoire");
             hasError = true;
@@ -271,8 +266,6 @@ public class AddReservationFrontController {
             showFieldError(telephoneField, telephoneError, "Le numéro doit contenir 8 chiffres");
             hasError = true;
         }
-
-        // Validation du nombre de personnes
         if (nombrePersonneText == null || nombrePersonneText.trim().isEmpty()) {
             showFieldError(nombrePersonneField, nombrePersonneError, "Le nombre de personnes est obligatoire");
             hasError = true;
@@ -288,25 +281,21 @@ public class AddReservationFrontController {
                 hasError = true;
             }
         }
-
-        // Validation du mode de paiement
         if (modePaiement == null) {
             showFieldError(modePaiementChoice, modePaiementError, "Le mode de paiement est obligatoire");
             hasError = true;
         }
-        
-        // Validation du régime alimentaire
         if (regimeAlimentaire == null || regimeAlimentaire.trim().isEmpty()) {
             showFieldError(regimeAlimentaireField, regimeAlimentaireError, "Le régime alimentaire est obligatoire");
             hasError = true;
         }
 
-        // S'il y a des erreurs, arrêter
+        // If there are errors, stop
         if (hasError) {
             return;
         }
 
-        // Si tout est valide, procéder à la réservation
+        // Proceed with reservation creation or update
         try {
             reservation newReservation = currentReservation != null ? currentReservation : new reservation();
             if (currentReservation != null) {
@@ -325,49 +314,80 @@ public class AddReservationFrontController {
             newReservation.setModePaiement(modePaiement);
             newReservation.setRegimeAlimentaire(regimeAlimentaire.trim());
             newReservation.setCommentaire(commentaire != null && !commentaire.trim().isEmpty() ? commentaire.trim() : null);
-
-            // Définir des valeurs par défaut pour les champs non affichés
             newReservation.setDateDepart(null);
             newReservation.setHeureDepart(null);
             newReservation.setTypeVoyage("Individuel");
             newReservation.setPreferencesVoyage(null);
-            newReservation.setStripePaymentId(null);
-
-            // Définir la date de réservation et le statut
             newReservation.setDateReservation(LocalDateTime.now());
             newReservation.setStatut("En attente");
 
             ReservationService reservationService = new ReservationService();
+            PaymentService paymentService = new PaymentService();
+
+            // Save the reservation first to get an ID
             if (currentReservation != null) {
                 reservationService.update(newReservation);
-                showAlert("Succès", "Réservation modifiée avec succès !");
             } else {
                 reservationService.create(newReservation);
-                showAlert("Succès", "Réservation effectuée avec succès !");
             }
 
-            // Charger la page de liste des réservations via le FrontOfficeController
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/FrontOffice/FrontOffice.fxml"));
-            Parent root = loader.load();
-            FrontOfficeController frontController = loader.getController();
-            frontController.loadContent("/com/esprit/wonderwise/FrontOffice/ReservationList.fxml");
-            
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) nomField.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            // Validate reservation ID
+            if (newReservation.getId() <= 0) {
+                throw new SQLException("Failed to obtain a valid reservation ID.");
+            }
+
+            if ("Carte bancaire".equals(modePaiement)) {
+                // Create Stripe checkout session
+                String checkoutUrl = paymentService.createCheckoutSession(newReservation, selectedOffre);
+
+                // Send confirmation email
+                EmailService.sendReservationConfirmation(
+                        newReservation.getEmail(),
+                        newReservation.getPrenom() + " " + newReservation.getNom(),
+                        newReservation,
+                        selectedOffre
+                );
+
+                try {
+                    System.out.println("Opening Stripe checkout URL: " + checkoutUrl);
+                    java.awt.Desktop.getDesktop().browse(new java.net.URI(checkoutUrl));
+                } catch (Exception e) {
+                    showAlert("Erreur", "Impossible d'ouvrir la page de paiement : " + e.getMessage());
+                    return;
+                }
+
+                showAlert("Réservation Initiée", "Vous allez être redirigé vers la page de paiement Stripe pour finaliser votre réservation.\n" +
+                        "Un email de confirmation a été envoyé à " + newReservation.getEmail() + ".");
+            } else {
+                // Send confirmation email for non-Stripe payment
+                EmailService.sendReservationConfirmation(
+                        newReservation.getEmail(),
+                        newReservation.getPrenom() + " " + newReservation.getNom(),
+                        newReservation,
+                        selectedOffre
+                );
+
+                showAlert("Succès", currentReservation != null ? "Réservation modifiée avec succès !" : "Réservation effectuée avec succès !");
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/wonderwise/FrontOffice/FrontOffice.fxml"));
+                Parent root = loader.load();
+                FrontOfficeController frontController = loader.getController();
+                frontController.loadContent("/com/esprit/wonderwise/FrontOffice/ReservationList.fxml");
+
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) nomField.getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            }
 
         } catch (SQLException e) {
-            if (currentReservation != null) {
-                showAlert("Erreur", "Erreur lors de la modification de la réservation : " + e.getMessage());
-            } else {
-                showAlert("Erreur", "Erreur lors de la réservation : " + e.getMessage());
-            }
+            showAlert("Erreur", currentReservation != null ? "Erreur lors de la modification de la réservation : " + e.getMessage() : "Erreur lors de la réservation : " + e.getMessage());
+        } catch (StripeException e) {
+            showAlert("Erreur de paiement", "Erreur lors de la création de la session de paiement : " + e.getMessage());
         } catch (Exception e) {
-            showAlert("Erreur", "Erreur lors du chargement de la page : " + e.getMessage());
+            showAlert("Erreur", "Erreur inattendue : " + e.getMessage());
         }
     }
-
     @FXML
     private void handleCancel() {
         closeWindow();

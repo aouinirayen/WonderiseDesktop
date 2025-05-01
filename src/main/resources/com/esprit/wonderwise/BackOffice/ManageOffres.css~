@@ -242,3 +242,61 @@
     -fx-font-size: 12px;
     -fx-text-fill: #666;
 }
+
+/* Statistics Dashboard Styles */
+.stats-container {
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 10px;
+}
+
+.stats-card {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-min-width: 200px;
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.stats-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.2), 15, 0, 0, 3);
+    -fx-translate-y: -2px;
+}
+
+.stats-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-weight: bold;
+}
+
+.stats-number {
+    -fx-font-size: 24px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+.stats-chart {
+    -fx-min-width: 300px;
+    -fx-min-height: 200px;
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.stats-chart .chart-pie {
+    -fx-border-color: white;
+}
+
+.stats-chart .chart-pie-label {
+    -fx-font-size: 12px;
+}
+
+.stats-chart .chart-legend {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}

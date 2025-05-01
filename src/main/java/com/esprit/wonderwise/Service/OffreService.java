@@ -33,7 +33,19 @@ public class OffreService {
     public List<offre> readAll() throws SQLException {
         List<offre> offres = new ArrayList<>();
         String sql = "SELECT * FROM offre";
-        try (Statement stmt = cnx.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        System.out.println(" Exécution de la requête : " + sql);
+        
+        try (Statement stmt = cnx.createStatement(); 
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            System.out.println(" Connexion à la base de données réussie");
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            System.out.println(" Colonnes trouvées :");
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.println(" - " + metaData.getColumnName(i));
+            }
+            
             while (rs.next()) {
                 offre offre = new offre();
                 offre.setId(rs.getInt("id"));
@@ -42,15 +54,43 @@ public class OffreService {
                 offre.setPrix(rs.getDouble("prix"));
                 offre.setNombrePlaces(rs.getInt("nombre_places"));
                 offre.setPlacesDisponibles(rs.getInt("places_disponibles"));
-                offre.setDateCreation(rs.getTimestamp("date_creation").toLocalDateTime());
-                offre.setDateDebut(rs.getTimestamp("date_debut") != null ? rs.getTimestamp("date_debut").toLocalDateTime() : null);
-                offre.setDateFin(rs.getTimestamp("date_fin") != null ? rs.getTimestamp("date_fin").toLocalDateTime() : null);
+                
+                Timestamp dateCreation = rs.getTimestamp("date_creation");
+                if (dateCreation != null) {
+                    offre.setDateCreation(dateCreation.toLocalDateTime());
+                }
+                
+                Timestamp dateDebut = rs.getTimestamp("date_debut");
+                if (dateDebut != null) {
+                    offre.setDateDebut(dateDebut.toLocalDateTime());
+                }
+                
+                Timestamp dateFin = rs.getTimestamp("date_fin");
+                if (dateFin != null) {
+                    offre.setDateFin(dateFin.toLocalDateTime());
+                }
+                
                 offre.setImage(rs.getString("image"));
                 offre.setPays(rs.getString("pays"));
-                offre.setRating(rs.getObject("rating") != null ? rs.getDouble("rating") : null);
-                offre.setRatingCount(rs.getObject("rating_count") != null ? rs.getInt("rating_count") : null);
+                
+                Object rating = rs.getObject("rating");
+                if (rating != null) {
+                    offre.setRating(rs.getDouble("rating"));
+                }
+                
+                Object ratingCount = rs.getObject("rating_count");
+                if (ratingCount != null) {
+                    offre.setRatingCount(rs.getInt("rating_count"));
+                }
+                
                 offres.add(offre);
+                System.out.println(" Offre chargée : " + offre.getTitre());
             }
+            
+            System.out.println(" Total des offres chargées : " + offres.size());
+        } catch (SQLException e) {
+            System.out.println(" Erreur lors du chargement des offres : " + e.getMessage());
+            e.printStackTrace();
         }
         return offres;
     }
@@ -79,6 +119,25 @@ public class OffreService {
         String sql = "DELETE FROM offre WHERE id = ?";
         try (PreparedStatement stmt = cnx.prepareStatement(sql)) {
             stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void updateRating(int offreId, double rating, int ratingCount) throws SQLException {
+        String sql = "UPDATE offre SET rating = ?, rating_count = ? WHERE id = ?";
+        try (PreparedStatement stmt = cnx.prepareStatement(sql)) {
+            stmt.setDouble(1, rating);
+            stmt.setInt(2, ratingCount);
+            stmt.setInt(3, offreId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void updatePlacesDisponibles(int offreId, int nombrePersonnes) throws SQLException {
+        String sql = "UPDATE offre SET places_disponibles = places_disponibles - ? WHERE id = ?";
+        try (PreparedStatement stmt = cnx.prepareStatement(sql)) {
+            stmt.setInt(1, nombrePersonnes);
+            stmt.setInt(2, offreId);
             stmt.executeUpdate();
         }
     }
