@@ -18,45 +18,8 @@ public class ChangePasswordController {
 
 
 
-  
-        });
-    }
 
-    private void togglePasswordVisibility(PasswordField pf, TextField tf, ImageView eye) {
-        boolean showing = tf.isVisible();
-        if (showing) {
-            tf.setVisible(false);
-            tf.setManaged(false);
-            pf.setVisible(true);
-            pf.setManaged(true);
-            setEyeIcon(eye, false);
-        } else {
-            tf.setText(pf.getText());
-            tf.setVisible(true);
-            tf.setManaged(true);
-            pf.setVisible(false);
-            pf.setManaged(false);
-            setEyeIcon(eye, true);
-        }
-    }
-
-    private void setEyeIcon(ImageView eye, boolean open) {
-        String iconPath = open ? EYE_OPEN_ICON : EYE_CLOSED_ICON;
-        eye.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream(iconPath)));
-    }
-
-    @FXML
-    private void handleChangePassword() {
-        String newPassword = newPasswordField.getText();
-        String confirmPassword = confirmPasswordField.getText();
-        if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
-            DialogUtils.showCustomDialog("Erreur", "Veuillez remplir tous les champs.", false);
-            return;
-        }
-        if (!newPassword.equals(confirmPassword)) {
-            DialogUtils.showCustomDialog("Erreur", "Les mots de passe ne correspondent pas.", false);
-            return;
-        }
+   
         if (newPassword.length() < 6) {
             DialogUtils.showCustomDialog("Erreur", "Le mot de passe doit contenir au moins 6 caractères.", false);
             return;
