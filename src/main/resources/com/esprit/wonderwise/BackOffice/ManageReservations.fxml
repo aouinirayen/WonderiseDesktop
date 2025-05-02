@@ -9,81 +9,85 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 
-<VBox spacing="20" prefWidth="1200" stylesheets="@ManageReservations.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.ManageReservationsController">
+<ScrollPane fitToWidth="true" styleClass="main-scroll-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.ManageReservationsController">
+    <content>
+        <VBox spacing="20" prefWidth="1200" stylesheets="@ManageReservations.css">
 
-    <!-- Header with title and add button -->
-    <HBox styleClass="header-container" alignment="CENTER">
-        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-            <Label styleClass="page-title" text="Gestion des réservations" />
-        </HBox>
-        <HBox alignment="CENTER_RIGHT">
-            <padding>
-                <Insets right="100.0" />
-            </padding>
-            <Button fx:id="addButton" text="Ajouter une réservation" styleClass="button-add" onAction="#openAddReservationForm">
-                <graphic>
-                    <ImageView fitHeight="16" fitWidth="16">
-                        <image>
-                            <Image url="@../icons/add.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Button>
-        </HBox>
-    </HBox>
+            <!-- Header with title and add button -->
+            <HBox styleClass="header-container" alignment="CENTER">
+                <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                    <Label styleClass="page-title" text="Gestion des réservations" />
+                </HBox>
+                <HBox alignment="CENTER_RIGHT">
+                    <padding>
+                        <Insets right="100.0" />
+                    </padding>
+                    <Button fx:id="addButton" text="Ajouter une réservation" styleClass="button-add" onAction="#openAddReservationForm">
+                        <graphic>
+                            <ImageView fitHeight="16" fitWidth="16">
+                                <image>
+                                    <Image url="@../icons/add.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </HBox>
 
-    <!-- Statistics Dashboard -->
-    <HBox styleClass="stats-container" spacing="20" alignment="CENTER">
-        <VBox styleClass="stats-card" alignment="CENTER">
-            <Label styleClass="stats-title" text="Total des réservations" />
-            <Label fx:id="totalReservationsLabel" styleClass="stats-value" text="0" />
-        </VBox>
-        <VBox styleClass="stats-card" alignment="CENTER">
-            <Label styleClass="stats-title" text="Total des personnes" />
-            <Label fx:id="totalPersonnesLabel" styleClass="stats-value" text="0" />
-        </VBox>
-        <StackPane styleClass="stats-card" fx:id="reservationsChartContainer">
-            <!-- PieChart will be added here programmatically -->
-        </StackPane>
-        <StackPane styleClass="stats-card" fx:id="personnesChartContainer">
-            <!-- PieChart will be added here programmatically -->
-        </StackPane>
-    </HBox>
+            <!-- Statistics Dashboard -->
+            <HBox styleClass="stats-container" spacing="20" alignment="CENTER">
+                <VBox styleClass="stats-card" alignment="CENTER">
+                    <Label styleClass="stats-title" text="Total des réservations" />
+                    <Label fx:id="totalReservationsLabel" styleClass="stats-value" text="0" />
+                </VBox>
+                <VBox styleClass="stats-card" alignment="CENTER">
+                    <Label styleClass="stats-title" text="Total des personnes" />
+                    <Label fx:id="totalPersonnesLabel" styleClass="stats-value" text="0" />
+                </VBox>
+                <StackPane styleClass="stats-card" fx:id="reservationsChartContainer">
+                    <!-- PieChart will be added here programmatically -->
+                </StackPane>
+                <StackPane styleClass="stats-card" fx:id="personnesChartContainer">
+                    <!-- PieChart will be added here programmatically -->
+                </StackPane>
+            </HBox>
 
-    <!-- Filters and Sort Bar -->
-    <HBox styleClass="filters-bar" spacing="15" alignment="CENTER_LEFT">
-        <ComboBox fx:id="sortComboBox" promptText="Trier par..." prefWidth="150">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Date (plus récent)" />
-                    <String fx:value="Date (plus ancien)" />
-                    <String fx:value="Nombre de personnes" />
-                    <String fx:value="Offre" />
-                </FXCollections>
-            </items>
-        </ComboBox>
-        <TextField fx:id="searchField" promptText="Rechercher une réservation..." prefWidth="200" styleClass="search-field" />
-        <ComboBox fx:id="filterComboBox" promptText="Filtrer par offre" prefWidth="180" />
-        <DatePicker fx:id="dateFilter" promptText="Filtrer par date" />
-    </HBox>
+            <!-- Filters and Sort Bar -->
+            <HBox styleClass="filters-bar" spacing="15" alignment="CENTER_LEFT">
+                <ComboBox fx:id="sortComboBox" promptText="Trier par..." prefWidth="150">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Date (plus récent)" />
+                            <String fx:value="Date (plus ancien)" />
+                            <String fx:value="Nombre de personnes" />
+                            <String fx:value="Offre" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <TextField fx:id="searchField" promptText="Rechercher une réservation..." prefWidth="200" styleClass="search-field" />
+                <ComboBox fx:id="filterComboBox" promptText="Filtrer par offre" prefWidth="180" />
+                <DatePicker fx:id="dateFilter" promptText="Filtrer par date" />
+            </HBox>
 
-    <!-- Scrollable content area -->
-    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="reservations-scroll-pane" prefHeight="500.0" maxHeight="500.0">
-        <content>
-            <VBox fx:id="reservationsContainer" styleClass="reservations-container" spacing="10">
-                <!-- Reservation cards will be added dynamically here -->
+            <!-- Scrollable content area -->
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="reservations-scroll-pane" prefHeight="500.0" maxHeight="500.0">
+                <content>
+                    <VBox fx:id="reservationsContainer" styleClass="reservations-container" spacing="10">
+                        <!-- Reservation cards will be added dynamically here -->
+                    </VBox>
+                </content>
+            </ScrollPane>
+
+            <!-- Empty state -->
+            <VBox fx:id="emptyState" styleClass="empty-state" alignment="CENTER" visible="false" managed="false">
+                <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
+                    <image>
+                        <Image url="@../icons/empty-list.png" />
+                    </image>
+                </ImageView>
+                <Label styleClass="empty-state-text" text="Aucune réservation disponible" />
+                <Button text="Ajouter une réservation" styleClass="button-add" onAction="#openAddReservationForm" />
             </VBox>
-        </content>
-    </ScrollPane>
-
-    <!-- Empty state -->
-    <VBox fx:id="emptyState" styleClass="empty-state" alignment="CENTER" visible="false" managed="false">
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-            <image>
-                <Image url="@../icons/empty-list.png" />
-            </image>
-        </ImageView>
-        <Label styleClass="empty-state-text" text="Aucune réservation disponible" />
-        <Button text="Ajouter une réservation" styleClass="button-add" onAction="#openAddReservationForm" />
-    </VBox>
-</VBox>
+        </VBox>
+    </content>
+</ScrollPane>

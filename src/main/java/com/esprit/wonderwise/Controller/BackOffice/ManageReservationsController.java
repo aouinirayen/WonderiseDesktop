@@ -96,7 +96,7 @@ public class ManageReservationsController {
         try {
             List<offre> offres = offreService.readAll();
             offres.forEach(offre -> offresMap.put(offre.getId(), offre));
-            
+
             filterComboBox.getItems().add("Toutes les offres");
             offres.forEach(offre -> filterComboBox.getItems().add(offre.getTitre()));
         } catch (SQLException e) {
@@ -112,7 +112,7 @@ public class ManageReservationsController {
                 String lowerCaseFilter = newValue.toLowerCase();
                 offre offreAssociee = offresMap.get(reservation.getOffreId());
                 return (offreAssociee != null && offreAssociee.getTitre().toLowerCase().contains(lowerCaseFilter)) ||
-                       reservation.getNom().toLowerCase().contains(lowerCaseFilter);
+                        reservation.getNom().toLowerCase().contains(lowerCaseFilter);
             });
             updateDisplay();
         });

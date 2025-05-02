@@ -3,13 +3,13 @@ package com.esprit.wonderwise.Controller.BackOffice;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 public class BackOfficeController {
 
     @FXML
-    private Pane contentPane;
+    private VBox contentPane;
 
     @FXML
     private NavBarBackController navBarController;
@@ -32,6 +32,9 @@ public class BackOfficeController {
 
     public void loadContent(FXMLLoader loader) throws IOException {
         Node newContent = loader.load();
+        
+        // Set VBox.grow priority for the new content
+        VBox.setVgrow(newContent, javafx.scene.layout.Priority.ALWAYS);
 
         Object controller = loader.getController();
         if (controller instanceof AddOffreController) {

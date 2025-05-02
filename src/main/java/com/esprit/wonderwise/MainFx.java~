@@ -11,7 +11,7 @@ public class MainFx extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                MainFx.class.getResource("/com/esprit/wonderwise/BackOffice/BackOffice.fxml")
+                MainFx.class.getResource("/com/esprit/wonderwise/")
         );
         //FrontOffice/FrontOffice.fxml
         //BackOffice/BackOffice.fxml
