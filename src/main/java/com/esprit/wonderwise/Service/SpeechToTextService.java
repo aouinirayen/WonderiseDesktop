@@ -7,22 +7,6 @@ import javax.sound.sampled.*;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-/**
- * Service de dictée vocale Vosk – totalement offline.
- *
- * Utilisation :
- *
- * <pre>{@code
- * SpeechToTextService stt = new SpeechToTextService(
- *         modelPath,
- *         partial -> Platform.runLater(() -> textArea.setPromptText(partial)),
- *         text    -> Platform.runLater(() -> textArea.appendText(text + " "))
- * );
- *
- * stt.start();   // → commence l’écoute
- * stt.stop();    // → termine et envoie le dernier segment
- * }</pre>
- */
 public class SpeechToTextService {
 
     /* ---------- Constantes ---------- */
