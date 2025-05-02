@@ -3,7 +3,7 @@ package com.esprit.wonderwise.Controller.Auth;
 import com.esprit.wonderwise.Service.UserService;
 import com.esprit.wonderwise.Utils.DialogUtils;
 import javafx.fxml.FXML;
-import .ImageView;
+import hfoiuezhfuoiezhfiuezhfiuezhfiuezhfiuezhfezifbezjhfediuhgveuyfefuyezbfiezhfiujzkefbeziufbeziufgezifgiezufgezuifgeziufgeiufgeziufgueifgeziufgeiufgezufeziufgeiufgeifezifgeifiuezfgiuezfiuezfguiezgfiuezgfiuezgfiuezgfuiezgfiuezfiuezgfiuzegf.ImageView;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
