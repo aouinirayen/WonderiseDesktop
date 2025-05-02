@@ -417,24 +417,3 @@ public class EvenementBackController {
             DialogUtils.showCustomDialog("Validation Error", "Country cannot be empty.", false, getCurrentStage());
             return false;
         }
-        if (categorieField.getText().trim().isEmpty()) {
-            DialogUtils.showCustomDialog("Validation Error", "Category cannot be empty.", false, getCurrentStage());
-            return false;
-        }
-        return true;
-    }
-
-    // Utility method to get the current stage
-    private Stage getCurrentStage() {
-        return (Stage) (evenementCards != null ? evenementCards.getScene().getWindow() :
-                nomField != null ? nomField.getScene().getWindow() :
-                        nomLabel.getScene().getWindow());
-    }
-
-    // --- Search and Filter Helper ---
-    private void applySearchFilter() {
-        String search = (searchField != null) ? searchField.getText() : null;
-        String category = (filterCombo != null && filterCombo.getValue() != null) ? filterCombo.getValue() : null;
-        loadEvenements(search, category);
-    }
-}

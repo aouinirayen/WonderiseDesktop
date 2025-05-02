@@ -11,13 +11,7 @@
     -fx-text-fill: #3498DB; /* Blue color on hover */
 }
 
-/* Style for MenuButton to match Button */
-.menu-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-font-weight: normal;
-    -fx-padding: 5 10 5 10;
+
 }
 
 /* Hover effect for MenuButton */

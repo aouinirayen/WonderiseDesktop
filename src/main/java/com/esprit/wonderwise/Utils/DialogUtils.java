@@ -20,21 +20,12 @@ public class DialogUtils {
             GaussianBlur blur = new GaussianBlur(10); // Adjust radius for blur intensity
             mainStage.getScene().getRoot().setEffect(blur);
 
-            // Load and set up the custom dialog
-            FXMLLoader loader = new FXMLLoader(DialogUtils.class.getResource("/com/esprit/wonderwise/CustomDialog.fxml"));
-            Parent dialogRoot = loader.load();
 
-            CustomDialogController controller = loader.getController();
-            controller.setDialogData(title, message, isSuccess);
-
-            // Create the scene with transparent fill
-            Scene dialogScene = new Scene(dialogRoot);
-            dialogScene.setFill(Color.TRANSPARENT); // Make the scene background transparent
-
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL); // Makes dialog modal
-            dialogStage.initOwner(mainStage); // Ties dialog to main window
-            dialogStage.setScene(dialogScene);
+            / --- Search Helper ---
+            private void applySearchFilter() {
+                String search = (searchField != null) ? searchField.getText() : null;
+                loadGuides(search);
+            }
             dialogStage.setResizable(false);
             dialogStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED
 
