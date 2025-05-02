@@ -89,6 +89,18 @@
                             <TextField fx:id="commentField" 
                                      promptText="Écrivez votre commentaire ici..."
                                      styleClass="comment-input"/>
+                            
+                            <!-- Suggestion Section -->
+                            <VBox fx:id="suggestionBox" spacing="8" styleClass="suggestion-box">
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <Label text="✨ Suggestions" styleClass="suggestion-title" HBox.hgrow="ALWAYS"/>
+                                    <Button fx:id="generateSuggestionsBtn" text="Générer des suggestions" 
+                                            onAction="#handleGenerateSuggestions"
+                                            styleClass="suggestion-button"/>
+                                </HBox>
+                                <FlowPane fx:id="suggestionChips" hgap="5" vgap="5"/>
+                            </VBox>
+                            
                             <Button text="💭 Ajouter un commentaire" 
                                     onAction="#handleCommentSubmit"
                                     styleClass="action-button"/>
@@ -107,12 +119,15 @@
                     <VBox spacing="15" styleClass="edit-form">
                         <Label text="📝 Titre" styleClass="field-label"/>
                         <TextField fx:id="editTitreField" styleClass="edit-input"/>
+                        <Label fx:id="editTitreErrorLabel" styleClass="error-label" visible="false"/>
                         
                         <Label text="✏️ Description" styleClass="field-label"/>
                         <TextArea fx:id="editDescriptionArea" styleClass="edit-textarea" wrapText="true" prefRowCount="4"/>
+                        <Label fx:id="editDescriptionErrorLabel" styleClass="error-label" visible="false"/>
                         
                         <Label text="📍 Lieu" styleClass="field-label"/>
                         <TextField fx:id="editLieuField" styleClass="edit-input"/>
+                        <Label fx:id="editLieuErrorLabel" styleClass="error-label" visible="false"/>
                         
                         <Label text="🏷️ Catégorie" styleClass="field-label"/>
                         <ComboBox fx:id="editCategorieComboBox" styleClass="edit-input" promptText="Choisir une catégorie">
@@ -126,9 +141,11 @@
                                 </FXCollections>
                             </items>
                         </ComboBox>
+                        <Label fx:id="editCategorieErrorLabel" styleClass="error-label" visible="false"/>
                         
                         <Label text="📆 Date" styleClass="field-label"/>
                         <DatePicker fx:id="editDatePicker" styleClass="edit-datepicker"/>
+                        <Label fx:id="editDateErrorLabel" styleClass="error-label" visible="false"/>
                     </VBox>
 
                     <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="action-buttons">

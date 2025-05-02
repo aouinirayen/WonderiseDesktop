@@ -17,7 +17,7 @@
 }
 
 .modern-input:focused {
-    -fx-border-color: #4A90E2;
+    -fx-border-color: #3498DB;
     -fx-background-color: white;
 }
 
@@ -441,9 +441,11 @@
 }
 
 .comment-input {
-    -fx-background-color: white;
-    -fx-background-radius: 8;
-    -fx-padding: 8 12;
+    -fx-background-color: #F8F9FA;
+    -fx-background-radius: 5px;
+    -fx-border-color: #E9ECEF;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
     -fx-font-size: 14px;
 }
 
@@ -1135,4 +1137,62 @@
     -fx-font-size: 14px;
     -fx-fill: #4A5568;
     -fx-line-spacing: 1.4;
+}
+
+/* Suggestion styles */
+.suggestion-box {
+    -fx-background-color: #F1F5F9;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-spacing: 8px;
+}
+
+.suggestion-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #64748B;
+}
+
+.suggestion-button {
+    -fx-background-color: #64748B;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.suggestion-button:hover {
+    -fx-background-color: #475569;
+}
+
+.suggestion-button:disabled {
+    -fx-background-color: #CBD5E0;
+    -fx-text-fill: #F8FAFC;
+}
+
+.suggestion-chip {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+.suggestion-chip:hover {
+    -fx-background-color: #2980B9;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+
+.comments-container {
+    -fx-background-color: #F7FAFC;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+}
+
+.error-label {
+    -fx-text-fill: #E74C3C;
+    -fx-font-size: 12px;
+    -fx-padding: 2 0 0 5;
 } 

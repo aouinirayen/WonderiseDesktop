@@ -14,6 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
+<?import javafx.scene.control.Label?>
 
 <BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../StylesCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.ExperienceFrontController">
     <top>
@@ -31,29 +32,44 @@
             </HBox>
 
             <!-- Title Field -->
-            <TextField fx:id="titreField" promptText="Title" styleClass="modern-input" />
+            <VBox spacing="2">
+                <TextField fx:id="titreField" promptText="Title" styleClass="modern-input" />
+                <Label fx:id="titreErrorLabel" styleClass="error-label" visible="false" />
+            </VBox>
 
             <!-- Location and Date -->
             <HBox spacing="20">
-                <TextField fx:id="lieuField" promptText="Location" styleClass="modern-input" HBox.hgrow="ALWAYS" />
-                <DatePicker fx:id="datePicker" promptText="Date" styleClass="modern-datepicker" HBox.hgrow="ALWAYS" />
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <TextField fx:id="lieuField" promptText="Location" styleClass="modern-input" />
+                    <Label fx:id="lieuErrorLabel" styleClass="error-label" visible="false" />
+                </VBox>
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <DatePicker fx:id="datePicker" promptText="Date" styleClass="modern-datepicker" />
+                    <Label fx:id="dateErrorLabel" styleClass="error-label" visible="false" />
+                </VBox>
             </HBox>
 
-                    <!-- Description - Changed from TextField to TextArea -->
-                    <TextArea fx:id="descriptionField" promptText="Description" wrapText="true" prefRowCount="5" styleClass="modern-textarea" />
+            <!-- Description - Changed from TextField to TextArea -->
+            <VBox spacing="2">
+                <TextArea fx:id="descriptionField" promptText="Description" wrapText="true" prefRowCount="5" styleClass="modern-textarea" />
+                <Label fx:id="descriptionErrorLabel" styleClass="error-label" visible="false" />
+            </VBox>
 
             <!-- Category -->
-            <ComboBox fx:id="categorieField" promptText="Choisir une catégorie" styleClass="modern-input" prefWidth="300">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="sortie" />
-                        <String fx:value="balade" />
-                        <String fx:value="visite" />
-                        <String fx:value="sport" />
-                        <String fx:value="voyage" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
+            <VBox spacing="2">
+                <ComboBox fx:id="categorieField" promptText="Choisir une catégorie" styleClass="modern-input" prefWidth="300">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="sortie" />
+                            <String fx:value="balade" />
+                            <String fx:value="visite" />
+                            <String fx:value="sport" />
+                            <String fx:value="voyage" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Label fx:id="categorieErrorLabel" styleClass="error-label" visible="false" />
+            </VBox>
 
             <!-- Photo Upload Section -->
             <VBox spacing="10" alignment="CENTER">
@@ -69,6 +85,7 @@
                 <VBox style="-fx-border-color: #E2E8F0; -fx-border-radius: 10; -fx-padding: 10;" alignment="CENTER">
                     <ImageView fx:id="previewImageView" fitHeight="200" fitWidth="300" preserveRatio="true" />
                 </VBox>
+                <Label fx:id="imageErrorLabel" styleClass="error-label" visible="false" />
             </VBox>
 
                     <!-- Generate Description Button -->
