@@ -7,7 +7,7 @@ import java.util.Properties;
 public class MailUtil {
     public static void sendEmail(String to, String subject, String userName) {
         final String from = "charfifatmaezzahra@gmail.com";
-        final String password = "cwchcilatcgydobw"; // À sécuriser via variables d'environnement
+        final String password = "cwchcilatcgydobw";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
