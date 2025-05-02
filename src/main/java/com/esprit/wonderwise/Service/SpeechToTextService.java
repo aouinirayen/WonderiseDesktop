@@ -77,7 +77,7 @@ public class SpeechToTextService {
         } catch (InterruptedException ignored) {}
     }
 
-   
+
 
     private void captureLoop() {
         try {
@@ -97,24 +97,24 @@ public class SpeechToTextService {
                     String text = extract(recognizer.getResult(), "text");
                     if (!text.isBlank()) onFinalUI.accept(text);
                 } else {
-                    // Transcription partielle
+
                     String partial = extract(recognizer.getPartialResult(), "partial");
                     if (!partial.isBlank()) onPartialUI.accept(partial);
                 }
             }
 
-            /* Récupère le dernier morceau restant avant de fermer */
+
             String last = extract(recognizer.getFinalResult(), "text");
             if (!last.isBlank()) onFinalUI.accept(last);
 
         } catch (LineUnavailableException e) {
-            e.printStackTrace(); // à remplacer par un logger
+            e.printStackTrace();
         } finally {
             recognizer.close();
         }
     }
 
-    /* ---------- Helper JSON ---------- */
+
     private static String extract(String json, String key) {
         return new JSONObject(json).optString(key, "");
     }
