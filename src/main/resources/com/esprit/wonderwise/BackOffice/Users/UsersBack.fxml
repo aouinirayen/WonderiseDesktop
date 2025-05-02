@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="740.0" prefWidth="1070.0" style="-fx-background-color: #F4F6FB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.UsersBackController">
+    <left>
+        <fx:include source="../NavBarBack.fxml" />
+    </left>
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="15.0" style="-fx-padding: 35; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 18, 0, 0, 4);" stylesheets="@usersback.css">
+            <!-- Beautiful Filter/Search/Stats Area -->
+            <VBox alignment="CENTER" spacing="12" style="-fx-background-color: #fff; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.10), 8, 0, 0, 2); -fx-padding: 18 26 18 26; -fx-border-color: #e0e7ef; -fx-border-width: 1;">
+               <Label style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #23395d;" text="User Management" />
+                <HBox alignment="CENTER" spacing="18">
+                    <TextField fx:id="searchField" prefHeight="49.0" promptText="Search by name, email..." style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-pref-width: 230; -fx-font-size: 15px; -fx-border-color: #e0e0e0; -fx-padding: 8; -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.04), 1, 0, 0, 1);" />
+                    <ComboBox fx:id="roleFilter" promptText="All Roles" style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-font-size: 15px; -fx-border-color: #e0e0e0;" />
+                    <ComboBox fx:id="statusFilter" promptText="All Statuses" style="-fx-background-radius: 10; -fx-background-color: #f6f7fb; -fx-font-size: 15px; -fx-border-color: #e0e0e0;" />
+                    <Button fx:id="addUserBtn" prefHeight="50.0" prefWidth="124.0" style="-fx-background-color: linear-gradient(to right, #3b82f6, #60a5fa); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 8 22; -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.14), 2, 0, 0, 1);" text="+ Add User" />
+                </HBox>
+                <!-- Statistics Cards (compact, beautiful) -->
+                <HBox alignment="CENTER" spacing="18">
+                    <VBox alignment="CENTER" spacing="3" style="-fx-background-color: #e3eafc; -fx-background-radius: 14; -fx-border-radius: 14; -fx-padding: 10 22; -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.07), 0, 0, 0, 0); -fx-border-color: #c7d2fe; -fx-border-width: 1; -fx-min-height: 80; -fx-max-height: 80;">
+                        <ImageView fitHeight="24" fitWidth="24" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.9;">
+                            <image>
+                                <Image url="@../../icons/users.png" />
+                            </image>
+                        </ImageView>
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #23395d;" text="Total Users" />
+                        <Label fx:id="totalUsersLabel" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #3b82f6;" text="0" />
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="3" style="-fx-background-color: #e9fbe5; -fx-background-radius: 14; -fx-border-radius: 14; -fx-padding: 10 22; -fx-border-color: #bbf7d0; -fx-border-width: 1; -fx-min-height: 80; -fx-max-height: 80;">
+                        <ImageView fitHeight="24" fitWidth="24" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.9;">
+                            <image>
+                                <Image url="@../../icons/active-user.png" />
+                            </image>
+                        </ImageView>
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #23395d;" text="Active Users" />
+                        <Label fx:id="activeUsersLabel" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #27ae60;" text="0" />
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="3" style="-fx-background-color: #FFE8BA; -fx-background-radius: 14; -fx-border-radius: 14; -fx-padding: 10 22; -fx-border-color: #fde68a; -fx-border-width: 1; -fx-min-height: 80; -fx-max-height: 80;">
+                        <ImageView fitHeight="24" fitWidth="24" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.9;">
+                            <image>
+                                <Image url="@../../icons/pending-user.png" />
+                            </image>
+                        </ImageView>
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #23395d;" text="Pending Users" />
+                        <Label fx:id="pendingUsersLabel" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FFC448;" text="0" />
+                    </VBox>
+                </HBox>
+            </VBox>
+            <!-- Users List Cards -->
+            <!-- Users List Cards Area: white, rounded, shadowed like User Management -->
+            <VBox alignment="CENTER" style="-fx-background-color: #fff; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.10), 8, 0, 0, 2); -fx-padding: 32 24 32 24; -fx-border-color: #e0e7ef; -fx-border-width: 1;">
+                <ScrollPane fitToWidth="true" style="-fx-background-color:transparent; -fx-background-insets: 0; -fx-background-radius: 18;">
+                    <FlowPane fx:id="usersFlowPane" hgap="30" prefWidth="990" style="-fx-padding: 10 0 10 0; -fx-background-color: transparent; -fx-alignment: center;" vgap="30" />
+                </ScrollPane>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

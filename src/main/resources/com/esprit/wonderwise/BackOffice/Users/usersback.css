@@ -1,0 +1,92 @@
+/* Center the cards in the FlowPane */
+.flow-pane {
+    -fx-alignment: center;
+}
+
+/* Remove background color from the VBox and FlowPane */
+.vbox, .flow-pane {
+    -fx-background-color: transparent;
+}
+
+/* Beautiful custom scrollbar for ScrollPane */
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px;
+}
+.scroll-pane .thumb {
+    -fx-background-color: #3b82f6;
+    -fx-background-radius: 6px;
+    -fx-opacity: 0.7;
+}
+.scroll-pane .track {
+    -fx-background-color: #e0e7ef;
+    -fx-background-radius: 6px;
+}
+.scroll-pane .increment-button, .scroll-pane .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+/* Card hover effect (optional, already in controller but can reinforce here) */
+.card:hover {
+    -fx-background-color: #e3eafc;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.18), 0, 0, 0, 0);
+}
+
+/* BEAUTIFUL SEARCH & FILTERS */
+#searchField, #roleFilter, #statusFilter {
+    -fx-background-radius: 13px;
+    -fx-background-color: #f6f7fb;
+    -fx-border-color: #dbeafe;
+    -fx-border-radius: 13px;
+    -fx-border-width: 1.2;
+    -fx-font-size: 15px;
+    -fx-padding: 9 16 9 16;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.04), 1, 0, 0, 1);
+    -fx-prompt-text-fill: #9ca3af;
+    -fx-text-fill: #23395d;
+    -fx-background-insets: 0;
+    -fx-transition: all 0.25s cubic-bezier(.4,0,.2,1);
+}
+#searchField:focused, #roleFilter:focused, #statusFilter:focused {
+    -fx-background-color: #e0e7ef;
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.10), 3, 0, 0, 1);
+}
+#searchField:hover, #roleFilter:hover, #statusFilter:hover {
+    -fx-background-color: #f1f5fd;
+    -fx-border-color: #60a5fa;
+}
+
+/* ComboBox drop-down styling */
+.combo-box-popup .list-view {
+    -fx-background-color: #fff;
+    -fx-background-radius: 10px;
+    -fx-border-color: #dbeafe;
+    -fx-border-width: 1.2;
+    -fx-padding: 6 0 6 0;
+}
+.combo-box-popup .list-cell {
+    -fx-font-size: 15px;
+    -fx-text-fill: #23395d;
+    -fx-background-color: transparent;
+    -fx-padding: 7 18 7 18;
+}
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #e0e7ef;
+    -fx-text-fill: #3b82f6;
+}
+.combo-box {
+    -fx-background-insets: 0;
+}
+
+/* Remove ComboBox arrow (icon) for minimal look */
+.combo-box .arrow, .combo-box .arrow-button {
+    -fx-padding: 0;
+    -fx-shape: "";
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-opacity: 0;
+}
