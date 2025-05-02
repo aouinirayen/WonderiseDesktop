@@ -20,18 +20,6 @@ public class ChangePasswordController {
 
 
 
-        if (newPassword.length() < 6) {
-            DialogUtils.showCustomDialog("Erreur", "Le mot de passe doit contenir au moins 6 caractères.", false);
-            return;
-        }
-        boolean changed = userService.updatePassword(resetEmail, newPassword);
-        if (changed) {
-            DialogUtils.showCustomDialog("Succès", "Mot de passe changé avec succès. Connectez-vous.", true);
-            switchSceneFromControl(changePasswordButton, "/com/esprit/wonderwise/auth/Login.fxml");
-        } else {
-            DialogUtils.showCustomDialog("Erreur", "Erreur lors du changement du mot de passe. Veuillez réessayer.", false);
-        }
-    }
 
-  
+
 }
