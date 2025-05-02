@@ -52,26 +52,7 @@ public class EvenementBackController {
                     categories.add(evt.getCategorie());
                 }
             }
-            if (filterCombo != null) {
-                filterCombo.getItems().clear();
-                filterCombo.getItems().add("Toutes les catégories");
-                filterCombo.getItems().addAll(categories);
-                filterCombo.getSelectionModel().selectFirst();
-                filterCombo.valueProperty().addListener((obs, oldVal, newVal) -> applySearchFilter());
-            }
-            if (searchField != null) {
-                searchField.textProperty().addListener((obs, oldVal, newVal) -> applySearchFilter());
-            }
-            loadEvenements(null, null);
-        }
 
-        // Real-time validation for numeric fields
-        if (placeMaxField != null) {
-            placeMaxField.textProperty().addListener((obs, oldVal, newVal) -> {
-                if (!newVal.matches("\\d*")) {
-                    placeMaxField.setText(oldVal); // Only allow digits
-                }
-            });
         }
         if (prixField != null) {
             prixField.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -82,10 +63,7 @@ public class EvenementBackController {
         }
     }
 
-    private void loadGuides() {
-        List<Guide> guides = guideService.readAll();
-        guideComboBox.getItems().addAll(guides);
-    }
+
 
     private void loadEvenements(String search, String category) {
         evenementCards.getChildren().clear();
