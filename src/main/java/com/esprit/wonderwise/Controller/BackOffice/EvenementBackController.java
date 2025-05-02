@@ -37,21 +37,6 @@ import java.util.regex.Pattern;
 
 public class EvenementBackController {
 
-    @FXML private FlowPane evenementCards;
-    @FXML private TextField nomField, lieuField, descriptionField, placeMaxField, prixField, paysField, categorieField, heureField, photoField;
-    @FXML private DatePicker datePicker;
-    @FXML private ComboBox<Guide> guideComboBox;
-    @FXML private ImageView photoView;
-    @FXML private Label nomLabel, dateLabel, heureLabel, lieuLabel, descriptionLabel, placeMaxLabel, prixLabel, statusLabel, paysLabel, categorieLabel, guideLabel, likesCountLabel, latitudeLabel, longitudeLabel, isFavoriteLabel, isAnnuleLabel, isInterestedLabel, isLikedLabel;
-    @FXML private javafx.scene.control.TextField searchField;
-    @FXML private javafx.scene.control.ComboBox<String> filterCombo;
-    private EvenementService evenementService = new EvenementService();
-    private GuideService guideService = new GuideService();
-    private Evenement selectedEvenement;
-    private static final String IMAGE_DESTINATION_DIR = "C:\\xampp\\htdocs\\pidev3\\";
-    private static final Pattern TIME_PATTERN = Pattern.compile("^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"); // HH:MM:SS format
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("^\\d+$"); // Only positive integers
-    private static final Pattern PRICE_PATTERN = Pattern.compile("^\\d+(\\.\\d{1,2})?$"); // Positive number with up to 2 decimals
 
     @FXML
     public void initialize() {
