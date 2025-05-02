@@ -4,10 +4,13 @@ import com.esprit.wonderwise.Model.offre;
 import com.esprit.wonderwise.Service.OffreService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,6 +23,9 @@ import javafx.scene.text.Text;
 import java.io.File;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ManageOffresController {
 
@@ -29,10 +35,32 @@ public class ManageOffresController {
     @FXML
     private VBox emptyState;
 
+    @FXML
+    private Label totalOffresLabel;
+
+    @FXML
+    private Label prixMoyenLabel;
+
+    @FXML
+    private StackPane pieChartContainer;
+
+    @FXML
+    private ComboBox<String> sortComboBox;
+
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private ComboBox<String> filterComboBox;
+
     private OffreService offreService = new OffreService();
     private ObservableList<offre> offresList = FXCollections.observableArrayList();
     private BackOfficeController backOfficeController; // Reference to BackOfficeController
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private PieChart typesPieChart;
+
+    private FilteredList<offre> filteredOffres;
+    private SortedList<offre> sortedOffres;
 
     // Method to set the BackOfficeController
     public void setBackOfficeController(BackOfficeController controller) {
@@ -41,8 +69,134 @@ public class ManageOffresController {
 
     @FXML
     public void initialize() {
+        typesPieChart = new PieChart();
+        typesPieChart.setTitle("Répartition par type");
+        typesPieChart.setLabelsVisible(true);
+        typesPieChart.setLegendVisible(true);
+        pieChartContainer.getChildren().add(typesPieChart);
+
+        // Initialize filtered and sorted lists
+        filteredOffres = new FilteredList<>(offresList, p -> true);
+        sortedOffres = new SortedList<>(filteredOffres);
+
+        // Setup search listener
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredOffres.setPredicate(offre -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                return offre.getTitre().toLowerCase().contains(lowerCaseFilter);
+            });
+            updateDisplay();
+        });
+
+        // Setup filter listener
+        filterComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            filteredOffres.setPredicate(offre -> {
+                if (newValue == null || newValue.equals("Toutes les offres")) {
+                    return true;
+                }
+                switch (newValue) {
+                    case "Complètement disponible":
+                        return offre.getPlacesDisponibles() == offre.getNombrePlaces();
+                    case "Partiellement disponible":
+                        return offre.getPlacesDisponibles() > 0 && offre.getPlacesDisponibles() < offre.getNombrePlaces();
+                    case "Complet":
+                        return offre.getPlacesDisponibles() == 0;
+                    default:
+                        return true;
+                }
+            });
+            updateDisplay();
+        });
+
+        // Setup sort listener
+        sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                switch (newValue) {
+                    case "Prix (croissant)":
+                        sortedOffres.setComparator(Comparator.comparing(offre::getPrix));
+                        break;
+                    case "Prix (décroissant)":
+                        sortedOffres.setComparator(Comparator.comparing(offre::getPrix).reversed());
+                        break;
+                    case "Places disponibles":
+                        sortedOffres.setComparator(Comparator.comparing(offre::getPlacesDisponibles).reversed());
+                        break;
+                    case "Date (plus récent)":
+                        sortedOffres.setComparator(Comparator.comparing(offre::getDateDebut).reversed());
+                        break;
+                    case "Date (plus ancien)":
+                        sortedOffres.setComparator(Comparator.comparing(offre::getDateDebut));
+                        break;
+                }
+                updateDisplay();
+            }
+        });
+
         // Load offers
         loadOffres();
+    }
+
+    private void updateDisplay() {
+        offresContainer.getChildren().clear();
+        sortedOffres.forEach(offre -> offresContainer.getChildren().add(createOfferCard(offre)));
+        updateStatistics();
+    }
+
+    private void updateStatistics() {
+        // Mise à jour du nombre total d'offres
+        totalOffresLabel.setText(String.valueOf(sortedOffres.size()));
+
+        // Calcul et mise à jour du prix moyen
+        double prixMoyen = sortedOffres.stream()
+                .mapToDouble(offre::getPrix)
+                .average()
+                .orElse(0.0);
+        prixMoyenLabel.setText(String.format("%.2f DT", prixMoyen));
+
+        // Mise à jour du graphique circulaire des disponibilités
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        long completementDisponibles = sortedOffres.stream()
+                .filter(o -> o.getPlacesDisponibles() == o.getNombrePlaces())
+                .count();
+
+        long partialDisponibles = sortedOffres.stream()
+                .filter(o -> o.getPlacesDisponibles() > 0 && o.getPlacesDisponibles() < o.getNombrePlaces())
+                .count();
+
+        long complet = sortedOffres.stream()
+                .filter(o -> o.getPlacesDisponibles() == 0)
+                .count();
+
+        // Création des données avec des couleurs spécifiques
+        PieChart.Data completData = new PieChart.Data("Complètement disponible", completementDisponibles);
+        PieChart.Data partialData = new PieChart.Data("Partiellement disponible", partialDisponibles);
+        PieChart.Data reservedData = new PieChart.Data("Complet", complet);
+
+        if (completementDisponibles > 0) pieChartData.add(completData);
+        if (partialDisponibles > 0) pieChartData.add(partialData);
+        if (complet > 0) pieChartData.add(reservedData);
+
+        typesPieChart.setData(pieChartData);
+
+        // Application des couleurs et ajout des tooltips
+        pieChartData.forEach(data -> {
+            String tooltipText = String.format("%s: %.0f offres", data.getName(), data.getPieValue());
+            Tooltip tooltip = new Tooltip(tooltipText);
+
+            if (data.getName().equals("Complètement disponible")) {
+                data.getNode().setStyle("-fx-pie-color: #22c55e;"); // Vert
+            } else if (data.getName().equals("Partiellement disponible")) {
+                data.getNode().setStyle("-fx-pie-color: #f97316;"); // Orange
+            } else if (data.getName().equals("Complet")) {
+                data.getNode().setStyle("-fx-pie-color: #ef4444;"); // Rouge
+            }
+
+            Tooltip.install(data.getNode(), tooltip);
+        });
     }
 
     private void loadOffres() {
@@ -61,10 +215,12 @@ public class ManageOffresController {
                 offresContainer.getChildren().clear();
 
                 // Create cards for each offer
-                for (offre offre : offresList) {
-                    offresContainer.getChildren().add(createOfferCard(offre));
-                }
+                sortedOffres.forEach(offre -> offresContainer.getChildren().add(createOfferCard(offre)));
             }
+
+            // Mise à jour des statistiques après le chargement des offres
+            updateStatistics();
+
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger les offres : " + e.getMessage());
         }

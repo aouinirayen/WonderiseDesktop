@@ -18,7 +18,7 @@ import javafx.scene.layout.*;
 import javafx.geometry.Pos;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -61,7 +61,7 @@ public class ManageReservationsController {
     private ReservationService reservationService = new ReservationService();
     private OffreService offreService = new OffreService();
     private ObservableList<reservation> reservationsList = FXCollections.observableArrayList();
-    private Map<Integer, offre> offresMap = new HashMap<>();
+    private Map<Integer, String> offreNamesMap = new HashMap<>();
     private BackOfficeController backOfficeController;
     private PieChart reservationsChart;
     private PieChart personnesChart;
@@ -75,7 +75,17 @@ public class ManageReservationsController {
 
     @FXML
     public void initialize() {
-        // Initialize pie charts
+        // Charger les noms des offres
+        try {
+            List<offre> offres = offreService.readAll();
+            for (offre o : offres) {
+                offreNamesMap.put(o.getId(), o.getTitre());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Initialisation des graphiques
         reservationsChart = new PieChart();
         reservationsChart.setTitle("Réservations par offre");
         reservationsChart.setLabelsVisible(true);
@@ -92,11 +102,9 @@ public class ManageReservationsController {
         filteredReservations = new FilteredList<>(reservationsList, p -> true);
         sortedReservations = new SortedList<>(filteredReservations);
 
-        // Load all offres first
+        // Populate offres filter
         try {
             List<offre> offres = offreService.readAll();
-            offres.forEach(offre -> offresMap.put(offre.getId(), offre));
-            
             filterComboBox.getItems().add("Toutes les offres");
             offres.forEach(offre -> filterComboBox.getItems().add(offre.getTitre()));
         } catch (SQLException e) {
@@ -110,8 +118,7 @@ public class ManageReservationsController {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                offre offreAssociee = offresMap.get(reservation.getOffreId());
-                return (offreAssociee != null && offreAssociee.getTitre().toLowerCase().contains(lowerCaseFilter)) ||
+                return reservation.getOffre().getTitre().toLowerCase().contains(lowerCaseFilter) ||
                        reservation.getNom().toLowerCase().contains(lowerCaseFilter);
             });
             updateDisplay();
@@ -123,8 +130,7 @@ public class ManageReservationsController {
                 if (newValue == null || newValue.equals("Toutes les offres")) {
                     return true;
                 }
-                offre offreAssociee = offresMap.get(reservation.getOffreId());
-                return offreAssociee != null && offreAssociee.getTitre().equals(newValue);
+                return reservation.getOffre().getTitre().equals(newValue);
             });
             updateDisplay();
         });
@@ -134,7 +140,7 @@ public class ManageReservationsController {
                 if (newValue == null) {
                     return true;
                 }
-                return reservation.getDateDepart().equals(newValue);
+                return reservation.getDateDepart().toLocalDate().equals(newValue);
             });
             updateDisplay();
         });
@@ -153,12 +159,7 @@ public class ManageReservationsController {
                         sortedReservations.setComparator((r1, r2) -> Integer.compare(r2.getNombrePersonne(), r1.getNombrePersonne()));
                         break;
                     case "Offre":
-                        sortedReservations.setComparator((r1, r2) -> {
-                            offre o1 = offresMap.get(r1.getOffreId());
-                            offre o2 = offresMap.get(r2.getOffreId());
-                            if (o1 == null || o2 == null) return 0;
-                            return o1.getTitre().compareTo(o2.getTitre());
-                        });
+                        sortedReservations.setComparator((r1, r2) -> r1.getOffre().getTitre().compareTo(r2.getOffre().getTitre()));
                         break;
                 }
                 updateDisplay();
@@ -194,8 +195,7 @@ public class ManageReservationsController {
 
         ObservableList<PieChart.Data> reservationsData = FXCollections.observableArrayList();
         reservationsParOffre.forEach((offreId, count) -> {
-            offre offre = offresMap.get(offreId);
-            String offreName = offre != null ? offre.getTitre() : "Offre " + offreId;
+            String offreName = offreNamesMap.getOrDefault(offreId, "Offre " + offreId);
             String label = String.format("%s (%d rés.)", offreName, count);
             PieChart.Data data = new PieChart.Data(label, count);
             reservationsData.add(data);
@@ -211,8 +211,7 @@ public class ManageReservationsController {
 
         ObservableList<PieChart.Data> personnesData = FXCollections.observableArrayList();
         personnesParOffre.forEach((offreId, nbPersonnes) -> {
-            offre offre = offresMap.get(offreId);
-            String offreName = offre != null ? offre.getTitre() : "Offre " + offreId;
+            String offreName = offreNamesMap.getOrDefault(offreId, "Offre " + offreId);
             String label = String.format("%s (%d pers.)", offreName, nbPersonnes);
             PieChart.Data data = new PieChart.Data(label, nbPersonnes);
             personnesData.add(data);

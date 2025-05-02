@@ -36,7 +36,7 @@ public class ReservationService {
                 stmt.setString(12, res.getPreferencesVoyage());
                 stmt.setString(13, res.getCommentaire());
                 stmt.setTimestamp(14, res.getDateReservation() != null ? Timestamp.valueOf(res.getDateReservation()) : null);
-                stmt.setString(15, res.getStatut());
+                stmt.setString(15, "Confirmée"); 
                 stmt.setTimestamp(16, res.getDatePaiement() != null ? Timestamp.valueOf(res.getDatePaiement()) : null);
                 stmt.setString(17, res.getStripePaymentId());
                 stmt.setString(18, res.getRegimeAlimentaire());

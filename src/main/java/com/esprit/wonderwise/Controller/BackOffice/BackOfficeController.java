@@ -2,6 +2,7 @@ package com.esprit.wonderwise.Controller.BackOffice;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import java.io.IOException;
 
@@ -30,7 +31,7 @@ public class BackOfficeController {
     }
 
     public void loadContent(FXMLLoader loader) throws IOException {
-        Pane newContent = loader.load();
+        Node newContent = loader.load();
 
         Object controller = loader.getController();
         if (controller instanceof AddOffreController) {

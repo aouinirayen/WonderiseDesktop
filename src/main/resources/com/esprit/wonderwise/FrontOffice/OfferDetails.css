@@ -160,7 +160,7 @@
 
 /* Price and booking section */
 .booking-panel {
-    -fx-background-color: linear-gradient(145deg, #f8fafc, #f1f5f9);
+    -fx-background-color: #f8fafc;
     -fx-background-radius: 16px;
     -fx-padding: 30px;
     -fx-spacing: 25px;

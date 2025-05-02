@@ -6,8 +6,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.text.Text?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
 
 <VBox spacing="20" prefWidth="1200" stylesheets="@ManageReservations.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.ManageReservationsController">
 
@@ -42,29 +40,12 @@
             <Label styleClass="stats-title" text="Total des personnes" />
             <Label fx:id="totalPersonnesLabel" styleClass="stats-value" text="0" />
         </VBox>
-        <StackPane styleClass="stats-card" fx:id="reservationsChartContainer">
+        <StackPane styleClass="stats-card" fx:id="reservationsChartContainer" prefWidth="180" prefHeight="150" maxWidth="180" maxHeight="150" minWidth="180" minHeight="150">
             <!-- PieChart will be added here programmatically -->
         </StackPane>
-        <StackPane styleClass="stats-card" fx:id="personnesChartContainer">
+        <StackPane styleClass="stats-card" fx:id="personnesChartContainer" prefWidth="180" prefHeight="150" maxWidth="180" maxHeight="150" minWidth="180" minHeight="150">
             <!-- PieChart will be added here programmatically -->
         </StackPane>
-    </HBox>
-
-    <!-- Filters and Sort Bar -->
-    <HBox styleClass="filters-bar" spacing="15" alignment="CENTER_LEFT">
-        <ComboBox fx:id="sortComboBox" promptText="Trier par..." prefWidth="150">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Date (plus récent)" />
-                    <String fx:value="Date (plus ancien)" />
-                    <String fx:value="Nombre de personnes" />
-                    <String fx:value="Offre" />
-                </FXCollections>
-            </items>
-        </ComboBox>
-        <TextField fx:id="searchField" promptText="Rechercher une réservation..." prefWidth="200" styleClass="search-field" />
-        <ComboBox fx:id="filterComboBox" promptText="Filtrer par offre" prefWidth="180" />
-        <DatePicker fx:id="dateFilter" promptText="Filtrer par date" />
     </HBox>
 
     <!-- Scrollable content area -->

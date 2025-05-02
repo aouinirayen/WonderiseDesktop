@@ -2,6 +2,7 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.ScrollPane?>
 
 <BorderPane fx:id="mainPane" prefHeight="740.0" prefWidth="1300.0" style="-fx-background-color: #ECF0F1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.BackOfficeController">
   <!-- Navigation Bar (Left) -->
@@ -11,6 +12,10 @@
 
   <!-- Main Content Area (Center) -->
   <center>
-    <Pane fx:id="contentPane" prefWidth="1030" prefHeight="700" />
+    <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;">
+      <content>
+        <Pane fx:id="contentPane" minWidth="1030" minHeight="700" style="-fx-background-color: transparent;" />
+      </content>
+    </ScrollPane>
   </center>
 </BorderPane>

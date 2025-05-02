@@ -11,8 +11,11 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,13 +25,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -36,6 +35,7 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -67,11 +67,18 @@ public class PackagesController {
     private OffreService offreService = new OffreService();
     private WeatherService weatherService = new WeatherService();
     private List<offre> allOffres = new java.util.ArrayList<>();
+    private FilteredList<offre> filteredOffres;
+    private LocalDate selectedDate;
 
     @FXML
     public void initialize() {
         emptyState.setVisible(false);
         offersPane.getChildren().clear();
+
+        // Initialize calendar controller reference
+        // if (calendarController != null) {
+        //     calendarController.setPackagesController(this);
+        // }
 
         // Configure search field
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -82,28 +89,45 @@ public class PackagesController {
         CompletableFuture.runAsync(this::loadOffersAsync);
     }
 
+    public void filterByDate(LocalDate date) {
+        this.selectedDate = date;
+        filterOffers(searchField.getText());
+    }
+
     private void filterOffers(String searchText) {
         if (allOffres == null) return;
 
-        if (searchText == null || searchText.trim().isEmpty()) {
-            displayOffers(allOffres);
-            return;
+        if (filteredOffres == null) {
+            filteredOffres = new FilteredList<>(FXCollections.observableArrayList(allOffres));
         }
 
-        String searchLower = searchText.toLowerCase();
-        List<offre> filteredOffers = allOffres.stream()
-                .filter(offer -> {
-                    String title = offer.getTitre().toLowerCase();
-                    String desc = offer.getDescription().toLowerCase();
-                    return title.contains(searchLower) || desc.contains(searchLower);
-                })
-                .collect(Collectors.toList());
+        filteredOffres.setPredicate(offre -> {
+            boolean matchesSearch = true;
+            boolean matchesDate = true;
 
-        displayOffers(filteredOffers);
-        
+            // Apply search filter
+            if (searchText != null && !searchText.trim().isEmpty()) {
+                String searchLower = searchText.toLowerCase();
+                matchesSearch = offre.getTitre().toLowerCase().contains(searchLower) ||
+                        offre.getDescription().toLowerCase().contains(searchLower);
+            }
+
+            // Apply date filter
+            if (selectedDate != null) {
+                // Assuming offre has dateDebut and dateFin properties
+                LocalDate debut = offre.getDateDebut().toLocalDate();
+                LocalDate fin = offre.getDateFin().toLocalDate();
+                matchesDate = !selectedDate.isBefore(debut) && !selectedDate.isAfter(fin);
+            }
+
+            return matchesSearch && matchesDate;
+        });
+
+        displayOffers(filteredOffres);
+
         // Show/hide empty state
-        emptyState.setVisible(filteredOffers.isEmpty());
-        emptyState.setManaged(filteredOffers.isEmpty());
+        emptyState.setVisible(filteredOffres.isEmpty());
+        emptyState.setManaged(filteredOffres.isEmpty());
     }
 
     private void loadOffersAsync() {
@@ -210,12 +234,13 @@ public class PackagesController {
     private VBox createOfferCard(offre offre) {
         VBox card = new VBox(10);
         card.getStyleClass().add("card");
-        card.setAlignment(javafx.geometry.Pos.CENTER);
+        card.setAlignment(Pos.CENTER);
 
         // Image container with weather overlay
         StackPane imageContainer = new StackPane();
         imageContainer.getStyleClass().add("image-container");
 
+        // Create background with image
         ImageView imageView = new ImageView();
         try {
             String imagePath = offre.getImage();
@@ -223,84 +248,22 @@ public class PackagesController {
                 String fullPath = "src/main/resources" + imagePath;
                 File imageFile = new File(fullPath);
                 if (imageFile.exists()) {
-                    imageView.setImage(new Image(imageFile.toURI().toString()));
-                } else {
-                    imageView.setImage(new Image(getClass().getResource("/images/offres/placeholder.png").toExternalForm()));
+                    Image image = new Image(imageFile.toURI().toString());
+                    imageView.setImage(image);
+                    imageView.setFitWidth(300);
+                    imageView.setFitHeight(200);
+                    imageView.setPreserveRatio(true);
                 }
-            } else {
-                imageView.setImage(new Image(getClass().getResource("/images/offres/placeholder.png").toExternalForm()));
             }
         } catch (Exception e) {
-            System.err.println("Erreur lors du chargement de l'image pour l'offre " + offre.getTitre() + " : " + e.getMessage());
-            imageView.setImage(new Image(getClass().getResource("/images/offres/placeholder.png").toExternalForm()));
-        }
-        imageView.setFitWidth(280);
-        imageView.setFitHeight(180);
-        imageView.setPreserveRatio(true);
-        imageView.getStyleClass().add("card-image-view");
-
-        // Weather overlay
-        VBox weatherOverlay = new VBox(5);
-        weatherOverlay.getStyleClass().add("weather-card");
-        weatherOverlay.setMaxWidth(100);
-        weatherOverlay.setMaxHeight(100);
-        StackPane.setAlignment(weatherOverlay, javafx.geometry.Pos.TOP_RIGHT);
-        StackPane.setMargin(weatherOverlay, new javafx.geometry.Insets(10, 10, 0, 0));
-
-        String title = offre.getTitre();
-        String city = extractCityFromTitle(title);
-
-        if (city != null) {
-            CompletableFuture.supplyAsync(() -> weatherService.getWeatherForCity(city))
-                    .thenAcceptAsync(weather -> {
-                        if (weather != null) {
-                            Platform.runLater(() -> {
-                                try {
-                                    ImageView weatherIcon = new ImageView(new Image(weather.getIconUrl()));
-                                    weatherIcon.setFitWidth(32);
-                                    weatherIcon.setFitHeight(32);
-                                    weatherIcon.getStyleClass().add("weather-icon");
-
-                                    Label tempLabel = new Label(String.format("%.1f°C", weather.getTemperature()));
-                                    tempLabel.getStyleClass().add("weather-temp");
-
-                                    VBox weatherDetails = new VBox(2);
-                                    weatherDetails.setAlignment(javafx.geometry.Pos.CENTER);
-
-                                    Label descLabel = new Label(weather.getDescription());
-                                    descLabel.getStyleClass().add("weather-desc");
-                                    descLabel.setWrapText(true);
-
-                                    Label humidityLabel = new Label(String.format("Humidité: %.0f%%", weather.getHumidity()));
-                                    humidityLabel.getStyleClass().add("weather-detail");
-
-                                    Label windLabel = new Label(String.format("Vent: %.1f km/h", weather.getWindSpeed() * 3.6));
-                                    windLabel.getStyleClass().add("weather-detail");
-
-                                    weatherDetails.getChildren().addAll(descLabel, humidityLabel, windLabel);
-
-                                    weatherOverlay.getChildren().clear();
-                                    weatherOverlay.getChildren().addAll(weatherIcon, tempLabel, weatherDetails);
-                                    weatherOverlay.setAlignment(javafx.geometry.Pos.CENTER);
-
-                                    // Simple fade animation
-                                    FadeTransition fadeIn = new FadeTransition(Duration.millis(500), weatherOverlay);
-                                    fadeIn.setFromValue(0);
-                                    fadeIn.setToValue(1);
-                                    fadeIn.play();
-                                } catch (Exception e) {
-                                    System.err.println("Error updating weather UI for " + city + ": " + e.getMessage());
-                                }
-                            });
-                        }
-                    });
+            System.err.println("Erreur lors du chargement de l'image: " + e.getMessage());
         }
 
-        imageContainer.getChildren().addAll(imageView, weatherOverlay);
+        createWeatherOverlay(imageContainer, imageView, offre);
 
         // Contenu
         VBox content = new VBox(8);
-        content.setAlignment(javafx.geometry.Pos.CENTER);
+        content.setAlignment(Pos.CENTER);
 
         Label titleLabel = new Label(offre.getTitre());
         titleLabel.getStyleClass().add("card-title");
@@ -311,7 +274,7 @@ public class PackagesController {
         // Système de notation
         HBox ratingContainer = new HBox(5);
         ratingContainer.getStyleClass().add("rating-container");
-        ratingContainer.setAlignment(javafx.geometry.Pos.CENTER);
+        ratingContainer.setAlignment(Pos.CENTER);
 
         // Création du label de rating
         double currentRating = offre.getRating() != null ? offre.getRating() : 0.0;
@@ -362,14 +325,14 @@ public class PackagesController {
         VBox dateContainer = new VBox(5);
         dateContainer.getStyleClass().add("date-container");
 
-        javafx.scene.layout.HBox startDateBox = new javafx.scene.layout.HBox(5);
+        HBox startDateBox = new HBox(5);
         Label startDateLabel = new Label("Du:");
         startDateLabel.getStyleClass().add("date-label");
         Label startDate = new Label(offre.getDateDebut().toLocalDate().toString());
         startDate.getStyleClass().add("date-info");
         startDateBox.getChildren().addAll(startDateLabel, startDate);
 
-        javafx.scene.layout.HBox endDateBox = new javafx.scene.layout.HBox(5);
+        HBox endDateBox = new HBox(5);
         Label endDateLabel = new Label("Au:");
         endDateLabel.getStyleClass().add("date-label");
         Label endDate = new Label(offre.getDateFin().toLocalDate().toString());
@@ -388,7 +351,7 @@ public class PackagesController {
         // Conteneur pour les boutons
         HBox buttonContainer = new HBox(10);
         buttonContainer.getStyleClass().add("button-container");
-        buttonContainer.setAlignment(javafx.geometry.Pos.CENTER);
+        buttonContainer.setAlignment(Pos.CENTER);
 
         Button detailsButton = new Button("Détails");
         detailsButton.getStyleClass().addAll("button", "details-button");
@@ -448,6 +411,91 @@ public class PackagesController {
         // Modification de l'assemblage final
         card.getChildren().addAll(imageContainer, content);
         return card;
+    }
+
+    private void createWeatherOverlay(StackPane imageContainer, ImageView imageView, offre offre) {
+        VBox weatherCard = new VBox(2);
+        weatherCard.getStyleClass().add("weather-card");
+
+        StackPane.setAlignment(weatherCard, Pos.TOP_RIGHT);
+        StackPane.setMargin(weatherCard, new Insets(10));
+
+        imageContainer.getChildren().clear();
+        imageContainer.getChildren().addAll(imageView, weatherCard);
+
+        String city = offre.getPays();
+        if (city != null) {
+            CompletableFuture.supplyAsync(() -> weatherService.getWeatherForCity(city))
+                    .thenAccept(weather -> {
+                        if (weather != null) {
+                            Platform.runLater(() -> {
+                                try {
+                                    // Temperature row
+                                    HBox tempRow = new HBox(4);
+                                    tempRow.setAlignment(Pos.CENTER_LEFT);
+
+                                    Label weatherIcon = new Label(getWeatherIcon(weather.getDescription()));
+                                    Label tempLabel = new Label(String.format("%.0f°", weather.getTemperature()));
+                                    tempLabel.getStyleClass().add("temp-value");
+
+                                    tempRow.getChildren().addAll(weatherIcon, tempLabel);
+
+                                    // City name
+                                    Label cityLabel = new Label(city);
+                                    cityLabel.getStyleClass().add("location");
+
+                                    // Details row
+                                    HBox detailsRow = new HBox(4);
+                                    detailsRow.setAlignment(Pos.CENTER_LEFT);
+
+                                    // Humidity
+                                    HBox humidityBox = new HBox(2);
+                                    humidityBox.getStyleClass().add("detail-box");
+                                    Label humidityIcon = new Label("💧");
+                                    Label humidityValue = new Label(String.format("%.0f%%", weather.getHumidity()));
+                                    humidityValue.getStyleClass().add("value");
+                                    humidityBox.getChildren().addAll(humidityIcon, humidityValue);
+
+                                    // Wind
+                                    HBox windBox = new HBox(2);
+                                    windBox.getStyleClass().add("detail-box");
+                                    Label windIcon = new Label("💨");
+                                    Label windValue = new Label(String.format("%.0f", weather.getWindSpeed() * 3.6));
+                                    windValue.getStyleClass().add("value");
+                                    windBox.getChildren().addAll(windIcon, windValue);
+
+                                    detailsRow.getChildren().addAll(humidityBox, windBox);
+                                    weatherCard.getChildren().addAll(tempRow, cityLabel, detailsRow);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                        }
+                    })
+                    .exceptionally(throwable -> {
+                        throwable.printStackTrace();
+                        return null;
+                    });
+        }
+    }
+
+    private String getWeatherIcon(String description) {
+        description = description.toLowerCase();
+        if (description.contains("soleil") || description.contains("clair")) {
+            return "☀️";
+        } else if (description.contains("nuage")) {
+            return "⛅";
+        } else if (description.contains("pluie")) {
+            return "🌧️";
+        } else if (description.contains("neige")) {
+            return "🌨️";
+        } else if (description.contains("orage")) {
+            return "⛈️";
+        } else if (description.contains("brume") || description.contains("brouillard")) {
+            return "🌫️";
+        }
+        return "🌤️";
     }
 
     private void updateStarRatings(HBox stars, int rating) {

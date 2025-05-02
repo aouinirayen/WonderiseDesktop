@@ -98,8 +98,8 @@ public class ReservationListController implements Initializable {
         nameLabel.getStyleClass().add("client-name");
         
         // Badge de statut
-        Label statusBadge = new Label(res.getStatut());
-        statusBadge.getStyleClass().addAll("status-badge", "status-" + res.getStatut().toLowerCase().replace(" ", "-"));
+        Label statusBadge = new Label("Confirmée");
+        statusBadge.getStyleClass().addAll("status-badge", "status-confirmé");
         
         header.getChildren().addAll(nameLabel, statusBadge);
         

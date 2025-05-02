@@ -1,0 +1,76 @@
+.calendar-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.calendar-nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748b;
+    -fx-font-size: 12px;
+    -fx-padding: 2 6;
+    -fx-cursor: hand;
+}
+
+.calendar-nav-button:hover {
+    -fx-text-fill: #1e293b;
+}
+
+.month-year-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.calendar-day-header {
+    -fx-font-size: 11px;
+    -fx-text-fill: #64748b;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.calendar-day-cell {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 3;
+    -fx-alignment: center;
+    -fx-padding: 2;
+    -fx-cursor: hand;
+    -fx-min-width: 25;
+    -fx-min-height: 25;
+    -fx-max-height: 25;
+}
+
+.calendar-day-cell:hover {
+    -fx-background-color: #e2e8f0;
+}
+
+.calendar-day-text {
+    -fx-font-size: 11px;
+    -fx-text-fill: #334155;
+}
+
+.current-day {
+    -fx-background-color: #3b82f6;
+}
+
+.current-day .calendar-day-text {
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+.current-day:hover {
+    -fx-background-color: #2563eb;
+}
+
+.selected-day {
+    -fx-background-color: #60a5fa;
+}
+
+.selected-day .calendar-day-text {
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+.selected-day:hover {
+    -fx-background-color: #3b82f6;
+}
