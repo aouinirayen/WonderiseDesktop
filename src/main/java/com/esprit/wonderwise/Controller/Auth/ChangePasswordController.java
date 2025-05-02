@@ -19,7 +19,7 @@ public class ChangePasswordController {
 
 
 
-   
+
         if (newPassword.length() < 6) {
             DialogUtils.showCustomDialog("Erreur", "Le mot de passe doit contenir au moins 6 caractères.", false);
             return;
@@ -33,15 +33,5 @@ public class ChangePasswordController {
         }
     }
 
-    private void switchSceneFromControl(Control control, String fxmlPath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Scene scene = new Scene(loader.load());
-            Stage stage = (Stage) control.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            DialogUtils.showCustomDialog("Erreur", "Erreur lors du chargement de la scène", false);
-            System.err.println("Error loading scene: " + e.getMessage());
-        }
-    }
+  
 }
