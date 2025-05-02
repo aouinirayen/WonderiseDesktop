@@ -1,0 +1,48 @@
+/* General beautiful style for TextField and ComboBox */
+.text-field.custom-beauty {
+    -fx-pref-width: 250px;
+    -fx-pref-height: 50px;
+    -fx-background-radius: 10;
+    -fx-font-size: 15px;
+    -fx-background-color: #f7fafc;
+    -fx-border-radius: 10;
+    -fx-border-color: #e0e7ef;
+    -fx-border-width: 1.5px;
+    -fx-padding: 8 14 8 36;
+    -fx-effect: dropshadow(gaussian, rgba(41,128,185,0.07), 6,0,0,1);
+    -fx-text-fill: #2c3e50;
+}
+
+.combo-box.custom-beauty {
+    -fx-pref-width: 200px;
+    -fx-background-radius: 10;
+    -fx-font-size: 15px;
+    -fx-background-color: #f7fafc;
+    -fx-border-radius: 10;
+    -fx-border-color: #e0e7ef;
+    -fx-border-width: 1.5px;
+    -fx-padding: 8 14 8 14;
+    -fx-effect: dropshadow(gaussian, rgba(41,128,185,0.07), 6,0,0,1);
+    -fx-text-fill: #2c3e50;
+}
+
+/* Dropdown List Styling */
+.combo-box-popup .list-view {
+    -fx-background-color: #fff;
+    -fx-border-radius: 0 0 10 10;
+    -fx-background-radius: 0 0 10 10;
+    -fx-effect: dropshadow(gaussian, rgba(41,128,185,0.09), 8,0,0,2);
+    -fx-padding: 6 0 6 0;
+}
+.combo-box-popup .list-cell {
+    -fx-font-size: 15px;
+    -fx-padding: 8 18 8 18;
+    -fx-text-fill: #2c3e50;
+    -fx-background-color: transparent;
+}
+.combo-box-popup .list-cell:hover, .combo-box-popup .list-cell:selected {
+    -fx-background-color: #e8fbe9;
+    -fx-text-fill: #27ae60;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}

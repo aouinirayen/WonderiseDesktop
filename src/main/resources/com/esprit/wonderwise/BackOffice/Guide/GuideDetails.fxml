@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../../AmineStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.BackOffice.GuideBackController">
+    <left>
+        <fx:include source="../NavBarBack.fxml" />
+    </left>
+    <center>
+        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 30;" BorderPane.alignment="CENTER">
+            <!-- Header -->
+            <HBox alignment="CENTER" spacing="10" style="-fx-background-color: White; -fx-background-radius: 50; -fx-padding: 8 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);">
+                <ImageView fitHeight="25.0" fitWidth="25.0">
+                    <Image url="@../../icons/guide.png" />
+                </ImageView>
+                <Text styleClass="header-text" text="Guide Details" />
+            </HBox>
+
+            <!-- Main Content -->
+            <VBox alignment="CENTER" spacing="15" style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-background-radius: 25; -fx-padding: 20; -fx-max-width: 800; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 5);">
+                <!-- Circular Image and Name -->
+                <VBox alignment="CENTER" spacing="12">
+                    <ImageView fx:id="photoView" fitHeight="200" fitWidth="200">
+                        <clip>
+                            <Circle centerX="100" centerY="100" radius="100" />
+                        </clip>
+                    </ImageView>
+                    <Label fx:id="nomLabel" style="-fx-font-size: 22px; -fx-text-fill: #1E3A8A; -fx-font-weight: bold; -fx-background-color: rgba(59, 130, 246, 0.1); -fx-padding: 5 15; -fx-background-radius: 10;" />
+                </VBox>
+
+                <!-- Details Organized in HBoxes -->
+                <VBox alignment="CENTER" spacing="10" style="-fx-padding: 10;">
+                    <!-- Row 1: Prenom, Email -->
+                    <HBox alignment="CENTER" spacing="20">
+                        <Label fx:id="prenomLabel" style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" text="Prénom: " />
+                        <Label fx:id="emailLabel" style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" text="Email: " />
+                    </HBox>
+
+                    <!-- Row 2: Telephone, Description -->
+                    <HBox alignment="CENTER" spacing="20">
+                        <Label fx:id="numTelephoneLabel" style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" text="Numéro de téléphone: " />
+                        <Label fx:id="descriptionLabel" style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" text="Description: " wrapText="true" />
+                    </HBox>
+
+                    <!-- Row 3: Social Media -->
+                    <HBox alignment="CENTER" spacing="20">
+                        <Label fx:id="facebookLabel" style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" text="Facebook: " />
+                        <Label fx:id="instagramLabel" style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" text="Instagram: " />
+                    </HBox>
+
+                    <!-- Row 4: Avis -->
+                    <HBox alignment="CENTER" spacing="20">
+                        <Label fx:id="nombreAvisLabel" style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" text="Nombre d'avis: " />
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- Action Button -->
+            <Button onAction="#showGuideList" styleClass="backoffice-action-button" text="Back" />
+        </VBox>
+    </center>
+</BorderPane>

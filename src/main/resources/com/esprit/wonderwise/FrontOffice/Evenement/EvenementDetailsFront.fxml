@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.layout.Pane?>
+<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="modern-background" stylesheets="@../../AmineStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.EvenementDetailsFrontController">
+    <!-- Top Navigation -->
+    <top>
+        <fx:include source="../NavBarFront.fxml" />
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <VBox alignment="CENTER" spacing="25" style="-fx-padding: 40; -fx-background-color: linear-gradient(to bottom right, #F7FAFC, #E2E8F0);">
+            <!-- Event Card -->
+            <HBox alignment="CENTER" prefHeight="550.0" prefWidth="950.0" spacing="30" style="-fx-background-color: #FFFFFF; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 20, 0, 0, 8); -fx-padding: 25;">
+                <!-- Left Side: Event Image -->
+                <VBox alignment="CENTER" prefWidth="450.0" spacing="20">
+                    <ImageView fx:id="photoView" fitHeight="300.0" fitWidth="450.0" style="-fx-background-radius: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 5);" styleClass="rounded-image" />
+                    <HBox alignment="CENTER" spacing="20" style="-fx-padding: 0 0 0 0;">
+    <Pane fx:id="mapPane" prefHeight="120.0" prefWidth="320.0" style="-fx-background-color: #F7FAFC; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 2);" />
+    <ImageView fx:id="qrCodeView" fitHeight="100.0" fitWidth="100.0" style="-fx-background-radius: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);" />
+</HBox>
+                    <Button onAction="#goBack" style="-fx-background-color: #4A5568; -fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-padding: 10 25; -fx-background-radius: 12; -fx-font-family: 'Inter', 'Arial', sans-serif; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);" text="Back to List" />
+                </VBox>
+
+                <!-- Right Side: Event Details and Comments -->
+                <VBox prefWidth="450.0" spacing="20">
+                    <!-- Event Details -->
+                    <VBox spacing="15" style="-fx-padding: 15; -fx-background-color: #F7FAFC; -fx-background-radius: 20;">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <ImageView fitHeight="30.0" fitWidth="30.0">
+                                <Image url="@../../icons/evenement.png" />
+                            </ImageView>
+                            <Label fx:id="nomLabel" style="-fx-font-size: 26px; -fx-text-fill: #1A202C; -fx-font-weight: bold; -fx-font-family: 'Inter', 'Arial', sans-serif;" />
+                        </HBox>
+                        <Text fx:id="descriptionLabel" style="-fx-font-size: 15px; -fx-fill: #4A5568; -fx-font-family: 'Inter', 'Arial', sans-serif;" wrappingWidth="400" />
+                        <HBox spacing="25">
+                            <VBox spacing="10">
+                                <HBox spacing="10">
+                                    <Label style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;" text="Date:" />
+                                    <Label fx:id="dateLabel" style="-fx-font-size: 14px; -fx-text-fill: #2D3748;" />
+                                </HBox>
+                                <HBox spacing="10">
+                                    <Label style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;" text="Time:" />
+                                    <Label fx:id="heureLabel" style="-fx-font-size: 14px; -fx-text-fill: #2D3748;" />
+                                </HBox>
+                                <HBox spacing="10">
+                                    <Label style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;" text="Location:" />
+                                    <Label fx:id="lieuLabel" style="-fx-font-size: 14px; -fx-text-fill: #2D3748;" />
+                                </HBox>
+                                <HBox spacing="10">
+                                    <Label style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;" text="Weather:" />
+                                    <Label fx:id="weatherLabel" style="-fx-font-size: 14px; -fx-text-fill: #2B6CB0; -fx-font-family: 'Inter', 'Arial', sans-serif;" text="Loading weather..." />
+                                </HBox>
+                            </VBox>
+                            <VBox spacing="10">
+                                <HBox spacing="10">
+                                    <Label style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;" text="Category:" />
+                                    <Label fx:id="categorieLabel" style="-fx-font-size: 14px; -fx-text-fill: #2D3748;" />
+                                </HBox>
+                                <HBox spacing="10">
+                                    <Label style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;" text="Price:" />
+                                    <Label fx:id="prixLabel" style="-fx-font-size: 14px; -fx-text-fill: #2D3748;" />
+                                </HBox>
+                                <HBox spacing="10">
+                                    <Label style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;" text="Places:" />
+                                    <Label fx:id="placeMaxLabel" style="-fx-font-size: 14px; -fx-text-fill: #2D3748;" />
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label style="-fx-font-size: 14px; -fx-text-fill: #718096; -fx-font-weight: bold;" text="Likes:" />
+                            <Label fx:id="likesCountLabel" style="-fx-font-size: 14px; -fx-text-fill: #2D3748;" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Comments Section -->
+                    <VBox spacing="15" style="-fx-background-color: #EDF2F7; -fx-background-radius: 20; -fx-padding: 15; -fx-min-height: 200;">
+                        <Text style="-fx-font-size: 20px; -fx-fill: #1A202C; -fx-font-weight: bold; -fx-font-family: 'Inter', 'Arial', sans-serif;" text="Comments" />
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <TextField fx:id="commentField" prefWidth="320" promptText="Add a comment..." style="-fx-font-size: 14px; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #CBD5E0; -fx-padding: 8; -fx-background-color: #FFFFFF;" />
+                            <Button fx:id="addCommentButton" onAction="#addComment" prefHeight="38.0" prefWidth="90.0" style="-fx-background-color: #2D3748; -fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-background-radius: 12; -fx-font-family: 'Inter', 'Arial', sans-serif;" text="Post" />
+                        </HBox>
+                        <ScrollPane fitToWidth="true" prefHeight="150.0" style="-fx-background: transparent; -fx-background-color: transparent;" styleClass="scroll-pane">
+                            <FlowPane fx:id="commentsFlowPane" hgap="10" prefWidth="400" vgap="10" />
+                        </ScrollPane>
+                    </VBox>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

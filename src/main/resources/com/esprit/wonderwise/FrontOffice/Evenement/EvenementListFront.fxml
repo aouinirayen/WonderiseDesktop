@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="740.0" prefWidth="1070.0" styleClass="gradient-background" stylesheets="@../../AmineStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.EvenementFrontController">
+    <top>
+        <fx:include source="../NavBarFront.fxml" />
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: #F0F4F8; -fx-padding: 30;" stylesheets="@../../search-filter.css">
+            <!-- Title Section with Icon -->
+            <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 0 0 20 20;">
+                <ImageView fitHeight="50.0" fitWidth="50.0">
+                    <Image url="@../../icons/evenement.png" />
+                </ImageView>
+                <Text style="-fx-font-size: 34px; -fx-fill: #2D3748; -fx-font-weight: bold; -fx-font-family: 'Poppins', 'Arial', sans-serif;" styleClass="header-text" text="Explore Events" />
+            </HBox>
+
+            <Button fx:id="calendarBtn" alignment="CENTER" style="-fx-background-color: #22C55E; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 10 24; -fx-background-radius: 8; -fx-cursor: hand; -fx-pref-width: 250;" text="Voir le calendrier" />
+            <!-- Search and Filter Row -->
+            <HBox alignment="CENTER" spacing="20" style="-fx-padding: 5; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5); -fx-background-color: White;">
+                <TextField fx:id="searchField" prefHeight="37.0" promptText="Rechercher un événement..." styleClass="custom-beauty" />
+                <ComboBox fx:id="filterCombo" promptText="Filtrer par catégorie" styleClass="custom-beauty" />
+            </HBox>
+            <!-- Scrollable Event Cards -->
+            <ScrollPane fitToHeight="false" fitToWidth="true" prefHeight="600" style="-fx-background: transparent; -fx-background-color: transparent;" styleClass="scroll-pane">
+                <FlowPane fx:id="evenementCards" alignment="CENTER" hgap="25" prefWidth="1000" style="-fx-padding: 20; -fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);" vgap="25">
+                    <BorderPane.margin>
+                        <Insets bottom="20" left="20" right="20" top="20" />
+                    </BorderPane.margin>
+                </FlowPane>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
