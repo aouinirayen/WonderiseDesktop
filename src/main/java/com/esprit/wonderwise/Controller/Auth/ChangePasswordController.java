@@ -16,35 +16,9 @@ import java.io.IOException;
 
 public class ChangePasswordController {
 
-    
 
-    @FXML
-    private void initialize() {
-        // --- New Password Field ---
-        newPasswordTextField.setManaged(false);
-        newPasswordTextField.setVisible(false);
-        newPasswordTextField.setText("");
-        newPasswordTextField.setPromptText(newPasswordField.getPromptText());
-        setEyeIcon(toggleNewPasswordView, false);
-        toggleNewPasswordView.setOnMouseClicked(event -> togglePasswordVisibility(newPasswordField, newPasswordTextField, toggleNewPasswordView));
-        newPasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newPasswordTextField.isVisible()) newPasswordTextField.setText(newVal);
-        });
-        newPasswordTextField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (newPasswordTextField.isVisible()) newPasswordField.setText(newVal);
-        });
-        // --- Confirm Password Field ---
-        confirmPasswordTextField.setManaged(false);
-        confirmPasswordTextField.setVisible(false);
-        confirmPasswordTextField.setText("");
-        confirmPasswordTextField.setPromptText(confirmPasswordField.getPromptText());
-        setEyeIcon(toggleConfirmPasswordView, false);
-        toggleConfirmPasswordView.setOnMouseClicked(event -> togglePasswordVisibility(confirmPasswordField, confirmPasswordTextField, toggleConfirmPasswordView));
-        confirmPasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!confirmPasswordTextField.isVisible()) confirmPasswordTextField.setText(newVal);
-        });
-        confirmPasswordTextField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (confirmPasswordTextField.isVisible()) confirmPasswordField.setText(newVal);
+
+  
         });
     }
 
