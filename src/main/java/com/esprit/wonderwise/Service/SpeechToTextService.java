@@ -53,11 +53,6 @@ public class SpeechToTextService {
         recognizer  = new Recognizer(model, SAMPLE_RATE);
     }
 
-    /* ======================================
-     *           Contrôle du service
-     * ====================================== */
-
-    /** Démarre la capture micro dans un thread séparé */
     public void start() {
         if (running) return;
         running = true;
