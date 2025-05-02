@@ -16,21 +16,7 @@ import java.io.IOException;
 
 public class ChangePasswordController {
 
-    private static final String EYE_OPEN_ICON = "/com/esprit/wonderwise/icons/eye_open.png";
-    private static final String EYE_CLOSED_ICON = "/com/esprit/wonderwise/icons/eye_closed.png";
-    @FXML private PasswordField newPasswordField;
-    @FXML private TextField newPasswordTextField;
-    @FXML private ImageView toggleNewPasswordView;
-    @FXML private PasswordField confirmPasswordField;
-    @FXML private TextField confirmPasswordTextField;
-    @FXML private ImageView toggleConfirmPasswordView;
-    @FXML private Button changePasswordButton;
-    private final UserService userService = new UserService();
-    private static String resetEmail;
-
-    public static void setResetEmail(String email) {
-        resetEmail = email;
-    }
+    
 
     @FXML
     private void initialize() {
