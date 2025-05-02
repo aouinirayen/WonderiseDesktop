@@ -77,9 +77,7 @@ public class SpeechToTextService {
         } catch (InterruptedException ignored) {}
     }
 
-    /* ======================================
-     *              Boucle interne
-     * ====================================== */
+   
 
     private void captureLoop() {
         try {
