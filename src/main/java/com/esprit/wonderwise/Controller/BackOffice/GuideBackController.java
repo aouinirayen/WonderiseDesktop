@@ -29,17 +29,6 @@ import java.util.regex.Pattern;
 
 public class GuideBackController {
 
-    @FXML private FlowPane guideCards;
-    @FXML private TextField nomField, prenomField, emailField, numTelephoneField, facebookField, instagramField, photoField;
-    @FXML private TextField searchField;
-    @FXML private TextArea descriptionArea;
-    @FXML private Label nomLabel, prenomLabel, emailLabel, numTelephoneLabel, descriptionLabel, facebookLabel, instagramLabel, nombreAvisLabel;
-    @FXML private ImageView photoView;
-    private GuideService guideService = new GuideService();
-    private Guide selectedGuide;
-    private static final String IMAGE_DESTINATION_DIR = "C:\\xampp\\htdocs\\pidev3\\";
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$"); // Basic email regex
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{8}$"); // 8-digit phone number
 
     @FXML
     public void initialize() {
