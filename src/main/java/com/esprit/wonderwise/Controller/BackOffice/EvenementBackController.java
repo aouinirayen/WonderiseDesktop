@@ -6,6 +6,7 @@ import com.esprit.wonderwise.Service.EvenementService;
 import com.esprit.wonderwise.Service.GuideService;
 import com.esprit.wonderwise.Utils.DialogUtils; // Import DialogUtils
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -417,3 +418,26 @@ public class EvenementBackController {
             DialogUtils.showCustomDialog("Validation Error", "Country cannot be empty.", false, getCurrentStage());
             return false;
         }
+
+        public class NavBarBackController {
+            @FXML private Button dashboardBtn, countryBtn, artBtn, monumentBtn, foodBtn, celebrityBtn, guideBtn, evenementBtn;
+
+            @FXML
+            private void handleDashboardButton(ActionEvent event) throws IOException {
+                loadScene("BackOffice.fxml", event);
+            }
+
+            @FXML
+            private void handleCountryButton(ActionEvent event) throws IOException {
+                loadScene("Country/Country.fxml", event);
+            }
+
+            @FXML
+            private void handleArtButton(ActionEvent event) throws IOException {
+                loadScene("Art/Art.fxml", event);
+            }
+
+            @FXML
+            private void handleMonumentButton(ActionEvent event) throws IOException {
+                loadScene("Monument/Monument.fxml", event);
+            }
