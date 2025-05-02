@@ -62,12 +62,11 @@ public class SpeechToTextService {
         worker.start();
     }
 
-    /** Arrête proprement la capture et attend la fin du thread */
+
     public void stop() {
         if (!running) return;
         running = false;
 
-        // Réveille read() si bloqué
         if (microphone != null) {
             microphone.stop();
             microphone.close();
