@@ -61,7 +61,7 @@ public class SpeechToTextService {
     public void start() {
         if (running) return;
         running = true;
-aaaaaaaaaaaaaaaaaaaaaa
+
         worker = new Thread(this::captureLoop, "STT-Worker");
         worker.setDaemon(true);
         worker.start();
