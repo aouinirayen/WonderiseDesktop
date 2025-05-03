@@ -122,11 +122,6 @@
                                    </ImageView>
                                </graphic>
                            </Button>
-                           <Button fx:id="moderationButton" onAction="#openModerationDashboard" style="-fx-background-color: #E74C3C; -fx-text-fill: #ECF0F1; -fx-font-size: 14px; -fx-padding: 8 15; -fx-background-radius: 5;" text="Modération">
-                               <graphic>
-                                   <Label style="-fx-text-fill: white; -fx-font-size: 14px;" text="🛡️" />
-                               </graphic>
-                           </Button>
                        </HBox>
                     </VBox>
 
