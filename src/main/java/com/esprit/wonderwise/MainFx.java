@@ -15,7 +15,7 @@ public class MainFx extends Application {
         );
         //FrontOffice/FrontOffice.fxml
         //BackOffice/BackOffice.fxml
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene scene = new Scene(fxmlLoader.load());2
         stage.setScene(scene);
         stage.show();
     }
