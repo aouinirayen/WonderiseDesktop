@@ -137,7 +137,7 @@ public class ReclamationController {
             r.setDescription(taDescription.getText().trim());
             r.setDate(LocalDate.now());
             r.setStatus(Status.ENVOYEE);
-            r.setUserId(1);   // TODO : remplacer par l'utilisateur connecté
+            r.setUserId(1);
 
             reclamationService.add(r);
 
@@ -207,7 +207,7 @@ public class ReclamationController {
         return true;
     }
 
-    /* ========== UTILITAIRES ========== */
+
 
     private Stage getCurrentStage() {
         Scene s = tfObjet.getScene();

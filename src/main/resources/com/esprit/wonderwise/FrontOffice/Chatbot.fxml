@@ -24,7 +24,7 @@
         </children>
     </HBox>
 
-    <!-- Chat Area - Plus grande -->
+    <!-- Chat Area  -->
     <ScrollPane fitToWidth="true" style="-fx-background: #ffffff;" VBox.vgrow="ALWAYS" prefHeight="500">
         <content>
             <TextArea fx:id="chatArea" editable="false" wrapText="true"

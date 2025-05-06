@@ -32,7 +32,7 @@
                       prefHeight="400" prefWidth="700"
                       legendVisible="false">
                 <xAxis>
-                    <CategoryAxis fx:id="categoryAxis" label="Type" />
+                    <CategoryAxis fx:id="categoryAxis" label="Objet" />
                 </xAxis>
                 <yAxis>
                     <NumberAxis fx:id="numberAxis" label="Occurrences" />

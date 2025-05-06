@@ -248,7 +248,7 @@ public class ReclamationService implements InterfaceCRUD<Reclamation> {
         r.setReponses(reponseService.findByReclamationId(r.getId()));
 
         return r;
-    }// Ajoutez cette méthode dans ReclamationService
+    }//
     public boolean deleteReclamationsByType(String type) {
         try {
             // 1. Supprimer d'abord les réponses associées
