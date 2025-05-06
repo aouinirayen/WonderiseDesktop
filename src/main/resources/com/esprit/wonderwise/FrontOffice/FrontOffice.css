@@ -1,0 +1,28 @@
+
+/* Style for the Book Now button */
+.book-now-button {
+    -fx-background-color: #3498DB; /* Blue background */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20 8 20;
+    -fx-background-radius: 20; /* Rounded corners */
+}
+
+.book-now-button:hover {
+    -fx-background-color: #2980B9; /* Slightly darker blue on hover */
+}
+
+/* Style for the Discover Now button */
+.discover-button {
+    -fx-background-color: #3498DB; /* Blue background */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 30 10 30;
+    -fx-background-radius: 25; /* More rounded corners */
+}
+
+.discover-button:hover {
+    -fx-background-color: #2980B9; /* Slightly darker blue on hover */
+}

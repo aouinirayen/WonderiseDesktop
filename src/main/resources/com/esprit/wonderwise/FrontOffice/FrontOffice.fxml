@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="740.0" prefWidth="1070.0" stylesheets="@FrontOffice.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.wonderwise.Controller.FrontOffice.FrontOfficeController">
+
+  <!-- Navigation Bar -->
+  <top>
+    <fx:include source="NavBarFront.fxml" />
+  </top>
+
+  <!-- Hero Section -->
+  <center>
+    <StackPane style="-fx-background-color: #B0BEC5;">
+      <!-- Overlay for darkening the background -->
+      <StackPane style="-fx-background-color: rgba(0, 0, 0, 0.5);" />
+
+      <!-- Content (Text and Button) -->
+      <VBox alignment="CENTER" spacing="20">
+        <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="EXPLORE THE WORLD" />
+        <Label style="-fx-text-fill: white; -fx-font-size: 48px; -fx-font-weight: bold;" text="Let's The World Together!" />
+        <Text style="-fx-fill: white; -fx-font-size: 14px; -fx-text-alignment: center;" text="Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s," wrappingWidth="600" />
+        <Button styleClass="discover-button" text="Discover Now" />
+      </VBox>
+    </StackPane>
+  </center>
+
+</BorderPane>
