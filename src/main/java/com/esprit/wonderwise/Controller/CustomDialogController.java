@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class CustomDialogController {
     @FXML private ImageView iconView;
     @FXML private Label titleLabel;
-    @FXML private Label messageLabel;why
+    @FXML private Label messageLabel;
     @FXML private Button closeButton;
 
     public void setDialogData(String title, String message, boolean isSuccess) {
