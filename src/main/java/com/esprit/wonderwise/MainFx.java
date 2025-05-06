@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-aaaaaaaaaaaa
+
 import java.io.IOException;
 
 public class MainFx extends Application {
